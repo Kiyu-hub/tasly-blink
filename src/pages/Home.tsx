@@ -69,7 +69,6 @@ export default function Home() {
   }, [])
 
   const newArrivals = products.filter((p) => p.new)
-  const discountedProducts = products.filter((p) => p.discount && p.discount > 0)
 
   return (
     <motion.div
@@ -96,42 +95,7 @@ export default function Home() {
         subtitle="Handpicked products for your wellness journey"
       />
 
-      {/* Special Offers */}
-      {discountedProducts.length > 0 && (
-        <section className="py-16 md:py-24">
-          <div className="container mx-auto px-4">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-rose-500 to-orange-500 p-8 md:p-12"
-            >
-              <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2" />
-              <div className="absolute bottom-0 left-0 w-48 h-48 bg-white/10 rounded-full translate-y-1/2 -translate-x-1/2" />
 
-              <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-6">
-                <div className="text-white text-center md:text-left">
-                  <span className="inline-block px-4 py-1 bg-white/20 rounded-full text-sm font-medium mb-3">
-                    Limited Time Offer
-                  </span>
-                  <h2 className="text-3xl md:text-4xl font-bold mb-2">
-                    Up to 30% Off
-                  </h2>
-                  <p className="text-white/80">
-                    Save big on selected health supplements
-                  </p>
-                </div>
-                <a
-                  href="/products?filter=sale"
-                  className="inline-flex items-center justify-center h-12 px-8 bg-white text-rose-600 font-semibold rounded-full hover:bg-white/90 transition-colors"
-                >
-                  Shop Sale
-                </a>
-              </div>
-            </motion.div>
-          </div>
-        </section>
-      )}
 
       {/* New Arrivals */}
       {newArrivals.length > 0 && (

@@ -60,13 +60,11 @@ export default function Header() {
 
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-2">
-            <img 
-              src="/tasly-logo.svg" 
-              alt="Tasly Logo" 
-              className="h-12 w-auto"
-            />
-            <span className="hidden font-display text-xl font-bold sm:inline-block">
-              Ghana <span className="text-primary">346</span>
+            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-r from-primary to-green-600">
+              <span className="text-lg font-bold text-white">T</span>
+            </div>
+            <span className="font-display text-xl font-bold">
+              Tasly Ghana <span className="text-primary">346</span>
             </span>
           </Link>
 
@@ -129,12 +127,7 @@ export default function Header() {
             >
               Contact
             </Link>
-            <Link
-              to="/track-order"
-              className="text-sm font-medium hover:text-primary transition-colors"
-            >
-              Track Order
-            </Link>
+
           </nav>
 
           {/* Right Side Actions */}

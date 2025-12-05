@@ -88,6 +88,7 @@ export interface SiteInfo {
   address: string
   businessHours?: string
   announcement?: string
+  showAnnouncement?: boolean
   currency: string
   freeShippingThreshold: number
   deliveryFee?: number
@@ -98,6 +99,14 @@ export interface SiteInfo {
     tiktok?: string
     youtube?: string
     whatsapp?: string
+  }
+  socialMediaDisplay?: {
+    showFacebook?: boolean
+    showInstagram?: boolean
+    showTwitter?: boolean
+    showTiktok?: boolean
+    showYoutube?: boolean
+    showWhatsApp?: boolean
   }
   shippingInfo?: string
   returnPolicy?: string

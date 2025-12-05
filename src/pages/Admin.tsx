@@ -947,8 +947,9 @@ export default function Admin() {
                 </CardHeader>
                 <CardContent>
                   {siteInfo && (
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div className="space-y-2">
+                    <>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="space-y-2">
                         <Label>Facebook</Label>
                         <Input
                           value={siteInfo.socialMedia?.facebook || ''}
@@ -1028,7 +1029,133 @@ export default function Admin() {
                           placeholder="https://tiktok.com/..."
                         />
                       </div>
+                      <div className="space-y-2">
+                        <Label>WhatsApp Chat Link</Label>
+                        <Input
+                          value={siteInfo.socialMedia?.whatsapp || ''}
+                          onChange={(e) =>
+                            setSiteInfo({
+                              ...siteInfo,
+                              socialMedia: {
+                                ...siteInfo.socialMedia,
+                                whatsapp: e.target.value,
+                              },
+                            })
+                          }
+                          placeholder="233599004548"
+                        />
+                        <p className="text-xs text-muted-foreground">Enter phone number with country code (no + or spaces)</p>
+                      </div>
                     </div>
+
+                    <div className="mt-6 pt-6 border-t">
+                      <h4 className="font-semibold mb-4">Social Media Display Settings</h4>
+                      <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                        <label className="flex items-center gap-2">
+                          <input
+                            type="checkbox"
+                            checked={siteInfo.socialMediaDisplay?.showFacebook ?? true}
+                            onChange={(e) =>
+                              setSiteInfo({
+                                ...siteInfo,
+                                socialMediaDisplay: {
+                                  ...siteInfo.socialMediaDisplay,
+                                  showFacebook: e.target.checked,
+                                },
+                              })
+                            }
+                            className="w-4 h-4"
+                          />
+                          <span className="text-sm">Show Facebook</span>
+                        </label>
+                        <label className="flex items-center gap-2">
+                          <input
+                            type="checkbox"
+                            checked={siteInfo.socialMediaDisplay?.showInstagram ?? true}
+                            onChange={(e) =>
+                              setSiteInfo({
+                                ...siteInfo,
+                                socialMediaDisplay: {
+                                  ...siteInfo.socialMediaDisplay,
+                                  showInstagram: e.target.checked,
+                                },
+                              })
+                            }
+                            className="w-4 h-4"
+                          />
+                          <span className="text-sm">Show Instagram</span>
+                        </label>
+                        <label className="flex items-center gap-2">
+                          <input
+                            type="checkbox"
+                            checked={siteInfo.socialMediaDisplay?.showTwitter ?? true}
+                            onChange={(e) =>
+                              setSiteInfo({
+                                ...siteInfo,
+                                socialMediaDisplay: {
+                                  ...siteInfo.socialMediaDisplay,
+                                  showTwitter: e.target.checked,
+                                },
+                              })
+                            }
+                            className="w-4 h-4"
+                          />
+                          <span className="text-sm">Show Twitter</span>
+                        </label>
+                        <label className="flex items-center gap-2">
+                          <input
+                            type="checkbox"
+                            checked={siteInfo.socialMediaDisplay?.showYoutube ?? true}
+                            onChange={(e) =>
+                              setSiteInfo({
+                                ...siteInfo,
+                                socialMediaDisplay: {
+                                  ...siteInfo.socialMediaDisplay,
+                                  showYoutube: e.target.checked,
+                                },
+                              })
+                            }
+                            className="w-4 h-4"
+                          />
+                          <span className="text-sm">Show YouTube</span>
+                        </label>
+                        <label className="flex items-center gap-2">
+                          <input
+                            type="checkbox"
+                            checked={siteInfo.socialMediaDisplay?.showTiktok ?? true}
+                            onChange={(e) =>
+                              setSiteInfo({
+                                ...siteInfo,
+                                socialMediaDisplay: {
+                                  ...siteInfo.socialMediaDisplay,
+                                  showTiktok: e.target.checked,
+                                },
+                              })
+                            }
+                            className="w-4 h-4"
+                          />
+                          <span className="text-sm">Show TikTok</span>
+                        </label>
+                        <label className="flex items-center gap-2">
+                          <input
+                            type="checkbox"
+                            checked={siteInfo.socialMediaDisplay?.showWhatsApp ?? true}
+                            onChange={(e) =>
+                              setSiteInfo({
+                                ...siteInfo,
+                                socialMediaDisplay: {
+                                  ...siteInfo.socialMediaDisplay,
+                                  showWhatsApp: e.target.checked,
+                                },
+                              })
+                            }
+                            className="w-4 h-4"
+                          />
+                          <span className="text-sm">Show WhatsApp</span>
+                        </label>
+                      </div>
+                    </div>
+                    </>
                   )}
                 </CardContent>
               </Card>
@@ -1054,6 +1181,21 @@ export default function Admin() {
                           placeholder="Free shipping on orders over GH₵500!"
                         />
                       </div>
+
+                      <label className="flex items-center gap-2">
+                        <input
+                          type="checkbox"
+                          checked={siteInfo.showAnnouncement ?? true}
+                          onChange={(e) =>
+                            setSiteInfo({
+                              ...siteInfo,
+                              showAnnouncement: e.target.checked,
+                            })
+                          }
+                          className="w-4 h-4"
+                        />
+                        <span className="text-sm font-medium">Show Announcement Banner</span>
+                      </label>
 
                       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <div className="space-y-2">

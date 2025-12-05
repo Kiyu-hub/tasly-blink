@@ -10,6 +10,7 @@
   "businessHours": "Monday - Saturday: 9:00 AM - 6:00 PM, Sunday: Closed",
   "currency": "GH₵",
   "announcement": "",
+  "showAnnouncement": false,
   "freeShippingThreshold": 0,
   "deliveryFee": 30,
   "shippingInfo": "We deliver across all regions of Ghana. Delivery within Accra: 1-2 business days. Delivery outside Accra: 3-5 business days. Same-day delivery available for orders placed before 12:00 PM in selected areas of Accra.",
@@ -18,8 +19,17 @@
     "facebook": "https://facebook.com/taslyghana346",
     "instagram": "https://instagram.com/taslyghana346",
     "twitter": "https://twitter.com/taslyghana346",
-    "whatsapp": "https://wa.me/233599004548",
-    "youtube": "https://youtube.com/@taslyghana346"
+    "whatsapp": "233599004548",
+    "youtube": "https://youtube.com/@taslyghana346",
+    "tiktok": ""
+  },
+  "socialMediaDisplay": {
+    "showFacebook": true,
+    "showInstagram": true,
+    "showTwitter": true,
+    "showYoutube": true,
+    "showTiktok": false,
+    "showWhatsApp": true
   },
   "paymentMethods": [
     "Mobile Money (MTN, Vodafone, AirtelTigo)",

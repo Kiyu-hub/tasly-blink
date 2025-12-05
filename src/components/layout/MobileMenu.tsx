@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { X, Home, ShoppingBag, Info, Phone, MapPin, Heart } from 'lucide-react'
+import { X, Home, ShoppingBag, Info, Phone, Heart } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import { useUIStore } from '@/store'
@@ -16,7 +16,7 @@ export default function MobileMenu() {
     { icon: Heart, label: 'Wishlist', href: '/wishlist' },
     { icon: Info, label: 'About Us', href: '/about' },
     { icon: Phone, label: 'Contact', href: '/contact' },
-    { icon: MapPin, label: 'Track Order', href: '/track-order' },
+
   ]
 
   return (

@@ -6,15 +6,17 @@ import { cn } from '@/lib/utils'
 export default function AnnouncementBar() {
   const [isVisible, setIsVisible] = useState(true)
   const [announcement, setAnnouncement] = useState('')
+  const [showAnnouncement, setShowAnnouncement] = useState(false)
 
   useEffect(() => {
     const siteInfo = getSiteInfo()
     if (siteInfo.announcement) {
       setAnnouncement(siteInfo.announcement)
     }
+    setShowAnnouncement(siteInfo.showAnnouncement ?? true)
   }, [])
 
-  if (!isVisible || !announcement) return null
+  if (!isVisible || !announcement || !showAnnouncement) return null
 
   return (
     <div className="bg-gradient-to-r from-primary to-green-600 text-white py-2 px-4 relative">

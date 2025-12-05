@@ -1,10 +1,8 @@
-import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { Trash2, Plus, Minus, ShoppingBag, ArrowRight } from 'lucide-react'
 import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
 import { Separator } from '@/components/ui/separator'
 import { Card, CardContent } from '@/components/ui/card'
 import { useCartStore } from '@/store'
@@ -13,22 +11,10 @@ import { formatCurrency, getDiscountedPrice, getSiteInfo } from '@/lib/utils'
 export default function Cart() {
   const { items, updateQuantity, removeItem, clearCart, getTotalPrice, getTotalItems } =
     useCartStore()
-  const [couponCode, setCouponCode] = useState('')
-  const [discount, setDiscount] = useState(0)
 
   const subtotal = getTotalPrice()
-  const deliveryFee = subtotal >= 500 ? 0 : 30
-  const total = subtotal - discount + deliveryFee
-
-  const handleApplyCoupon = () => {
-    if (couponCode.toLowerCase() === 'tasly10') {
-      const discountAmount = subtotal * 0.1
-      setDiscount(discountAmount)
-      toast.success('Coupon applied! 10% discount')
-    } else {
-      toast.error('Invalid coupon code')
-    }
-  }
+  const deliveryFee = 30
+  const total = subtotal + deliveryFee
 
   const handleCheckout = () => {
     const siteInfo = getSiteInfo()
@@ -41,7 +27,7 @@ export default function Cart() {
       })
       .join('\n')
 
-    const message = `Hello! I'd like to place an order:\n\n${orderDetails}\n\nSubtotal: ${formatCurrency(subtotal)}\n${discount > 0 ? `Discount: -${formatCurrency(discount)}\n` : ''}Delivery: ${deliveryFee === 0 ? 'Free' : formatCurrency(deliveryFee)}\nTotal: ${formatCurrency(total)}`
+    const message = `Hello! I'd like to place an order:\n\n${orderDetails}\n\nSubtotal: ${formatCurrency(subtotal)}\nDelivery: ${formatCurrency(deliveryFee)}\nTotal: ${formatCurrency(total)}`
 
     const whatsappUrl = `https://wa.me/${siteInfo?.whatsapp || '233200000000'}?text=${encodeURIComponent(message)}`
     window.open(whatsappUrl, '_blank')
@@ -222,45 +208,15 @@ export default function Cart() {
               <CardContent className="p-6">
                 <h2 className="text-xl font-bold mb-6">Order Summary</h2>
 
-                {/* Coupon */}
-                <div className="flex gap-2 mb-6">
-                  <Input
-                    placeholder="Coupon code"
-                    value={couponCode}
-                    onChange={(e) => setCouponCode(e.target.value)}
-                    className="flex-1"
-                  />
-                  <Button variant="outline" onClick={handleApplyCoupon}>
-                    Apply
-                  </Button>
-                </div>
-
                 <div className="space-y-3">
                   <div className="flex justify-between">
                     <span className="text-muted-foreground">Subtotal</span>
                     <span>{formatCurrency(subtotal)}</span>
                   </div>
-                  {discount > 0 && (
-                    <div className="flex justify-between text-green-600">
-                      <span>Discount</span>
-                      <span>-{formatCurrency(discount)}</span>
-                    </div>
-                  )}
                   <div className="flex justify-between">
                     <span className="text-muted-foreground">Delivery</span>
-                    <span>
-                      {deliveryFee === 0 ? (
-                        <span className="text-green-600">Free</span>
-                      ) : (
-                        formatCurrency(deliveryFee)
-                      )}
-                    </span>
+                    <span>{formatCurrency(deliveryFee)}</span>
                   </div>
-                  {subtotal < 500 && (
-                    <p className="text-xs text-muted-foreground">
-                      Add {formatCurrency(500 - subtotal)} more for free delivery
-                    </p>
-                  )}
 
                   <Separator />
 

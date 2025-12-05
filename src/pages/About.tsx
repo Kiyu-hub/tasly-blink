@@ -36,23 +36,11 @@ const stats = [
   { number: '24/7', label: 'Customer Support' },
 ]
 
-const team = [
-  {
-    name: 'Dr. Kofi Mensah',
-    role: 'Chief Health Advisor',
-    image: 'https://randomuser.me/api/portraits/men/32.jpg',
-  },
-  {
-    name: 'Ama Serwaa',
-    role: 'Operations Manager',
-    image: 'https://randomuser.me/api/portraits/women/44.jpg',
-  },
-  {
-    name: 'Kwesi Appiah',
-    role: 'Customer Relations',
-    image: 'https://randomuser.me/api/portraits/men/52.jpg',
-  },
-]
+const manager = {
+  name: 'Dr. Kofi Mensah',
+  role: 'General Manager',
+  image: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&h=400&fit=crop',
+}
 
 export default function About() {
   return (
@@ -254,31 +242,31 @@ export default function About() {
             viewport={{ once: true }}
             className="text-center mb-12"
           >
-            <h2 className="text-3xl font-bold mb-4">Meet Our Team</h2>
+            <h2 className="text-3xl font-bold mb-4">The Manager</h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              Dedicated professionals committed to your health and wellness
+              Leading Tasly Ghana with dedication and expertise
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
-            {team.map((member, index) => (
-              <motion.div
-                key={member.name}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
-                className="text-center"
-              >
-                <img
-                  src={member.image}
-                  alt={member.name}
-                  className="w-32 h-32 rounded-full mx-auto mb-4 object-cover"
-                />
-                <h3 className="font-bold">{member.name}</h3>
-                <p className="text-sm text-muted-foreground">{member.role}</p>
-              </motion.div>
-            ))}
+          <div className="max-w-md mx-auto">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-center"
+            >
+              <img
+                src={manager.image}
+                alt={manager.name}
+                className="w-48 h-48 rounded-full mx-auto mb-6 object-cover shadow-lg border-4 border-primary/20"
+              />
+              <h3 className="text-2xl font-bold mb-2">{manager.name}</h3>
+              <p className="text-lg text-muted-foreground mb-4">{manager.role}</p>
+              <p className="text-sm text-muted-foreground max-w-md mx-auto">
+                Leading Tasly Ghana with years of experience in healthcare and business management,
+                committed to bringing the best health solutions to our customers.
+              </p>
+            </motion.div>
           </div>
         </div>
       </section>

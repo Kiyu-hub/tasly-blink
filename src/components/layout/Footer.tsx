@@ -8,6 +8,7 @@ import {
   Phone,
   Mail,
   MapPin,
+  UserPlus,
 } from 'lucide-react'
 import { getSiteInfo } from '@/lib/storage'
 import { Separator } from '@/components/ui/separator'
@@ -137,6 +138,15 @@ export default function Footer() {
                   className="text-sm text-muted-foreground hover:text-primary transition-colors"
                 >
                   Wishlist
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/become-distributor"
+                  className="text-sm text-primary hover:text-primary/80 transition-colors font-medium flex items-center gap-1.5"
+                >
+                  <UserPlus className="h-4 w-4" />
+                  Become a Distributor
                 </Link>
               </li>
             </ul>

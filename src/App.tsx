@@ -10,6 +10,7 @@ import Cart from './pages/Cart'
 import Wishlist from './pages/Wishlist'
 import About from './pages/About'
 import Contact from './pages/Contact'
+import BecomeDistributor from './pages/BecomeDistributor'
 import Admin from './pages/Admin'
 import { initializeData } from './lib/storage'
 
@@ -30,6 +31,7 @@ function App() {
             <Route path="wishlist" element={<Wishlist />} />
             <Route path="about" element={<About />} />
             <Route path="contact" element={<Contact />} />
+            <Route path="become-distributor" element={<BecomeDistributor />} />
             <Route path="admin-tasly-ghana-346" element={<Admin />} />
           </Route>
         </Routes>

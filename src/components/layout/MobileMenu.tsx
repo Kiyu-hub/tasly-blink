@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { X, Home, ShoppingBag, Info, Phone, Heart } from 'lucide-react'
+import { X, Home, ShoppingBag, Info, Phone, Heart, UserPlus } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import { useUIStore } from '@/store'
@@ -16,7 +16,7 @@ export default function MobileMenu() {
     { icon: Heart, label: 'Wishlist', href: '/wishlist' },
     { icon: Info, label: 'About Us', href: '/about' },
     { icon: Phone, label: 'Contact', href: '/contact' },
-
+    { icon: UserPlus, label: 'Become a Distributor', href: '/become-distributor', highlight: true },
   ]
 
   return (
@@ -70,9 +70,11 @@ export default function MobileMenu() {
                       key={item.href}
                       to={item.href}
                       onClick={() => setMobileMenuOpen(false)}
-                      className="flex items-center gap-3 rounded-lg px-3 py-3 text-sm font-medium hover:bg-accent transition-colors"
+                      className={`flex items-center gap-3 rounded-lg px-3 py-3 text-sm font-medium hover:bg-accent transition-colors ${
+                        item.highlight ? 'text-primary' : ''
+                      }`}
                     >
-                      <item.icon className="h-5 w-5 text-muted-foreground" />
+                      <item.icon className={`h-5 w-5 ${item.highlight ? 'text-primary' : 'text-muted-foreground'}`} />
                       {item.label}
                     </Link>
                   ))}

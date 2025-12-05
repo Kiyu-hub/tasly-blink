@@ -9,6 +9,7 @@ import {
   Sun,
   Moon,
   ChevronDown,
+  UserPlus,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -129,6 +130,14 @@ export default function Header() {
               className="text-sm font-medium hover:text-primary transition-colors"
             >
               Contact
+            </Link>
+            
+            <Link
+              to="/become-distributor"
+              className="flex items-center gap-1.5 text-sm font-medium text-primary hover:text-primary/80 transition-colors"
+            >
+              <UserPlus className="h-4 w-4" />
+              Become a Distributor
             </Link>
 
           </nav>

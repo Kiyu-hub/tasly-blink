@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 100" width="200" height="100">
+  <polygon points="100,10 70,40 130,40" fill="#E31E24"/>
+  <polygon points="50,45 30,65 70,65" fill="#E31E24"/>
+  <polygon points="150,45 130,65 170,65" fill="#E31E24"/>
+  <polygon points="100,50 60,90 140,90" fill="#E31E24"/>
+  <text x="100" y="95" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="#E31E24" text-anchor="middle">TASLY</text>
+</svg>

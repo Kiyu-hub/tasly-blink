@@ -60,11 +60,13 @@ export default function Header() {
 
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-2">
-            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-r from-primary to-green-600">
-              <span className="text-lg font-bold text-white">T</span>
-            </div>
+            <img 
+              src="/tasly-logo.svg" 
+              alt="Tasly Logo" 
+              className="h-12 w-auto"
+            />
             <span className="hidden font-display text-xl font-bold sm:inline-block">
-              Tasly Ghana <span className="text-primary">346</span>
+              Ghana <span className="text-primary">346</span>
             </span>
           </Link>
 

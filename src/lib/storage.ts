@@ -204,7 +204,7 @@ const defaultSiteInfo: SiteInfo = {
   phone: '+233 20 000 0000',
   whatsapp: '233200000000',
   address: '123 Health Street, Osu, Accra, Ghana',
-  announcement: 'Free shipping on orders over GH₵500!',
+  announcement: '',
   currency: 'GH₵',
   freeShippingThreshold: 500,
   socialMedia: {

@@ -40,6 +40,12 @@ export default function BecomeDistributor() {
     whyDistributor: '',
   })
 
+  const ghanaNetworks = [
+    'MTN Mobile Money',
+    'Vodafone Cash',
+    'AirtelTigo Money'
+  ]
+
   const [loading, setLoading] = useState(false)
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -53,7 +59,7 @@ export default function BecomeDistributor() {
     e.preventDefault()
     setLoading(true)
 
-    // Validate all required fields
+    // Validate only required fields (excluding optional: businessExperience, whyDistributor, ghanaCardPhoto, bank details)
     const requiredFields = [
       'fullName',
       'email',
@@ -63,9 +69,6 @@ export default function BecomeDistributor() {
       'city',
       'region',
       'ghanaCardNumber',
-      'bankName',
-      'accountNumber',
-      'accountName',
       'momoNetwork',
       'momoNumber',
       'momoName',
@@ -84,7 +87,7 @@ export default function BecomeDistributor() {
     const whatsappNumber = (siteInfo?.whatsapp || '233599004548').replace(/[^0-9]/g, '')
 
     const message = `🎯 NEW DISTRIBUTOR REGISTRATION
-📋 From: Tasly Ghana 346 Website
+📋 From: ${siteInfo?.name || 'Tasly Ghana 346'} Website
 
 👤 PERSONAL INFORMATION
 ━━━━━━━━━━━━━━━━━━━━━
@@ -104,11 +107,13 @@ Region: ${formData.region}
 Card Number: ${formData.ghanaCardNumber}
 ${formData.ghanaCardPhoto ? `Card Photo: ${formData.ghanaCardPhoto}` : ''}
 
-🏦 BANK DETAILS
+${formData.bankName ? `🏦 BANK DETAILS
 ━━━━━━━━━━━━━━━━━━━━━
 Bank Name: ${formData.bankName}
 Account Number: ${formData.accountNumber}
 Account Name: ${formData.accountName}
+
+` : ''}
 
 📱 MOBILE MONEY
 ━━━━━━━━━━━━━━━━━━━━━
@@ -121,7 +126,7 @@ MoMo Name: ${formData.momoName}
 ${formData.businessExperience ? `Business Experience:\n${formData.businessExperience}\n\n` : ''}${formData.whyDistributor ? `Why Become Distributor:\n${formData.whyDistributor}` : ''}
 
 ---
-Sent from Tasly Ghana 346 Website
+Sent from ${siteInfo?.name || 'Tasly Ghana 346'} Website
 Date: ${new Date().toLocaleString('en-GB', { timeZone: 'Africa/Accra' })}`
 
     const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`
@@ -394,17 +399,16 @@ Date: ${new Date().toLocaleString('en-GB', { timeZone: 'Africa/Accra' })}`
                 <div className="space-y-4">
                   <h3 className="text-lg font-semibold flex items-center gap-2">
                     <Building2 className="w-5 h-5" />
-                    Bank Account Details
+                    Bank Account Details (Optional)
                   </h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="space-y-2">
-                      <Label htmlFor="bankName">Bank Name *</Label>
+                      <Label htmlFor="bankName">Bank Name</Label>
                       <select
                         id="bankName"
                         name="bankName"
                         value={formData.bankName}
                         onChange={handleChange}
-                        required
                         className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                       >
                         <option value="">Select Bank</option>
@@ -433,25 +437,23 @@ Date: ${new Date().toLocaleString('en-GB', { timeZone: 'Africa/Accra' })}`
                       </select>
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="accountNumber">Account Number *</Label>
+                      <Label htmlFor="accountNumber">Account Number</Label>
                       <Input
                         id="accountNumber"
                         name="accountNumber"
                         value={formData.accountNumber}
                         onChange={handleChange}
                         placeholder="XXXXXXXXXXXX"
-                        required
                       />
                     </div>
                     <div className="space-y-2 md:col-span-2">
-                      <Label htmlFor="accountName">Account Name *</Label>
+                      <Label htmlFor="accountName">Account Name</Label>
                       <Input
                         id="accountName"
                         name="accountName"
                         value={formData.accountName}
                         onChange={handleChange}
                         placeholder="Name as it appears on bank account"
-                        required
                       />
                     </div>
                   </div>
@@ -475,9 +477,9 @@ Date: ${new Date().toLocaleString('en-GB', { timeZone: 'Africa/Accra' })}`
                         className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                       >
                         <option value="">Select Network</option>
-                        <option value="MTN Mobile Money">MTN Mobile Money</option>
-                        <option value="Vodafone Cash">Vodafone Cash</option>
-                        <option value="AirtelTigo Money">AirtelTigo Money</option>
+                        {ghanaNetworks.map((network) => (
+                          <option key={network} value={network}>{network}</option>
+                        ))}
                       </select>
                     </div>
                     <div className="space-y-2">

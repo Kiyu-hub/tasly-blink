@@ -78,7 +78,7 @@ export default function Contact() {
   }
 
   const handleWhatsApp = () => {
-    const message = `Hello! I'd like to get in touch with Tasly Ghana 346.`
+    const message = `Hello! I'd like to get in touch with ${siteInfo?.name || 'Tasly Ghana 346'}.`
     const whatsappNumber = siteInfo?.whatsapp || '233599004548'
     window.open(
       `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`,

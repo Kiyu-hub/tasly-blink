@@ -44,11 +44,24 @@ const defaultBanners: Banner[] = [
     description:
       'Support your cardiovascular system with our premium heart health formulas trusted by thousands.',
     image:
-      'https://images.unsplash.com/photo-1559757175-7cb036e0e67a?w=1600&h=900&fit=crop',
+      'https://images.unsplash.com/photo-1505751172876-fa1923c5c528?w=1600&h=900&fit=crop',
     link: '/products?category=heart-cardiovascular',
     buttonText: 'Learn More',
     active: true,
     order: 3,
+  },
+  {
+    id: '4',
+    title: 'Become a Tasly Distributor',
+    subtitle: 'Join Our Network',
+    description:
+      'Build a thriving business with authentic Tasly health products. Attractive margins, full support, and genuine products.',
+    image:
+      'https://images.unsplash.com/photo-1560179707-f14e90ef3623?w=1600&h=900&fit=crop',
+    link: '/become-distributor',
+    buttonText: 'Apply Now',
+    active: true,
+    order: 4,
   },
 ]
 

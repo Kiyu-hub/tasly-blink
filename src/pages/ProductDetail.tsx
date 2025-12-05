@@ -18,9 +18,13 @@ import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Separator } from '@/components/ui/separator'
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
+import { Input } from '@/components/ui/input'
+import { Textarea } from '@/components/ui/textarea'
+import { Label } from '@/components/ui/label'
 import FeaturedProducts from '@/components/home/FeaturedProducts'
 import { useCartStore, useWishlistStore } from '@/store'
-import { getProducts } from '@/lib/storage'
+import { getProducts, getProductReviews, addReview } from '@/lib/storage'
 import { formatCurrency, getDiscountedPrice, cn } from '@/lib/utils'
 import type { Product } from '@/types'
 
@@ -31,6 +35,13 @@ export default function ProductDetail() {
   const [quantity, setQuantity] = useState(1)
   const [selectedImage, setSelectedImage] = useState(0)
   const [loading, setLoading] = useState(true)
+  const [reviews, setReviews] = useState<any[]>([])
+  const [isReviewDialogOpen, setIsReviewDialogOpen] = useState(false)
+  const [reviewForm, setReviewForm] = useState({
+    userName: '',
+    rating: 5,
+    comment: '',
+  })
 
   const addItem = useCartStore((state) => state.addItem)
   const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlistStore()
@@ -47,6 +58,10 @@ export default function ProductDetail() {
           .filter((p) => p.category === found.category && p.id !== found.id)
           .slice(0, 4)
         setRelatedProducts(related)
+        
+        // Load reviews
+        const productReviews = getProductReviews(found.id)
+        setReviews(productReviews)
       }
 
       setLoading(false)
@@ -118,7 +133,7 @@ export default function ProductDetail() {
 
   const handlePreOrder = () => {
     const siteInfo = getSiteInfo()
-    const message = `Hi Tasly Ghana 346, I would like to pre-order the following product:\n\nProduct: ${product.name}\nQuantity: ${quantity}\n\nPlease let me know when it will be available.`
+    const message = `Hi ${siteInfo?.name || 'Tasly Ghana 346'}, I would like to pre-order the following product:\n\nProduct: ${product.name}\nQuantity: ${quantity}\n\nPlease let me know when it will be available.`
     const whatsappUrl = `https://wa.me/${siteInfo?.whatsapp || '233599004548'}?text=${encodeURIComponent(message)}`
     window.open(whatsappUrl, '_blank')
   }
@@ -126,6 +141,26 @@ export default function ProductDetail() {
   const getSiteInfo = () => {
     const data = localStorage.getItem('tasly_site_info')
     return data ? JSON.parse(data) : null
+  }
+
+  const handleSubmitReview = () => {
+    if (!product || !reviewForm.userName.trim() || !reviewForm.comment.trim()) {
+      toast.error('Please fill in all fields')
+      return
+    }
+
+    const newReview = addReview({
+      productId: product.id,
+      userId: `user-${Date.now()}`,
+      userName: reviewForm.userName,
+      rating: reviewForm.rating,
+      comment: reviewForm.comment,
+    })
+
+    setReviews([...reviews, newReview])
+    setReviewForm({ userName: '', rating: 5, comment: '' })
+    setIsReviewDialogOpen(false)
+    toast.success('Thank you for your review!')
   }
 
   return (
@@ -497,11 +532,145 @@ export default function ProductDetail() {
           </TabsContent>
 
           <TabsContent value="reviews" className="pt-6">
-            <div className="text-center py-12">
-              <p className="text-muted-foreground mb-4">
-                Reviews feature coming soon!
-              </p>
-              <Button variant="outline">Write a Review</Button>
+            <div className="space-y-6">
+              {/* Review Summary */}
+              <div className="flex items-center justify-between">
+                <div>
+                  <h3 className="text-lg font-semibold mb-2">Customer Reviews</h3>
+                  <div className="flex items-center gap-2">
+                    <div className="flex">
+                      {[...Array(5)].map((_, i) => (
+                        <Star
+                          key={i}
+                          className={cn(
+                            'w-5 h-5',
+                            i < Math.round(product?.rating || 0)
+                              ? 'fill-yellow-400 text-yellow-400'
+                              : 'text-gray-300'
+                          )}
+                        />
+                      ))}
+                    </div>
+                    <span className="text-sm text-muted-foreground">
+                      {product.rating} out of 5 ({reviews.length} reviews)
+                    </span>
+                  </div>
+                </div>
+                <Dialog open={isReviewDialogOpen} onOpenChange={setIsReviewDialogOpen}>
+                  <DialogTrigger asChild>
+                    <Button variant="outline">Write a Review</Button>
+                  </DialogTrigger>
+                  <DialogContent>
+                    <DialogHeader>
+                      <DialogTitle>Write a Review for {product.name}</DialogTitle>
+                    </DialogHeader>
+                    <div className="space-y-4 pt-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="userName">Your Name *</Label>
+                        <Input
+                          id="userName"
+                          value={reviewForm.userName}
+                          onChange={(e) =>
+                            setReviewForm({ ...reviewForm, userName: e.target.value })
+                          }
+                          placeholder="John Doe"
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label>Rating *</Label>
+                        <div className="flex gap-2">
+                          {[1, 2, 3, 4, 5].map((rating) => (
+                            <button
+                              key={rating}
+                              type="button"
+                              onClick={() => setReviewForm({ ...reviewForm, rating })}
+                              className="focus:outline-none"
+                            >
+                              <Star
+                                className={cn(
+                                  'w-8 h-8 transition-colors',
+                                  rating <= reviewForm.rating
+                                    ? 'fill-yellow-400 text-yellow-400'
+                                    : 'text-gray-300'
+                                )}
+                              />
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="comment">Your Review *</Label>
+                        <Textarea
+                          id="comment"
+                          value={reviewForm.comment}
+                          onChange={(e) =>
+                            setReviewForm({ ...reviewForm, comment: e.target.value })
+                          }
+                          placeholder="Share your experience with this product..."
+                          rows={4}
+                        />
+                      </div>
+                      <div className="flex justify-end gap-2 pt-4">
+                        <Button
+                          variant="outline"
+                          onClick={() => setIsReviewDialogOpen(false)}
+                        >
+                          Cancel
+                        </Button>
+                        <Button onClick={handleSubmitReview}>Submit Review</Button>
+                      </div>
+                    </div>
+                  </DialogContent>
+                </Dialog>
+              </div>
+
+              <Separator />
+
+              {/* Reviews List */}
+              <div className="space-y-6">
+                {reviews.length > 0 ? (
+                  reviews.map((review) => (
+                    <div key={review.id} className="space-y-2">
+                      <div className="flex items-start justify-between">
+                        <div>
+                          <p className="font-semibold">{review.userName}</p>
+                          <div className="flex items-center gap-2 mt-1">
+                            <div className="flex">
+                              {[...Array(5)].map((_, i) => (
+                                <Star
+                                  key={i}
+                                  className={cn(
+                                    'w-4 h-4',
+                                    i < review.rating
+                                      ? 'fill-yellow-400 text-yellow-400'
+                                      : 'text-gray-300'
+                                  )}
+                                />
+                              ))}
+                            </div>
+                            <span className="text-sm text-muted-foreground">
+                              {new Date(review.createdAt).toLocaleDateString()}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                      <p className="text-muted-foreground">{review.comment}</p>
+                      {review.helpful > 0 && (
+                        <p className="text-sm text-muted-foreground">
+                          {review.helpful} people found this helpful
+                        </p>
+                      )}
+                      <Separator className="mt-4" />
+                    </div>
+                  ))
+                ) : (
+                  <div className="text-center py-8">
+                    <p className="text-muted-foreground mb-4">
+                      No reviews yet. Be the first to review this product!
+                    </p>
+                  </div>
+                )}
+              </div>
             </div>
           </TabsContent>
         </Tabs>

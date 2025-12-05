@@ -4,11 +4,12 @@ import { X, Home, ShoppingBag, Info, Phone, Heart, UserPlus } from 'lucide-react
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import { useUIStore } from '@/store'
-import { getCategories } from '@/lib/storage'
+import { getCategories, getSiteInfo } from '@/lib/storage'
 
 export default function MobileMenu() {
   const { isMobileMenuOpen, setMobileMenuOpen } = useUIStore()
   const categories = getCategories()
+  const siteInfo = getSiteInfo()
 
   const menuItems = [
     { icon: Home, label: 'Home', href: '/' },
@@ -104,7 +105,7 @@ export default function MobileMenu() {
               {/* Footer */}
               <div className="p-4 border-t">
                 <p className="text-xs text-center text-muted-foreground">
-                  © {new Date().getFullYear()} Tasly Ghana 346
+                  © {new Date().getFullYear()} {siteInfo.name}
                 </p>
               </div>
             </div>

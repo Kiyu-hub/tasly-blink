@@ -62,10 +62,9 @@ export default function Header() {
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-2">
             <img 
-              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSE5bpjWLc7v0MJ8EVqLPSOweMBQmvVU94YYw&s" 
+              src="https://i.ibb.co/ZzQZ8gK/tasly-logo-transparent.png" 
               alt="Tasly Ghana 346" 
-              className="h-12 w-12 object-contain mix-blend-multiply dark:mix-blend-screen"
-              style={{ background: 'transparent' }}
+              className="h-12 w-12 object-contain"
             />
             <span className="font-display text-xl font-bold">
               Tasly Ghana <span className="text-primary">346</span>

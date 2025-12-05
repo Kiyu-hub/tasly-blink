@@ -41,7 +41,7 @@ export default function WhatsAppButton() {
                     <MessageCircle className="h-5 w-5" />
                   </div>
                   <div>
-                    <h3 className="font-semibold">Tasly Ghana 346</h3>
+                    <h3 className="font-semibold">{siteInfo.name}</h3>
                     <p className="text-xs opacity-90">Usually replies instantly</p>
                   </div>
                 </div>

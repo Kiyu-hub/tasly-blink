@@ -3,11 +3,34 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { X, ShoppingCart, Minus, Plus, Trash2, ShoppingBag } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { useCartStore, useUIStore } from '@/store'
-import { formatCurrency } from '@/lib/utils'
+import { formatCurrency, getDiscountedPrice, getSiteInfo } from '@/lib/utils'
 
 export default function CartSidebar() {
   const { isCartOpen, setCartOpen } = useUIStore()
   const { items, removeItem, updateQuantity, getTotalPrice, clearCart } = useCartStore()
+
+  const handleCheckout = () => {
+    const siteInfo = getSiteInfo()
+    const whatsappNumber = (siteInfo?.whatsapp || '233599004548').replace(/[^0-9]/g, '')
+    const subtotal = getTotalPrice()
+    const deliveryFee = 30
+    const total = subtotal + deliveryFee
+
+    const orderDetails = items
+      .map((item) => {
+        const price = item.product.discount
+          ? getDiscountedPrice(item.product.price, item.product.discount)
+          : item.product.price
+        return `• ${item.quantity}x ${item.product.name} - ${formatCurrency(price * item.quantity)}`
+      })
+      .join('\n')
+
+    const message = `Hello! I'd like to place an order:\n\n${orderDetails}\n\nSubtotal: ${formatCurrency(subtotal)}\nDelivery: ${formatCurrency(deliveryFee)}\nTotal: ${formatCurrency(total)}`
+
+    const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`
+    window.open(whatsappUrl, '_blank')
+    setCartOpen(false)
+  }
 
   return (
     <AnimatePresence>
@@ -160,11 +183,15 @@ export default function CartSidebar() {
                       <Link to="/cart">View Cart</Link>
                     </Button>
                     <Button
-                      onClick={() => setCartOpen(false)}
-                      asChild
+                      onClick={handleCheckout}
                       className="bg-gradient-to-r from-primary to-green-600"
                     >
-                      <Link to="/checkout">Checkout</Link>
+                      <img
+                        src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg"
+                        alt="WhatsApp"
+                        className="w-4 h-4 mr-1"
+                      />
+                      Checkout
                     </Button>
                   </div>
                   <Button

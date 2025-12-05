@@ -101,8 +101,8 @@ export default function Cart() {
 
               return (
                 <Card key={product.id}>
-                  <CardContent className="p-4">
-                    <div className="flex gap-4">
+                  <CardContent className="p-3 sm:p-4">
+                    <div className="flex gap-3 sm:gap-4">
                       {/* Image */}
                       <Link
                         to={`/products/${product.slug}`}
@@ -111,7 +111,7 @@ export default function Cart() {
                         <img
                           src={product.imageURL}
                           alt={product.name}
-                          className="w-24 h-24 object-cover rounded-lg"
+                          className="w-20 h-20 sm:w-24 sm:h-24 object-cover rounded-lg"
                         />
                       </Link>
 
@@ -119,32 +119,32 @@ export default function Cart() {
                       <div className="flex-1 min-w-0">
                         <Link
                           to={`/products/${product.slug}`}
-                          className="font-semibold hover:text-primary transition-colors line-clamp-2"
+                          className="font-semibold text-sm sm:text-base hover:text-primary transition-colors line-clamp-2"
                         >
                           {product.name}
                         </Link>
-                        <p className="text-sm text-muted-foreground mt-1">
+                        <p className="text-xs sm:text-sm text-muted-foreground mt-1">
                           {product.category}
                         </p>
 
                         <div className="flex items-center gap-2 mt-2">
-                          <span className="font-bold text-primary">
+                          <span className="font-bold text-sm sm:text-base text-primary">
                             {formatCurrency(price)}
                           </span>
                           {product.discount && (
-                            <span className="text-sm text-muted-foreground line-through">
+                            <span className="text-xs sm:text-sm text-muted-foreground line-through">
                               {formatCurrency(product.price)}
                             </span>
                           )}
                         </div>
 
-                        <div className="flex items-center justify-between mt-4">
+                        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mt-3 sm:mt-4">
                           {/* Quantity */}
                           <div className="flex items-center border rounded-full">
                             <Button
                               variant="ghost"
                               size="icon"
-                              className="h-8 w-8 rounded-full"
+                              className="h-7 w-7 sm:h-8 sm:w-8 rounded-full"
                               onClick={() =>
                                 updateQuantity(
                                   product.id,
@@ -154,13 +154,13 @@ export default function Cart() {
                             >
                               <Minus className="h-3 w-3" />
                             </Button>
-                            <span className="w-8 text-center text-sm font-medium">
+                            <span className="w-7 sm:w-8 text-center text-xs sm:text-sm font-medium">
                               {quantity}
                             </span>
                             <Button
                               variant="ghost"
                               size="icon"
-                              className="h-8 w-8 rounded-full"
+                              className="h-7 w-7 sm:h-8 sm:w-8 rounded-full"
                               onClick={() =>
                                 updateQuantity(product.id, quantity + 1)
                               }
@@ -170,14 +170,14 @@ export default function Cart() {
                           </div>
 
                           {/* Actions */}
-                          <div className="flex items-center gap-2">
-                            <span className="font-semibold">
+                          <div className="flex items-center gap-2 w-full sm:w-auto justify-between sm:justify-start">
+                            <span className="font-semibold text-sm sm:text-base">
                               {formatCurrency(price * quantity)}
                             </span>
                             <Button
                               variant="ghost"
                               size="icon"
-                              className="h-8 w-8 text-red-500 hover:text-red-600"
+                              className="h-7 w-7 sm:h-8 sm:w-8 text-red-500 hover:text-red-600"
                               onClick={() => {
                                 removeItem(product.id)
                                 toast.success('Item removed from cart')

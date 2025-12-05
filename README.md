@@ -77,9 +77,7 @@ Tasly Ghana 346 is a **frontend-only** e-commerce platform for authentic Tasly h
    • 2x Tasly Danshen Plus - GH₵500
    • 1x Tasly Ginseng RH2 - GH₵450
    
-   Subtotal: GH₵950
-   Delivery: GH₵30
-   Total: GH₵980
+   Total: GH₵950
    ```
 
 ### Pre-Order Flow (Out of Stock)

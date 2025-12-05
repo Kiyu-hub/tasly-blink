@@ -1,0 +1,93 @@
+{
+  "name": "Tasly Ghana 346",
+  "tagline": "Your Trusted Partner in Natural Health & Wellness",
+  "description": "Tasly Ghana 346 is Ghana's premier distributor of authentic Tasly herbal and food supplement products. We bring you premium quality health solutions combining traditional Chinese medicine wisdom with modern scientific research.",
+  "aboutUs": "Tasly Ghana 346 is dedicated to improving the health and wellness of Ghanaians through premium herbal and food supplement products. As an authorized distributor of Tasly products, we bring you authentic, high-quality supplements that combine centuries of traditional Chinese medicine knowledge with cutting-edge modern research and biotechnology.\n\nOur commitment is to provide effective, safe, and natural health solutions that help you achieve optimal wellness. Every product we offer undergoes rigorous quality control and meets international standards, ensuring you receive only the best for your health.\n\nWith over a decade of experience serving the Ghanaian market, we have built a reputation for excellence, authenticity, and customer satisfaction. Our knowledgeable team is always ready to guide you in choosing the right products for your specific health needs.",
+  "contactEmail": "info@taslyghana346.com",
+  "contactPhone": "+233 24 123 4567",
+  "whatsapp": "233241234567",
+  "address": "Accra, Ghana",
+  "businessHours": "Monday - Saturday: 9:00 AM - 6:00 PM, Sunday: Closed",
+  "currency": "GH₵",
+  "announcement": "",
+  "freeShippingThreshold": 0,
+  "deliveryFee": 30,
+  "shippingInfo": "We deliver across all regions of Ghana. Delivery within Accra: 1-2 business days. Delivery outside Accra: 3-5 business days. Same-day delivery available for orders placed before 12:00 PM in selected areas of Accra.",
+  "returnPolicy": "We accept returns within 7 days of delivery for unopened products in original packaging. Product must be unused and in resalable condition. Contact our customer service team to initiate a return. Refunds will be processed within 5-7 business days after we receive the returned product.",
+  "socialMedia": {
+    "facebook": "https://facebook.com/taslyghana346",
+    "instagram": "https://instagram.com/taslyghana346",
+    "twitter": "https://twitter.com/taslyghana346",
+    "whatsapp": "https://wa.me/233241234567",
+    "youtube": "https://youtube.com/@taslyghana346"
+  },
+  "paymentMethods": [
+    "Mobile Money (MTN, Vodafone, AirtelTigo)",
+    "Bank Transfer",
+    "Cash on Delivery (Selected Areas)"
+  ],
+  "certifications": [
+    "FDA Ghana Approved",
+    "ISO 9001 Certified",
+    "GMP Certified Manufacturing"
+  ],
+  "missionStatement": "To empower every Ghanaian with access to premium natural health solutions that enhance quality of life and promote overall wellness through authentic Tasly products.",
+  "visionStatement": "To be the leading provider of premium herbal and food supplements in West Africa, recognized for quality, authenticity, and customer care.",
+  "coreValues": [
+    {
+      "title": "Authenticity",
+      "description": "We guarantee 100% authentic Tasly products sourced directly from authorized channels."
+    },
+    {
+      "title": "Quality",
+      "description": "Every product meets international quality standards and undergoes rigorous testing."
+    },
+    {
+      "title": "Customer First",
+      "description": "Your health and satisfaction are our top priorities. We provide expert guidance and support."
+    },
+    {
+      "title": "Trust & Transparency",
+      "description": "We operate with complete transparency in our products, pricing, and business practices."
+    },
+    {
+      "title": "Health Education",
+      "description": "We empower our customers with knowledge about natural health and proper product usage."
+    }
+  ],
+  "deliveryLocations": [
+    "Greater Accra Region",
+    "Ashanti Region (Kumasi)",
+    "Eastern Region",
+    "Central Region",
+    "Western Region",
+    "Northern Region",
+    "All other regions of Ghana"
+  ],
+  "faqs": [
+    {
+      "question": "Are your Tasly products authentic?",
+      "answer": "Yes, absolutely! We are an authorized distributor of Tasly products in Ghana. All our products are 100% authentic, sourced directly from Tasly Group, and come with proper documentation and batch numbers for verification."
+    },
+    {
+      "question": "How long does delivery take?",
+      "answer": "Delivery within Accra typically takes 1-2 business days. For locations outside Accra, delivery takes 3-5 business days. We also offer same-day delivery for orders placed before 12:00 PM in selected areas of Accra."
+    },
+    {
+      "question": "What payment methods do you accept?",
+      "answer": "We accept Mobile Money (MTN, Vodafone, AirtelTigo), Bank Transfer, and Cash on Delivery for selected areas in Accra."
+    },
+    {
+      "question": "Can I return a product?",
+      "answer": "Yes, we accept returns within 7 days of delivery for unopened products in original packaging. The product must be unused and in resalable condition. Please contact our customer service team to initiate a return."
+    },
+    {
+      "question": "Do you have a physical store?",
+      "answer": "Yes, we have a physical location in Accra where you can visit, consult with our team, and purchase products. Please contact us for our exact location and operating hours."
+    },
+    {
+      "question": "How do I know which product is right for me?",
+      "answer": "Our knowledgeable customer service team is available to help you choose the right products based on your health needs. You can contact us via WhatsApp, phone, or email for personalized recommendations."
+    }
+  ]
+}

@@ -23,7 +23,6 @@ import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Badge } from '@/components/ui/badge'
-import { Separator } from '@/components/ui/separator'
 import {
   Dialog,
   DialogContent,
@@ -87,7 +86,6 @@ const defaultProduct: Partial<Product> = {
   stock: 0,
   discount: 0,
   new: false,
-  bestSeller: false,
 }
 
 const defaultBanner: Partial<Banner> = {
@@ -102,6 +100,10 @@ const defaultBanner: Partial<Banner> = {
 }
 
 export default function Admin() {
+  const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const [password, setPassword] = useState('')
+  const [showPassword, setShowPassword] = useState(false)
+  
   const [products, setProducts] = useState<Product[]>([])
   const [banners, setBanners] = useState<Banner[]>([])
   const [siteInfo, setSiteInfo] = useState<SiteInfo | null>(null)
@@ -116,10 +118,87 @@ export default function Admin() {
   const [isBannerDialogOpen, setIsBannerDialogOpen] = useState(false)
 
   useEffect(() => {
-    setProducts(getProducts())
-    setBanners(getBanners())
-    setSiteInfo(getSiteInfo())
+    // Check if already authenticated in session
+    const auth = sessionStorage.getItem('tasly_admin_auth')
+    if (auth === 'authenticated') {
+      setIsAuthenticated(true)
+    }
   }, [])
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      setProducts(getProducts())
+      setBanners(getBanners())
+      setSiteInfo(getSiteInfo())
+    }
+  }, [isAuthenticated])
+
+  const handleLogin = (e: React.FormEvent) => {
+    e.preventDefault()
+    if (password === 'health2024') {
+      setIsAuthenticated(true)
+      sessionStorage.setItem('tasly_admin_auth', 'authenticated')
+      toast.success('Welcome to Admin Dashboard')
+    } else {
+      toast.error('Invalid password')
+      setPassword('')
+    }
+  }
+
+  const handleLogout = () => {
+    setIsAuthenticated(false)
+    sessionStorage.removeItem('tasly_admin_auth')
+    toast.success('Logged out successfully')
+  }
+
+  // Show login form if not authenticated
+  if (!isAuthenticated) {
+    return (
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        className="min-h-screen flex items-center justify-center bg-muted/30"
+      >
+        <Card className="w-full max-w-md">
+          <CardHeader>
+            <CardTitle className="text-2xl text-center">Admin Access</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <form onSubmit={handleLogin} className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="password">Password</Label>
+                <div className="relative">
+                  <Input
+                    id="password"
+                    type={showPassword ? 'text' : 'password'}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="Enter admin password"
+                    className="pr-10"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                  >
+                    {showPassword ? (
+                      <EyeOff className="h-4 w-4" />
+                    ) : (
+                      <Eye className="h-4 w-4" />
+                    )}
+                  </button>
+                </div>
+              </div>
+              <Button type="submit" className="w-full">
+                Access Dashboard
+              </Button>
+            </form>
+          </CardContent>
+        </Card>
+      </motion.div>
+    )
+  }
 
   // Products
   const handleSaveProduct = () => {
@@ -142,7 +221,6 @@ export default function Admin() {
       stock: editingProduct.stock || 0,
       discount: editingProduct.discount || 0,
       new: editingProduct.new || false,
-      bestSeller: editingProduct.bestSeller || false,
     }
 
     let updatedProducts: Product[]
@@ -233,7 +311,12 @@ export default function Admin() {
       className="min-h-screen py-8"
     >
       <div className="container mx-auto px-4">
-        <h1 className="text-3xl font-bold mb-2">Admin Dashboard</h1>
+        <div className="flex items-center justify-between mb-2">
+          <h1 className="text-3xl font-bold">Admin Dashboard</h1>
+          <Button variant="outline" onClick={handleLogout}>
+            Logout
+          </Button>
+        </div>
         <p className="text-muted-foreground mb-8">
           Manage your products, banners, and settings
         </p>
@@ -427,19 +510,6 @@ export default function Admin() {
                               }
                             />
                             <span className="text-sm">New Arrival</span>
-                          </label>
-                          <label className="flex items-center gap-2">
-                            <input
-                              type="checkbox"
-                              checked={editingProduct.bestSeller}
-                              onChange={(e) =>
-                                setEditingProduct({
-                                  ...editingProduct,
-                                  bestSeller: e.target.checked,
-                                })
-                              }
-                            />
-                            <span className="text-sm">Best Seller</span>
                           </label>
                         </div>
 
@@ -712,143 +782,451 @@ export default function Admin() {
 
           {/* Settings Tab */}
           <TabsContent value="settings">
-            <Card>
-              <CardHeader>
-                <CardTitle>Site Settings</CardTitle>
-              </CardHeader>
-              <CardContent>
-                {siteInfo && (
-                  <div className="space-y-6 max-w-2xl">
-                    <div className="space-y-2">
-                      <Label>Site Name</Label>
-                      <Input
-                        value={siteInfo.name}
-                        onChange={(e) =>
-                          setSiteInfo({ ...siteInfo, name: e.target.value })
-                        }
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label>Tagline</Label>
-                      <Input
-                        value={siteInfo.tagline}
-                        onChange={(e) =>
-                          setSiteInfo({ ...siteInfo, tagline: e.target.value })
-                        }
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label>Description</Label>
-                      <Textarea
-                        value={siteInfo.description}
-                        onChange={(e) =>
-                          setSiteInfo({
-                            ...siteInfo,
-                            description: e.target.value,
-                          })
-                        }
-                        rows={3}
-                      />
-                    </div>
-
-                    <Separator />
-
-                    <div className="grid grid-cols-2 gap-4">
-                      <div className="space-y-2">
-                        <Label>Email</Label>
-                        <Input
-                          type="email"
-                          value={siteInfo.email}
-                          onChange={(e) =>
-                            setSiteInfo({ ...siteInfo, email: e.target.value })
-                          }
-                        />
+            <div className="space-y-6">
+              {/* Basic Information */}
+              <Card>
+                <CardHeader>
+                  <CardTitle>Basic Information</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  {siteInfo && (
+                    <div className="space-y-4">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="space-y-2">
+                          <Label>Site Name</Label>
+                          <Input
+                            value={siteInfo.name}
+                            onChange={(e) =>
+                              setSiteInfo({ ...siteInfo, name: e.target.value })
+                            }
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label>Tagline</Label>
+                          <Input
+                            value={siteInfo.tagline}
+                            onChange={(e) =>
+                              setSiteInfo({ ...siteInfo, tagline: e.target.value })
+                            }
+                          />
+                        </div>
                       </div>
+                      
                       <div className="space-y-2">
-                        <Label>Phone</Label>
-                        <Input
-                          value={siteInfo.phone}
-                          onChange={(e) =>
-                            setSiteInfo({ ...siteInfo, phone: e.target.value })
-                          }
-                        />
-                      </div>
-                    </div>
-
-                    <div className="space-y-2">
-                      <Label>WhatsApp Number (with country code)</Label>
-                      <Input
-                        value={siteInfo.whatsapp}
-                        onChange={(e) =>
-                          setSiteInfo({ ...siteInfo, whatsapp: e.target.value })
-                        }
-                        placeholder="233200000000"
-                      />
-                    </div>
-
-                    <div className="space-y-2">
-                      <Label>Address</Label>
-                      <Textarea
-                        value={siteInfo.address}
-                        onChange={(e) =>
-                          setSiteInfo({ ...siteInfo, address: e.target.value })
-                        }
-                        rows={2}
-                      />
-                    </div>
-
-                    <Separator />
-
-                    <div className="space-y-2">
-                      <Label>Announcement Text</Label>
-                      <Input
-                        value={siteInfo.announcement}
-                        onChange={(e) =>
-                          setSiteInfo({
-                            ...siteInfo,
-                            announcement: e.target.value,
-                          })
-                        }
-                        placeholder="Free shipping on orders over GH₵500!"
-                      />
-                    </div>
-
-                    <div className="grid grid-cols-2 gap-4">
-                      <div className="space-y-2">
-                        <Label>Currency Symbol</Label>
-                        <Input
-                          value={siteInfo.currency}
+                        <Label>Description</Label>
+                        <Textarea
+                          value={siteInfo.description}
                           onChange={(e) =>
                             setSiteInfo({
                               ...siteInfo,
-                              currency: e.target.value,
+                              description: e.target.value,
                             })
                           }
+                          rows={3}
                         />
                       </div>
+
                       <div className="space-y-2">
-                        <Label>Free Shipping Threshold</Label>
-                        <Input
-                          type="number"
-                          value={siteInfo.freeShippingThreshold}
+                        <Label>About Us</Label>
+                        <Textarea
+                          value={siteInfo.aboutUs || ''}
                           onChange={(e) =>
                             setSiteInfo({
                               ...siteInfo,
-                              freeShippingThreshold: Number(e.target.value),
+                              aboutUs: e.target.value,
                             })
                           }
+                          rows={6}
+                        />
+                      </div>
+
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="space-y-2">
+                          <Label>Mission Statement</Label>
+                          <Textarea
+                            value={siteInfo.missionStatement || ''}
+                            onChange={(e) =>
+                              setSiteInfo({
+                                ...siteInfo,
+                                missionStatement: e.target.value,
+                              })
+                            }
+                            rows={3}
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label>Vision Statement</Label>
+                          <Textarea
+                            value={siteInfo.visionStatement || ''}
+                            onChange={(e) =>
+                              setSiteInfo({
+                                ...siteInfo,
+                                visionStatement: e.target.value,
+                              })
+                            }
+                            rows={3}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+
+              {/* Contact Information */}
+              <Card>
+                <CardHeader>
+                  <CardTitle>Contact Information</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  {siteInfo && (
+                    <div className="space-y-4">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="space-y-2">
+                          <Label>Email</Label>
+                          <Input
+                            type="email"
+                            value={siteInfo.email}
+                            onChange={(e) =>
+                              setSiteInfo({ ...siteInfo, email: e.target.value })
+                            }
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label>Phone</Label>
+                          <Input
+                            value={siteInfo.phone}
+                            onChange={(e) =>
+                              setSiteInfo({ ...siteInfo, phone: e.target.value })
+                            }
+                          />
+                        </div>
+                      </div>
+
+                      <div className="space-y-2">
+                        <Label>WhatsApp Number (with country code)</Label>
+                        <Input
+                          value={siteInfo.whatsapp}
+                          onChange={(e) =>
+                            setSiteInfo({ ...siteInfo, whatsapp: e.target.value })
+                          }
+                          placeholder="233599004548"
+                        />
+                      </div>
+
+                      <div className="space-y-2">
+                        <Label>Address</Label>
+                        <Textarea
+                          value={siteInfo.address}
+                          onChange={(e) =>
+                            setSiteInfo({ ...siteInfo, address: e.target.value })
+                          }
+                          rows={2}
+                        />
+                      </div>
+
+                      <div className="space-y-2">
+                        <Label>Business Hours</Label>
+                        <Input
+                          value={siteInfo.businessHours || ''}
+                          onChange={(e) =>
+                            setSiteInfo({ ...siteInfo, businessHours: e.target.value })
+                          }
+                          placeholder="Monday - Saturday: 9:00 AM - 6:00 PM"
                         />
                       </div>
                     </div>
+                  )}
+                </CardContent>
+              </Card>
 
-                    <Button onClick={handleSaveSiteInfo}>
-                      <Save className="w-4 h-4 mr-2" />
-                      Save Settings
-                    </Button>
-                  </div>
-                )}
-              </CardContent>
-            </Card>
+              {/* Social Media Links */}
+              <Card>
+                <CardHeader>
+                  <CardTitle>Social Media Links</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  {siteInfo && (
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <Label>Facebook</Label>
+                        <Input
+                          value={siteInfo.socialMedia?.facebook || ''}
+                          onChange={(e) =>
+                            setSiteInfo({
+                              ...siteInfo,
+                              socialMedia: {
+                                ...siteInfo.socialMedia,
+                                facebook: e.target.value,
+                              },
+                            })
+                          }
+                          placeholder="https://facebook.com/..."
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label>Instagram</Label>
+                        <Input
+                          value={siteInfo.socialMedia?.instagram || ''}
+                          onChange={(e) =>
+                            setSiteInfo({
+                              ...siteInfo,
+                              socialMedia: {
+                                ...siteInfo.socialMedia,
+                                instagram: e.target.value,
+                              },
+                            })
+                          }
+                          placeholder="https://instagram.com/..."
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label>Twitter</Label>
+                        <Input
+                          value={siteInfo.socialMedia?.twitter || ''}
+                          onChange={(e) =>
+                            setSiteInfo({
+                              ...siteInfo,
+                              socialMedia: {
+                                ...siteInfo.socialMedia,
+                                twitter: e.target.value,
+                              },
+                            })
+                          }
+                          placeholder="https://twitter.com/..."
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label>YouTube</Label>
+                        <Input
+                          value={siteInfo.socialMedia?.youtube || ''}
+                          onChange={(e) =>
+                            setSiteInfo({
+                              ...siteInfo,
+                              socialMedia: {
+                                ...siteInfo.socialMedia,
+                                youtube: e.target.value,
+                              },
+                            })
+                          }
+                          placeholder="https://youtube.com/..."
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label>TikTok</Label>
+                        <Input
+                          value={siteInfo.socialMedia?.tiktok || ''}
+                          onChange={(e) =>
+                            setSiteInfo({
+                              ...siteInfo,
+                              socialMedia: {
+                                ...siteInfo.socialMedia,
+                                tiktok: e.target.value,
+                              },
+                            })
+                          }
+                          placeholder="https://tiktok.com/..."
+                        />
+                      </div>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+
+              {/* Policies & Settings */}
+              <Card>
+                <CardHeader>
+                  <CardTitle>Policies & Settings</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  {siteInfo && (
+                    <div className="space-y-4">
+                      <div className="space-y-2">
+                        <Label>Announcement Banner Text</Label>
+                        <Input
+                          value={siteInfo.announcement || ''}
+                          onChange={(e) =>
+                            setSiteInfo({
+                              ...siteInfo,
+                              announcement: e.target.value,
+                            })
+                          }
+                          placeholder="Free shipping on orders over GH₵500!"
+                        />
+                      </div>
+
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div className="space-y-2">
+                          <Label>Currency Symbol</Label>
+                          <Input
+                            value={siteInfo.currency}
+                            onChange={(e) =>
+                              setSiteInfo({
+                                ...siteInfo,
+                                currency: e.target.value,
+                              })
+                            }
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label>Free Shipping Threshold</Label>
+                          <Input
+                            type="number"
+                            value={siteInfo.freeShippingThreshold}
+                            onChange={(e) =>
+                              setSiteInfo({
+                                ...siteInfo,
+                                freeShippingThreshold: Number(e.target.value),
+                              })
+                            }
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label>Delivery Fee</Label>
+                          <Input
+                            type="number"
+                            value={siteInfo.deliveryFee || 0}
+                            onChange={(e) =>
+                              setSiteInfo({
+                                ...siteInfo,
+                                deliveryFee: Number(e.target.value),
+                              })
+                            }
+                          />
+                        </div>
+                      </div>
+
+                      <div className="space-y-2">
+                        <Label>Shipping Information</Label>
+                        <Textarea
+                          value={siteInfo.shippingInfo || ''}
+                          onChange={(e) =>
+                            setSiteInfo({
+                              ...siteInfo,
+                              shippingInfo: e.target.value,
+                            })
+                          }
+                          rows={4}
+                        />
+                      </div>
+
+                      <div className="space-y-2">
+                        <Label>Return Policy</Label>
+                        <Textarea
+                          value={siteInfo.returnPolicy || ''}
+                          onChange={(e) =>
+                            setSiteInfo({
+                              ...siteInfo,
+                              returnPolicy: e.target.value,
+                            })
+                          }
+                          rows={4}
+                        />
+                      </div>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+
+              {/* Manager Information */}
+              <Card>
+                <CardHeader>
+                  <CardTitle>Manager Information</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  {siteInfo && (
+                    <div className="space-y-4">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="space-y-2">
+                          <Label>Manager Name</Label>
+                          <Input
+                            value={siteInfo.manager?.name || ''}
+                            onChange={(e) =>
+                              setSiteInfo({
+                                ...siteInfo,
+                                manager: {
+                                  ...siteInfo.manager,
+                                  name: e.target.value,
+                                  role: siteInfo.manager?.role || '',
+                                  image: siteInfo.manager?.image || '',
+                                },
+                              })
+                            }
+                            placeholder="Dr. Kofi Mensah"
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label>Manager Role</Label>
+                          <Input
+                            value={siteInfo.manager?.role || ''}
+                            onChange={(e) =>
+                              setSiteInfo({
+                                ...siteInfo,
+                                manager: {
+                                  ...siteInfo.manager,
+                                  name: siteInfo.manager?.name || '',
+                                  role: e.target.value,
+                                  image: siteInfo.manager?.image || '',
+                                },
+                              })
+                            }
+                            placeholder="General Manager"
+                          />
+                        </div>
+                      </div>
+
+                      <div className="space-y-2">
+                        <Label>Manager Image URL</Label>
+                        <Input
+                          value={siteInfo.manager?.image || ''}
+                          onChange={(e) =>
+                            setSiteInfo({
+                              ...siteInfo,
+                              manager: {
+                                ...siteInfo.manager,
+                                name: siteInfo.manager?.name || '',
+                                role: siteInfo.manager?.role || '',
+                                image: e.target.value,
+                              },
+                            })
+                          }
+                          placeholder="https://example.com/manager.jpg"
+                        />
+                      </div>
+
+                      <div className="space-y-2">
+                        <Label>Manager Bio</Label>
+                        <Textarea
+                          value={siteInfo.manager?.bio || ''}
+                          onChange={(e) =>
+                            setSiteInfo({
+                              ...siteInfo,
+                              manager: {
+                                ...siteInfo.manager,
+                                name: siteInfo.manager?.name || '',
+                                role: siteInfo.manager?.role || '',
+                                image: siteInfo.manager?.image || '',
+                                bio: e.target.value,
+                              },
+                            })
+                          }
+                          rows={3}
+                          placeholder="Leading Tasly Ghana with years of experience..."
+                        />
+                      </div>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+
+              {/* Save Button */}
+              <div className="flex justify-end">
+                <Button onClick={handleSaveSiteInfo} size="lg">
+                  <Save className="w-4 h-4 mr-2" />
+                  Save All Settings
+                </Button>
+              </div>
+            </div>
           </TabsContent>
         </Tabs>
       </div>

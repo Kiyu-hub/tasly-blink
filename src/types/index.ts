@@ -18,7 +18,6 @@ export interface Product {
   ingredients?: string[]
   usage?: string
   featured?: boolean
-  bestSeller?: boolean
   new?: boolean
   createdAt?: string
 }
@@ -82,22 +81,45 @@ export interface SiteInfo {
   name: string
   tagline: string
   description: string
+  aboutUs?: string
   email: string
   phone: string
   whatsapp: string
   address: string
+  businessHours?: string
   announcement?: string
   currency: string
   freeShippingThreshold: number
+  deliveryFee?: number
   socialMedia?: {
     facebook?: string
     instagram?: string
     twitter?: string
     tiktok?: string
     youtube?: string
+    whatsapp?: string
   }
   shippingInfo?: string
   returnPolicy?: string
+  missionStatement?: string
+  visionStatement?: string
+  coreValues?: Array<{
+    title: string
+    description: string
+  }>
+  certifications?: string[]
+  paymentMethods?: string[]
+  deliveryLocations?: string[]
+  faqs?: Array<{
+    question: string
+    answer: string
+  }>
+  manager?: {
+    name: string
+    role: string
+    image: string
+    bio?: string
+  }
 }
 
 export interface Category {
@@ -107,15 +129,4 @@ export interface Category {
   description?: string
   imageUrl?: string
   productCount: number
-}
-
-export interface Coupon {
-  code: string
-  discount: number
-  type: 'percentage' | 'fixed'
-  minOrder?: number
-  maxDiscount?: number
-  expiresAt?: string
-  usageLimit?: number
-  usageCount: number
 }

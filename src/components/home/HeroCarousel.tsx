@@ -64,7 +64,7 @@ export default function HeroCarousel({
 
   return (
     <section className="relative overflow-hidden">
-      <div className="relative h-[500px] md:h-[600px] lg:h-[700px]">
+      <div className="relative h-[400px] md:h-[450px] lg:h-[500px]">
         <AnimatePresence initial={false} custom={direction} mode="wait">
           <motion.div
             key={currentIndex}

@@ -96,8 +96,6 @@ export default function Products() {
       result = result.filter((p) => p.discount && p.discount > 0)
     } else if (filter === 'new') {
       result = result.filter((p) => p.new)
-    } else if (filter === 'bestseller') {
-      result = result.filter((p) => p.bestSeller)
     }
 
     // Sort
@@ -122,10 +120,8 @@ export default function Products() {
         result.sort((a, b) => b.name.localeCompare(a.name))
         break
       default:
-        // Featured - bestsellers first, then by rating
+        // Featured - by rating
         result.sort((a, b) => {
-          if (a.bestSeller && !b.bestSeller) return -1
-          if (!a.bestSeller && b.bestSeller) return 1
           return (b.rating || 0) - (a.rating || 0)
         })
     }
@@ -249,7 +245,6 @@ export default function Products() {
                         { value: '', label: 'All Products' },
                         { value: 'sale', label: 'On Sale' },
                         { value: 'new', label: 'New Arrivals' },
-                        { value: 'bestseller', label: 'Best Sellers' },
                       ].map((item) => (
                         <label
                           key={item.value}

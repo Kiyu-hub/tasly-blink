@@ -70,9 +70,6 @@ export default function ProductCard({ product, index = 0 }: ProductCardProps) {
                 <Badge variant="sale">-{product.discount}%</Badge>
               )}
               {product.new && <Badge variant="new">New</Badge>}
-              {product.bestSeller && (
-                <Badge variant="success">Best Seller</Badge>
-              )}
               {product.stock <= 0 && (
                 <Badge variant="destructive">Out of Stock</Badge>
               )}

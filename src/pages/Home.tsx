@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import HeroCarousel from '@/components/home/HeroCarousel'
+import HealthBannerCarousel from '@/components/home/HealthBannerCarousel'
 import CategorySection from '@/components/home/CategorySection'
 import FeaturedProducts from '@/components/home/FeaturedProducts'
 import TestimonialsSection from '@/components/home/TestimonialsSection'
@@ -67,7 +68,6 @@ export default function Home() {
     loadData()
   }, [])
 
-  const bestSellers = products.filter((p) => p.bestSeller)
   const newArrivals = products.filter((p) => p.new)
   const discountedProducts = products.filter((p) => p.discount && p.discount > 0)
 
@@ -79,6 +79,9 @@ export default function Home() {
     >
       {/* Hero Carousel */}
       <HeroCarousel banners={banners} />
+
+      {/* Health Banner Carousel */}
+      <HealthBannerCarousel />
 
       {/* Features Strip */}
       <FeaturesSection />
@@ -92,18 +95,6 @@ export default function Home() {
         title="Featured Products"
         subtitle="Handpicked products for your wellness journey"
       />
-
-      {/* Best Sellers */}
-      {bestSellers.length > 0 && (
-        <div className="bg-muted/30">
-          <FeaturedProducts
-            products={bestSellers}
-            title="Best Sellers"
-            subtitle="Our most loved products"
-            viewAllLink="/products?filter=bestseller"
-          />
-        </div>
-      )}
 
       {/* Special Offers */}
       {discountedProducts.length > 0 && (

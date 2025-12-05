@@ -1,6 +1,9 @@
+import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { Users, Award, Heart, Leaf, Globe, Target } from 'lucide-react'
 import { Card, CardContent } from '@/components/ui/card'
+import { getSiteInfo } from '@/lib/storage'
+import type { SiteInfo } from '@/types'
 
 const values = [
   {
@@ -36,13 +39,20 @@ const stats = [
   { number: '24/7', label: 'Customer Support' },
 ]
 
-const manager = {
-  name: 'Dr. Kofi Mensah',
-  role: 'General Manager',
-  image: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&h=400&fit=crop',
-}
-
 export default function About() {
+  const [siteInfo, setSiteInfo] = useState<SiteInfo | null>(null)
+
+  useEffect(() => {
+    setSiteInfo(getSiteInfo())
+  }, [])
+
+  const manager = siteInfo?.manager || {
+    name: 'Dr. Kofi Mensah',
+    role: 'General Manager',
+    image: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&h=400&fit=crop',
+    bio: 'Leading Tasly Ghana with years of experience in healthcare and business management.'
+  }
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -263,8 +273,7 @@ export default function About() {
               <h3 className="text-2xl font-bold mb-2">{manager.name}</h3>
               <p className="text-lg text-muted-foreground mb-4">{manager.role}</p>
               <p className="text-sm text-muted-foreground max-w-md mx-auto">
-                Leading Tasly Ghana with years of experience in healthcare and business management,
-                committed to bringing the best health solutions to our customers.
+                {manager.bio || 'Leading Tasly Ghana with years of experience in healthcare and business management, committed to bringing the best health solutions to our customers.'}
               </p>
             </motion.div>
           </div>

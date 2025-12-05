@@ -7,7 +7,6 @@ const testimonials = [
     id: 1,
     name: 'Akosua Mensah',
     role: 'Wellness Enthusiast',
-    image: 'https://randomuser.me/api/portraits/women/44.jpg',
     content:
       'Tasly products have transformed my health journey. The Brain Care Capsules have significantly improved my focus and mental clarity. I recommend them to everyone!',
     rating: 5,
@@ -16,7 +15,6 @@ const testimonials = [
     id: 2,
     name: 'Kwame Asante',
     role: 'Business Professional',
-    image: 'https://randomuser.me/api/portraits/men/32.jpg',
     content:
       "As someone with a demanding schedule, the Immune Boost Syrup has been a game-changer. I haven't been sick in months, and I feel more energetic than ever.",
     rating: 5,
@@ -25,7 +23,6 @@ const testimonials = [
     id: 3,
     name: 'Ama Osei',
     role: 'Fitness Trainer',
-    image: 'https://randomuser.me/api/portraits/women/68.jpg',
     content:
       'The Heart Health Formula is excellent. My cholesterol levels have improved, and my doctor is impressed with my progress. Quality products that really work!',
     rating: 5,
@@ -34,7 +31,6 @@ const testimonials = [
     id: 4,
     name: 'Kofi Boateng',
     role: 'Teacher',
-    image: 'https://randomuser.me/api/portraits/men/75.jpg',
     content:
       "I've tried many supplements before, but Tasly's quality is unmatched. The customer service is also exceptional - they really care about their customers.",
     rating: 5,
@@ -90,18 +86,11 @@ export default function TestimonialsSection() {
                     ))}
                   </div>
 
-                  <div className="flex items-center gap-3">
-                    <img
-                      src={testimonial.image}
-                      alt={testimonial.name}
-                      className="w-12 h-12 rounded-full object-cover"
-                    />
-                    <div>
-                      <p className="font-semibold">{testimonial.name}</p>
-                      <p className="text-sm text-muted-foreground">
-                        {testimonial.role}
-                      </p>
-                    </div>
+                  <div>
+                    <p className="font-semibold">{testimonial.name}</p>
+                    <p className="text-sm text-muted-foreground">
+                      {testimonial.role}
+                    </p>
                   </div>
                 </CardContent>
               </Card>

@@ -15,70 +15,106 @@ const defaultSiteInfo: SiteInfo = {
   name: siteInfoData.name,
   tagline: siteInfoData.tagline,
   description: siteInfoData.description,
+  aboutUs: siteInfoData.aboutUs,
   email: siteInfoData.contactEmail,
   phone: siteInfoData.contactPhone,
   whatsapp: siteInfoData.whatsapp,
   address: siteInfoData.address,
+  businessHours: siteInfoData.businessHours,
   announcement: siteInfoData.announcement,
   currency: siteInfoData.currency,
   freeShippingThreshold: siteInfoData.freeShippingThreshold,
+  deliveryFee: siteInfoData.deliveryFee,
   socialMedia: siteInfoData.socialMedia,
   shippingInfo: siteInfoData.shippingInfo,
   returnPolicy: siteInfoData.returnPolicy,
+  missionStatement: siteInfoData.missionStatement,
+  visionStatement: siteInfoData.visionStatement,
+  coreValues: siteInfoData.coreValues,
+  certifications: siteInfoData.certifications,
+  paymentMethods: siteInfoData.paymentMethods,
+  deliveryLocations: siteInfoData.deliveryLocations,
+  faqs: siteInfoData.faqs,
+  manager: siteInfoData.manager,
 }
 
-const defaultReviews: Review[] = [
+// Dynamic review templates for generating realistic reviews
+const reviewTemplates = [
   {
-    id: 'rev-1',
-    productId: '2',
-    userId: 'user-1',
-    userName: 'Kwame Mensah',
-    rating: 5,
-    comment: 'Tasly Danshen Plus has been a lifesaver! My blood circulation has improved and I feel much healthier. Highly recommend for heart health.',
-    createdAt: '2024-10-15',
-    helpful: 32,
+    names: ['Kwame Mensah', 'Kofi Asante', 'Yaw Boateng', 'Kwabena Osei', 'Kojo Appiah'],
+    comments: [
+      'Excellent product! I\'ve been using this for {weeks} weeks and the results are amazing. Highly recommend!',
+      'Very effective product. I noticed improvements within {weeks} weeks of use. Great quality!',
+      'This has become part of my daily routine. After {weeks} weeks, I can definitely feel the difference.',
+      'Authentic Tasly product. Been using it for {weeks} weeks and very satisfied with the results.',
+      'Great product! {weeks} weeks in and I\'m seeing positive changes. Will continue using it.'
+    ]
   },
   {
-    id: 'rev-2',
-    productId: '1',
-    userId: 'user-2',
-    userName: 'Akosua Frimpong',
-    rating: 5,
-    comment: 'The Cordyceps Capsule has boosted my energy levels significantly. I no longer feel tired during the day. Great product!',
-    createdAt: '2024-10-10',
-    helpful: 24,
-  },
-  {
-    id: 'rev-3',
-    productId: '3',
-    userId: 'user-3',
-    userName: 'Kofi Asante',
-    rating: 4,
-    comment: 'Propolis Syrup helped my family during flu season. Good taste and effective immunity boost.',
-    createdAt: '2024-11-01',
-    helpful: 18,
-  },
-  {
-    id: 'rev-4',
-    productId: '4',
-    userId: 'user-4',
-    userName: 'Ama Owusu',
-    rating: 5,
-    comment: 'Ginseng Royal Jelly gives me sustained energy throughout the day without any jitters. Love it!',
-    createdAt: '2024-11-05',
-    helpful: 15,
-  },
-  {
-    id: 'rev-5',
-    productId: '5',
-    userId: 'user-5',
-    userName: 'Yaw Boateng',
-    rating: 5,
-    comment: 'Gynostemma Tea has a pleasant taste and I feel healthier since I started drinking it daily. Good for metabolism.',
-    createdAt: '2024-11-08',
-    helpful: 12,
-  },
+    names: ['Akosua Frimpong', 'Ama Owusu', 'Abena Mensah', 'Adwoa Asante', 'Afia Boateng'],
+    comments: [
+      'Love this product! After {weeks} weeks of consistent use, I feel much better. Highly recommended!',
+      'Genuine Tasly product. I\'ve been taking this for {weeks} weeks and it really works!',
+      'Very pleased with this purchase. {weeks} weeks later and I can see real improvements.',
+      'This product exceeded my expectations. Been using for {weeks} weeks with great results!',
+      'Excellent quality! After {weeks} weeks I\'m very happy with the outcome. Worth every cedi!'
+    ]
+  }
 ]
+
+function generateProductReviews(productId: string, count: number = 3): Review[] {
+  const reviews: Review[] = []
+  const usedComments = new Set<string>()
+  
+  for (let i = 0; i < count; i++) {
+    const template = reviewTemplates[i % 2]
+    const nameIndex = Math.floor(Math.random() * template.names.length)
+    let commentIndex = Math.floor(Math.random() * template.comments.length)
+    
+    // Ensure unique comments
+    while (usedComments.has(`${template.names[nameIndex]}-${commentIndex}`)) {
+      commentIndex = (commentIndex + 1) % template.comments.length
+    }
+    usedComments.add(`${template.names[nameIndex]}-${commentIndex}`)
+    
+    const weeks = 2 + Math.floor(Math.random() * 10) // 2-11 weeks
+    const comment = template.comments[commentIndex].replace('{weeks}', weeks.toString())
+    const rating = Math.random() > 0.3 ? 5 : 4 // 70% get 5 stars, 30% get 4 stars
+    
+    // Generate date within last 90 days
+    const daysAgo = Math.floor(Math.random() * 90)
+    const reviewDate = new Date()
+    reviewDate.setDate(reviewDate.getDate() - daysAgo)
+    
+    reviews.push({
+      id: `rev-${productId}-${i + 1}`,
+      productId,
+      userId: `user-${productId}-${i + 1}`,
+      userName: template.names[nameIndex],
+      rating,
+      comment,
+      createdAt: reviewDate.toISOString().split('T')[0],
+      helpful: Math.floor(Math.random() * 30) + 5, // 5-34 helpful votes
+    })
+  }
+  
+  return reviews
+}
+
+// Generate initial reviews for all products
+function initializeProductReviews(): Review[] {
+  const allReviews: Review[] = []
+  const products = defaultProducts
+  
+  products.forEach((product) => {
+    // Generate 2-4 reviews per product
+    const reviewCount = 2 + Math.floor(Math.random() * 3)
+    const productReviews = generateProductReviews(product.id, reviewCount)
+    allReviews.push(...productReviews)
+  })
+  
+  return allReviews
+}
 
 export function initializeData(): void {
   if (!localStorage.getItem(PRODUCTS_KEY)) {
@@ -88,7 +124,8 @@ export function initializeData(): void {
     localStorage.setItem(SITE_INFO_KEY, JSON.stringify(defaultSiteInfo))
   }
   if (!localStorage.getItem(REVIEWS_KEY)) {
-    localStorage.setItem(REVIEWS_KEY, JSON.stringify(defaultReviews))
+    const initialReviews = initializeProductReviews()
+    localStorage.setItem(REVIEWS_KEY, JSON.stringify(initialReviews))
   }
 }
 
@@ -149,10 +186,6 @@ export function deleteProduct(id: string): boolean {
 
 export function getFeaturedProducts(): Product[] {
   return getProducts().filter((p) => p.featured)
-}
-
-export function getBestSellers(): Product[] {
-  return getProducts().filter((p) => p.bestSeller)
 }
 
 export function getNewProducts(): Product[] {

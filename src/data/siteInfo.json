@@ -4,8 +4,8 @@
   "description": "Tasly Ghana 346 is Ghana's premier distributor of authentic Tasly herbal and food supplement products. We bring you premium quality health solutions combining traditional Chinese medicine wisdom with modern scientific research.",
   "aboutUs": "Tasly Ghana 346 is dedicated to improving the health and wellness of Ghanaians through premium herbal and food supplement products. As an authorized distributor of Tasly products, we bring you authentic, high-quality supplements that combine centuries of traditional Chinese medicine knowledge with cutting-edge modern research and biotechnology.\n\nOur commitment is to provide effective, safe, and natural health solutions that help you achieve optimal wellness. Every product we offer undergoes rigorous quality control and meets international standards, ensuring you receive only the best for your health.\n\nWith over a decade of experience serving the Ghanaian market, we have built a reputation for excellence, authenticity, and customer satisfaction. Our knowledgeable team is always ready to guide you in choosing the right products for your specific health needs.",
   "contactEmail": "info@taslyghana346.com",
-  "contactPhone": "+233 24 123 4567",
-  "whatsapp": "233241234567",
+  "contactPhone": "+233 59 900 4548",
+  "whatsapp": "233599004548",
   "address": "Accra, Ghana",
   "businessHours": "Monday - Saturday: 9:00 AM - 6:00 PM, Sunday: Closed",
   "currency": "GH₵",
@@ -18,7 +18,7 @@
     "facebook": "https://facebook.com/taslyghana346",
     "instagram": "https://instagram.com/taslyghana346",
     "twitter": "https://twitter.com/taslyghana346",
-    "whatsapp": "https://wa.me/233241234567",
+    "whatsapp": "https://wa.me/233599004548",
     "youtube": "https://youtube.com/@taslyghana346"
   },
   "paymentMethods": [
@@ -89,5 +89,11 @@
       "question": "How do I know which product is right for me?",
       "answer": "Our knowledgeable customer service team is available to help you choose the right products based on your health needs. You can contact us via WhatsApp, phone, or email for personalized recommendations."
     }
-  ]
+  ],
+  "manager": {
+    "name": "Dr. Kofi Mensah",
+    "role": "General Manager",
+    "image": "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&h=400&fit=crop",
+    "bio": "Leading Tasly Ghana with years of experience in healthcare and business management, committed to bringing the best health solutions to our customers."
+  }
 }

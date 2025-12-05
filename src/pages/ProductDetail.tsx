@@ -7,7 +7,6 @@ import {
   Minus,
   Plus,
   Share2,
-  Truck,
   Shield,
   RotateCcw,
   Star,
@@ -117,6 +116,18 @@ export default function ProductDetail() {
     }
   }
 
+  const handlePreOrder = () => {
+    const siteInfo = getSiteInfo()
+    const message = `Hi Tasly Ghana 346, I would like to pre-order the following product:\n\nProduct: ${product.name}\nQuantity: ${quantity}\n\nPlease let me know when it will be available.`
+    const whatsappUrl = `https://wa.me/${siteInfo?.whatsapp || '233599004548'}?text=${encodeURIComponent(message)}`
+    window.open(whatsappUrl, '_blank')
+  }
+
+  const getSiteInfo = () => {
+    const data = localStorage.getItem('tasly_site_info')
+    return data ? JSON.parse(data) : null
+  }
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -163,9 +174,6 @@ export default function ProductDetail() {
                   <Badge variant="sale">-{product.discount}%</Badge>
                 )}
                 {product.new && <Badge variant="new">New</Badge>}
-                {product.bestSeller && (
-                  <Badge variant="success">Best Seller</Badge>
-                )}
               </div>
 
               {/* Navigation */}
@@ -268,11 +276,28 @@ export default function ProductDetail() {
               {/* Stock Status */}
               <div className="mb-6">
                 {product.stock > 0 ? (
-                  <span className="text-sm text-green-600">
-                    ✓ In Stock ({product.stock} available)
-                  </span>
+                  product.stock <= 5 ? (
+                    <div className="flex items-center gap-2 text-orange-600">
+                      <Badge variant="destructive" className="bg-orange-500">Low Stock</Badge>
+                      <span className="text-sm font-medium">
+                        Only {product.stock} left in stock!
+                      </span>
+                    </div>
+                  ) : (
+                    <div className="flex items-center gap-2 text-green-600">
+                      <Badge className="bg-green-500">In Stock</Badge>
+                      <span className="text-sm">
+                        {product.stock} available
+                      </span>
+                    </div>
+                  )
                 ) : (
-                  <span className="text-sm text-red-600">✗ Out of Stock</span>
+                  <div className="flex items-center gap-2">
+                    <Badge variant="destructive">OUT OF STOCK</Badge>
+                    <span className="text-sm text-muted-foreground">
+                      Pre-order available via WhatsApp
+                    </span>
+                  </div>
                 )}
               </div>
 
@@ -284,46 +309,58 @@ export default function ProductDetail() {
 
             {/* Add to Cart */}
             <div className="space-y-4">
-              <div className="flex items-center gap-4">
-                <div className="flex items-center border rounded-full">
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="rounded-full"
-                    onClick={() => setQuantity((q) => Math.max(1, q - 1))}
-                    disabled={quantity <= 1}
-                  >
-                    <Minus className="h-4 w-4" />
-                  </Button>
-                  <span className="w-12 text-center font-medium">{quantity}</span>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="rounded-full"
-                    onClick={() =>
-                      setQuantity((q) => Math.min(product.stock, q + 1))
-                    }
-                    disabled={quantity >= product.stock}
-                  >
-                    <Plus className="h-4 w-4" />
-                  </Button>
-                </div>
+              {product.stock > 0 && (
+                <div className="flex items-center gap-4">
+                  <div className="flex items-center border rounded-full">
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="rounded-full"
+                      onClick={() => setQuantity((q) => Math.max(1, q - 1))}
+                      disabled={quantity <= 1}
+                    >
+                      <Minus className="h-4 w-4" />
+                    </Button>
+                    <span className="w-12 text-center font-medium">{quantity}</span>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="rounded-full"
+                      onClick={() =>
+                        setQuantity((q) => Math.min(product.stock, q + 1))
+                      }
+                      disabled={quantity >= product.stock}
+                    >
+                      <Plus className="h-4 w-4" />
+                    </Button>
+                  </div>
 
-                <span className="text-sm text-muted-foreground">
-                  Total: {formatCurrency(finalPrice * quantity)}
-                </span>
-              </div>
+                  <span className="text-sm text-muted-foreground">
+                    Total: {formatCurrency(finalPrice * quantity)}
+                  </span>
+                </div>
+              )}
 
               <div className="flex flex-col sm:flex-row gap-3">
-                <Button
-                  size="lg"
-                  className="flex-1 rounded-full bg-gradient-to-r from-primary to-green-600"
-                  onClick={handleAddToCart}
-                  disabled={product.stock <= 0}
-                >
-                  <ShoppingCart className="mr-2 h-5 w-5" />
-                  Add to Cart
-                </Button>
+                {product.stock > 0 ? (
+                  <Button
+                    size="lg"
+                    className="flex-1 rounded-full bg-gradient-to-r from-primary to-green-600"
+                    onClick={handleAddToCart}
+                  >
+                    <ShoppingCart className="mr-2 h-5 w-5" />
+                    Add to Cart
+                  </Button>
+                ) : (
+                  <Button
+                    size="lg"
+                    className="flex-1 rounded-full bg-gradient-to-r from-orange-500 to-red-500"
+                    onClick={handlePreOrder}
+                  >
+                    <ShoppingCart className="mr-2 h-5 w-5" />
+                    PRE-ORDER via WhatsApp
+                  </Button>
+                )}
 
                 <Button
                   size="lg"
@@ -357,12 +394,12 @@ export default function ProductDetail() {
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
-                  <Truck className="h-5 w-5 text-primary" />
+                  <Shield className="h-5 w-5 text-primary" />
                 </div>
                 <div>
-                  <p className="font-medium text-sm">Free Delivery</p>
+                  <p className="font-medium text-sm">FDA Approved</p>
                   <p className="text-xs text-muted-foreground">
-                    On orders over GH₵500
+                    Ghana FDA certified
                   </p>
                 </div>
               </div>

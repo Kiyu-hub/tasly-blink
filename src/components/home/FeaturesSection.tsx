@@ -1,11 +1,11 @@
 import { motion } from 'framer-motion'
-import { Truck, Shield, Clock, Headphones } from 'lucide-react'
+import { Shield, Clock, Headphones, BadgeCheck } from 'lucide-react'
 
 const features = [
   {
-    icon: Truck,
-    title: 'Free Delivery',
-    description: 'Free shipping on orders over GH₵500',
+    icon: BadgeCheck,
+    title: 'FDA Approved',
+    description: 'All products are FDA Ghana approved',
   },
   {
     icon: Shield,

@@ -5,6 +5,7 @@ import Layout from './components/layout/Layout'
 import Home from './pages/Home'
 import Products from './pages/Products'
 import ProductDetail from './pages/ProductDetail'
+import Categories from './pages/Categories'
 import Cart from './pages/Cart'
 import Wishlist from './pages/Wishlist'
 import About from './pages/About'
@@ -24,11 +25,12 @@ function App() {
             <Route index element={<Home />} />
             <Route path="products" element={<Products />} />
             <Route path="products/:slug" element={<ProductDetail />} />
+            <Route path="categories" element={<Categories />} />
             <Route path="cart" element={<Cart />} />
             <Route path="wishlist" element={<Wishlist />} />
             <Route path="about" element={<About />} />
             <Route path="contact" element={<Contact />} />
-            <Route path="admin" element={<Admin />} />
+            <Route path="admin-tasly-ghana-346" element={<Admin />} />
           </Route>
         </Routes>
         <Toaster position="top-center" richColors closeButton />

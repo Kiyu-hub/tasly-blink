@@ -13,8 +13,6 @@ export default function Cart() {
     useCartStore()
 
   const subtotal = getTotalPrice()
-  const deliveryFee = 30
-  const total = subtotal + deliveryFee
 
   const handleCheckout = () => {
     const siteInfo = getSiteInfo()
@@ -28,7 +26,7 @@ export default function Cart() {
       })
       .join('\n')
 
-    const message = `Hello! I'd like to place an order:\n\n${orderDetails}\n\nSubtotal: ${formatCurrency(subtotal)}\nDelivery: ${formatCurrency(deliveryFee)}\nTotal: ${formatCurrency(total)}`
+    const message = `Hello! I'd like to place an order:\n\n${orderDetails}\n\nTotal: ${formatCurrency(subtotal)}`
 
     const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`
     window.open(whatsappUrl, '_blank')
@@ -214,16 +212,12 @@ export default function Cart() {
                     <span className="text-muted-foreground">Subtotal</span>
                     <span>{formatCurrency(subtotal)}</span>
                   </div>
-                  <div className="flex justify-between">
-                    <span className="text-muted-foreground">Delivery</span>
-                    <span>{formatCurrency(deliveryFee)}</span>
-                  </div>
 
                   <Separator />
 
                   <div className="flex justify-between text-lg font-bold">
                     <span>Total</span>
-                    <span>{formatCurrency(total)}</span>
+                    <span>{formatCurrency(subtotal)}</span>
                   </div>
                 </div>
 

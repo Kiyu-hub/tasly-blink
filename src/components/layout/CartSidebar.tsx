@@ -13,8 +13,6 @@ export default function CartSidebar() {
     const siteInfo = getSiteInfo()
     const whatsappNumber = (siteInfo?.whatsapp || '233599004548').replace(/[^0-9]/g, '')
     const subtotal = getTotalPrice()
-    const deliveryFee = 30
-    const total = subtotal + deliveryFee
 
     const orderDetails = items
       .map((item) => {
@@ -25,7 +23,7 @@ export default function CartSidebar() {
       })
       .join('\n')
 
-    const message = `Hello! I'd like to place an order:\n\n${orderDetails}\n\nSubtotal: ${formatCurrency(subtotal)}\nDelivery: ${formatCurrency(deliveryFee)}\nTotal: ${formatCurrency(total)}`
+    const message = `Hello! I'd like to place an order:\n\n${orderDetails}\n\nTotal: ${formatCurrency(subtotal)}`
 
     const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`
     window.open(whatsappUrl, '_blank')

@@ -60,9 +60,11 @@ export default function Header() {
 
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-2">
-            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-r from-primary to-green-600">
-              <span className="text-lg font-bold text-white">T</span>
-            </div>
+            <img 
+              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSE5bpjWLc7v0MJ8EVqLPSOweMBQmvVU94YYw&s" 
+              alt="Tasly Ghana 346" 
+              className="h-12 w-12 object-contain"
+            />
             <span className="font-display text-xl font-bold">
               Tasly Ghana <span className="text-primary">346</span>
             </span>

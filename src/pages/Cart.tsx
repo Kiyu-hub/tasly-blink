@@ -29,7 +29,7 @@ export default function Cart() {
 
     const message = `Hello! I'd like to place an order:\n\n${orderDetails}\n\nSubtotal: ${formatCurrency(subtotal)}\nDelivery: ${formatCurrency(deliveryFee)}\nTotal: ${formatCurrency(total)}`
 
-    const whatsappUrl = `https://wa.me/${siteInfo?.whatsapp || '233200000000'}?text=${encodeURIComponent(message)}`
+    const whatsappUrl = `https://wa.me/${siteInfo?.whatsapp || '233599004548'}?text=${encodeURIComponent(message)}`
     window.open(whatsappUrl, '_blank')
   }
 

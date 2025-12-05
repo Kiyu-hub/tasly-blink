@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import {
   MapPin,
@@ -17,32 +17,11 @@ import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Label } from '@/components/ui/label'
 import { Card, CardContent } from '@/components/ui/card'
-import { getSiteInfo } from '@/lib/utils'
-
-const contactInfo = [
-  {
-    icon: MapPin,
-    title: 'Visit Us',
-    details: ['123 Health Street', 'Osu, Accra, Ghana'],
-  },
-  {
-    icon: Phone,
-    title: 'Call Us',
-    details: ['+233 20 000 0000', '+233 50 000 0000'],
-  },
-  {
-    icon: Mail,
-    title: 'Email Us',
-    details: ['info@taslyghana.com', 'support@taslyghana.com'],
-  },
-  {
-    icon: Clock,
-    title: 'Working Hours',
-    details: ['Mon - Fri: 8am - 6pm', 'Sat: 9am - 4pm'],
-  },
-]
+import { getSiteInfo } from '@/lib/storage'
+import type { SiteInfo } from '@/types'
 
 export default function Contact() {
+  const [siteInfo, setSiteInfo] = useState<SiteInfo | null>(null)
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -51,6 +30,34 @@ export default function Contact() {
     message: '',
   })
   const [loading, setLoading] = useState(false)
+
+  useEffect(() => {
+    const info = getSiteInfo()
+    setSiteInfo(info)
+  }, [])
+
+  const contactInfo = [
+    {
+      icon: MapPin,
+      title: 'Visit Us',
+      details: [siteInfo?.address || 'Accra, Ghana'],
+    },
+    {
+      icon: Phone,
+      title: 'Call Us',
+      details: [siteInfo?.phone || '+233 59 900 4548'],
+    },
+    {
+      icon: Mail,
+      title: 'Email Us',
+      details: [siteInfo?.email || 'info@taslyghana346.com'],
+    },
+    {
+      icon: Clock,
+      title: 'Working Hours',
+      details: [siteInfo?.businessHours || 'Monday - Saturday: 9:00 AM - 6:00 PM'],
+    },
+  ]
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -71,10 +78,10 @@ export default function Contact() {
   }
 
   const handleWhatsApp = () => {
-    const siteInfo = getSiteInfo()
-    const message = `Hello! I'd like to get in touch with Tasly Ghana.`
+    const message = `Hello! I'd like to get in touch with Tasly Ghana 346.`
+    const whatsappNumber = siteInfo?.whatsapp || '233599004548'
     window.open(
-      `https://wa.me/${siteInfo?.whatsapp || '233200000000'}?text=${encodeURIComponent(message)}`,
+      `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`,
       '_blank'
     )
   }

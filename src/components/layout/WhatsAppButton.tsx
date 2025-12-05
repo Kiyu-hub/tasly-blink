@@ -8,7 +8,7 @@ export default function WhatsAppButton() {
   const [isOpen, setIsOpen] = useState(false)
   const siteInfo = getSiteInfo()
 
-  const whatsappNumber = siteInfo.whatsapp?.replace(/[^0-9]/g, '') || '233200000000'
+  const whatsappNumber = siteInfo.whatsapp?.replace(/[^0-9]/g, '') || '233599004548'
 
   const handleChat = (message: string) => {
     const url = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`

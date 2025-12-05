@@ -40,6 +40,7 @@ import {
 } from '@/lib/storage'
 import { formatCurrency, generateId, slugify } from '@/lib/utils'
 import type { Product, Banner, SiteInfo } from '@/types'
+import { PRODUCT_CATEGORIES } from '@/data/categories'
 
 // Mock stats data
 const stats = [
@@ -410,7 +411,7 @@ export default function Admin() {
                           </div>
                           <div className="space-y-2">
                             <Label>Category</Label>
-                            <Input
+                            <select
                               value={editingProduct.category}
                               onChange={(e) =>
                                 setEditingProduct({
@@ -418,8 +419,15 @@ export default function Admin() {
                                   category: e.target.value,
                                 })
                               }
-                              placeholder="Category"
-                            />
+                              className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                            >
+                              <option value="">Select Category</option>
+                              {PRODUCT_CATEGORIES.map((cat) => (
+                                <option key={cat} value={cat}>
+                                  {cat}
+                                </option>
+                              ))}
+                            </select>
                           </div>
                         </div>
 

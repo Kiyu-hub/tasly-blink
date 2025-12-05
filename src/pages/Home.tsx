@@ -79,6 +79,25 @@ export default function Home() {
     }
 
     loadData()
+    
+    // Listen for updates from admin panel
+    const handleProductsUpdate = () => {
+      const allProducts = getProducts()
+      setProducts(allProducts)
+    }
+    
+    const handleBannersUpdate = () => {
+      const storedBanners = getBanners()
+      setBanners(storedBanners.length > 0 ? storedBanners : defaultBanners)
+    }
+    
+    window.addEventListener('productsUpdated', handleProductsUpdate)
+    window.addEventListener('bannersUpdated', handleBannersUpdate)
+    
+    return () => {
+      window.removeEventListener('productsUpdated', handleProductsUpdate)
+      window.removeEventListener('bannersUpdated', handleBannersUpdate)
+    }
   }, [])
 
   const newArrivals = products.filter((p) => p.new)

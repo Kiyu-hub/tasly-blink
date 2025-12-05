@@ -152,6 +152,7 @@ export function getProductById(id: string): Product | undefined {
 
 export function saveProducts(products: Product[]): void {
   localStorage.setItem(PRODUCTS_KEY, JSON.stringify(products))
+  window.dispatchEvent(new CustomEvent('productsUpdated', { detail: products }))
 }
 
 export function addProduct(product: Omit<Product, 'id' | 'slug' | 'createdAt'>): Product {
@@ -210,6 +211,7 @@ export function getSiteInfo(): SiteInfo {
 
 export function saveSiteInfo(info: SiteInfo): void {
   localStorage.setItem(SITE_INFO_KEY, JSON.stringify(info))
+  window.dispatchEvent(new CustomEvent('siteInfoUpdated', { detail: info }))
 }
 
 // Orders
@@ -269,6 +271,7 @@ export function getBanners(): Banner[] {
 
 export function saveBanners(banners: Banner[]): void {
   localStorage.setItem(BANNERS_KEY, JSON.stringify(banners))
+  window.dispatchEvent(new CustomEvent('bannersUpdated', { detail: banners }))
 }
 
 // Categories
@@ -342,6 +345,7 @@ function getDefaultCategoryColor(categoryName: string): string {
 
 export function saveCategoriesData(categories: CategoryData[]): void {
   localStorage.setItem(CATEGORIES_KEY, JSON.stringify(categories))
+  window.dispatchEvent(new CustomEvent('categoriesUpdated', { detail: categories }))
 }
 
 export function addCategoryData(category: Omit<CategoryData, 'id' | 'slug' | 'productCount'>): CategoryData {

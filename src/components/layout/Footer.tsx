@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import {
   Facebook,
@@ -14,8 +15,21 @@ import { getSiteInfo } from '@/lib/storage'
 import { Separator } from '@/components/ui/separator'
 
 export default function Footer() {
+  const [, setUpdateTrigger] = useState(0)
   const siteInfo = getSiteInfo()
   const logoUrl = siteInfo?.logo || 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSE5bpjWLc7v0MJ8EVqLPSOweMBQmvVU94YYw&s'
+  
+  useEffect(() => {
+    const handleDataUpdate = () => {
+      setUpdateTrigger(prev => prev + 1)
+    }
+    
+    window.addEventListener('siteInfoUpdated', handleDataUpdate)
+    
+    return () => {
+      window.removeEventListener('siteInfoUpdated', handleDataUpdate)
+    }
+  }, [])
 
   return (
     <footer className="bg-muted/50 border-t">

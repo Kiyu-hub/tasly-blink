@@ -69,6 +69,17 @@ export default function ProductDetail() {
 
     loadProduct()
     window.scrollTo(0, 0)
+    
+    // Listen for product updates from admin panel
+    const handleProductsUpdate = () => {
+      loadProduct()
+    }
+    
+    window.addEventListener('productsUpdated', handleProductsUpdate)
+    
+    return () => {
+      window.removeEventListener('productsUpdated', handleProductsUpdate)
+    }
   }, [slug])
 
   if (loading) {

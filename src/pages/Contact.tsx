@@ -34,6 +34,17 @@ export default function Contact() {
   useEffect(() => {
     const info = getSiteInfo()
     setSiteInfo(info)
+    
+    // Listen for site info updates from admin panel
+    const handleSiteInfoUpdate = () => {
+      setSiteInfo(getSiteInfo())
+    }
+    
+    window.addEventListener('siteInfoUpdated', handleSiteInfoUpdate)
+    
+    return () => {
+      window.removeEventListener('siteInfoUpdated', handleSiteInfoUpdate)
+    }
   }, [])
 
   const contactInfo = [

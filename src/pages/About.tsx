@@ -44,6 +44,17 @@ export default function About() {
 
   useEffect(() => {
     setSiteInfo(getSiteInfo())
+    
+    // Listen for site info updates from admin panel
+    const handleSiteInfoUpdate = () => {
+      setSiteInfo(getSiteInfo())
+    }
+    
+    window.addEventListener('siteInfoUpdated', handleSiteInfoUpdate)
+    
+    return () => {
+      window.removeEventListener('siteInfoUpdated', handleSiteInfoUpdate)
+    }
   }, [])
 
   const manager = siteInfo?.manager || {

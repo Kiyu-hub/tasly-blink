@@ -57,6 +57,27 @@ export default function Products() {
       ...cats.map(cat => ({ value: cat, label: cat }))
     ]
     setCategories(categoryOptions)
+    
+    // Listen for updates from admin panel
+    const handleProductsUpdate = () => {
+      const updatedProducts = getProducts()
+      setProducts(updatedProducts)
+      
+      const updatedCats = getCategories()
+      const updatedCategoryOptions = [
+        { value: 'all', label: 'All Categories' },
+        ...updatedCats.map(cat => ({ value: cat, label: cat }))
+      ]
+      setCategories(updatedCategoryOptions)
+    }
+    
+    window.addEventListener('productsUpdated', handleProductsUpdate)
+    window.addEventListener('categoriesUpdated', handleProductsUpdate)
+    
+    return () => {
+      window.removeEventListener('productsUpdated', handleProductsUpdate)
+      window.removeEventListener('categoriesUpdated', handleProductsUpdate)
+    }
   }, [])
 
   // Filter and sort products

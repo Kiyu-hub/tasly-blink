@@ -9,28 +9,45 @@ export default function CategorySection() {
   const [categories, setCategories] = useState<CategoryData[]>([])
 
   useEffect(() => {
-    const allCategories = getCategoriesData()
-    const products = getProducts()
+    const loadCategories = () => {
+      const allCategories = getCategoriesData()
+      const products = getProducts()
+      
+      // Update product counts
+      const categoryMap = new Map<string, number>()
+      products.forEach(product => {
+        const count = categoryMap.get(product.category) || 0
+        categoryMap.set(product.category, count + 1)
+      })
+      
+      // Filter visible categories with products, update counts, and sort by product count
+      const visibleCategories = allCategories
+        .filter(cat => cat.visible)
+        .map(cat => ({
+          ...cat,
+          productCount: categoryMap.get(cat.name) || 0,
+        }))
+        .filter(cat => cat.productCount > 0)
+        .sort((a, b) => (b.productCount || 0) - (a.productCount || 0))
+        .slice(0, 6)
+      
+      setCategories(visibleCategories)
+    }
     
-    // Update product counts
-    const categoryMap = new Map<string, number>()
-    products.forEach(product => {
-      const count = categoryMap.get(product.category) || 0
-      categoryMap.set(product.category, count + 1)
-    })
+    loadCategories()
     
-    // Filter visible categories with products, update counts, and sort by product count
-    const visibleCategories = allCategories
-      .filter(cat => cat.visible)
-      .map(cat => ({
-        ...cat,
-        productCount: categoryMap.get(cat.name) || 0,
-      }))
-      .filter(cat => cat.productCount > 0)
-      .sort((a, b) => (b.productCount || 0) - (a.productCount || 0))
-      .slice(0, 6)
+    // Listen for updates from admin panel
+    const handleUpdate = () => {
+      loadCategories()
+    }
     
-    setCategories(visibleCategories)
+    window.addEventListener('categoriesUpdated', handleUpdate)
+    window.addEventListener('productsUpdated', handleUpdate)
+    
+    return () => {
+      window.removeEventListener('categoriesUpdated', handleUpdate)
+      window.removeEventListener('productsUpdated', handleUpdate)
+    }
   }, [])
 
   if (categories.length === 0) return null

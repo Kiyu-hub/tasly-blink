@@ -8,11 +8,26 @@ export default function AnnouncementBar() {
   const [showAnnouncement, setShowAnnouncement] = useState(false)
 
   useEffect(() => {
-    const siteInfo = getSiteInfo()
-    if (siteInfo.announcement) {
-      setAnnouncement(siteInfo.announcement)
+    const loadAnnouncement = () => {
+      const siteInfo = getSiteInfo()
+      if (siteInfo.announcement) {
+        setAnnouncement(siteInfo.announcement)
+      }
+      setShowAnnouncement(siteInfo.showAnnouncement ?? true)
     }
-    setShowAnnouncement(siteInfo.showAnnouncement ?? true)
+    
+    loadAnnouncement()
+    
+    // Listen for site info updates from admin panel
+    const handleSiteInfoUpdate = () => {
+      loadAnnouncement()
+    }
+    
+    window.addEventListener('siteInfoUpdated', handleSiteInfoUpdate)
+    
+    return () => {
+      window.removeEventListener('siteInfoUpdated', handleSiteInfoUpdate)
+    }
   }, [])
 
   if (!isVisible || !announcement || !showAnnouncement) return null

@@ -21,6 +21,7 @@ import { cn } from '@/lib/utils'
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false)
   const [showCategories, setShowCategories] = useState(false)
+  const [, setUpdateTrigger] = useState(0)
   const navigate = useNavigate()
   const { theme, setTheme } = useTheme()
   
@@ -36,8 +37,22 @@ export default function Header() {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 10)
     }
+    
+    const handleDataUpdate = () => {
+      setUpdateTrigger(prev => prev + 1)
+    }
+    
     window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
+    window.addEventListener('siteInfoUpdated', handleDataUpdate)
+    window.addEventListener('categoriesUpdated', handleDataUpdate)
+    window.addEventListener('productsUpdated', handleDataUpdate)
+    
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+      window.removeEventListener('siteInfoUpdated', handleDataUpdate)
+      window.removeEventListener('categoriesUpdated', handleDataUpdate)
+      window.removeEventListener('productsUpdated', handleDataUpdate)
+    }
   }, [])
 
   return (

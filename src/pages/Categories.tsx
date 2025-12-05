@@ -11,27 +11,44 @@ export default function Categories() {
   const [categories, setCategories] = useState<CategoryData[]>([])
 
   useEffect(() => {
-    const allCategories = getCategoriesData()
-    const products = getProducts()
+    const loadCategories = () => {
+      const allCategories = getCategoriesData()
+      const products = getProducts()
+      
+      // Count products per category
+      const categoryMap = new Map<string, number>()
+      products.forEach(product => {
+        const count = categoryMap.get(product.category) || 0
+        categoryMap.set(product.category, count + 1)
+      })
+      
+      // Filter visible categories with products and update counts
+      const visibleCategories = allCategories
+        .filter(cat => cat.visible)
+        .map(cat => ({
+          ...cat,
+          productCount: categoryMap.get(cat.name) || 0,
+        }))
+        .filter(cat => cat.productCount > 0)
+        .sort((a, b) => a.name.localeCompare(b.name))
+      
+      setCategories(visibleCategories)
+    }
     
-    // Count products per category
-    const categoryMap = new Map<string, number>()
-    products.forEach(product => {
-      const count = categoryMap.get(product.category) || 0
-      categoryMap.set(product.category, count + 1)
-    })
+    loadCategories()
     
-    // Filter visible categories with products and update counts
-    const visibleCategories = allCategories
-      .filter(cat => cat.visible)
-      .map(cat => ({
-        ...cat,
-        productCount: categoryMap.get(cat.name) || 0,
-      }))
-      .filter(cat => cat.productCount > 0)
-      .sort((a, b) => a.name.localeCompare(b.name))
+    // Listen for updates from admin panel
+    const handleUpdate = () => {
+      loadCategories()
+    }
     
-    setCategories(visibleCategories)
+    window.addEventListener('categoriesUpdated', handleUpdate)
+    window.addEventListener('productsUpdated', handleUpdate)
+    
+    return () => {
+      window.removeEventListener('categoriesUpdated', handleUpdate)
+      window.removeEventListener('productsUpdated', handleUpdate)
+    }
   }, [])
 
   return (

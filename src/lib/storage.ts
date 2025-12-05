@@ -1,4 +1,4 @@
-import type { Product, SiteInfo, Order, Review, Banner } from '@/types'
+import type { Product, SiteInfo, Order, Review, Banner, CategoryData, Ad, Analytics, VisitorStats } from '@/types'
 import { generateId, slugify } from './utils'
 import productsData from '@/data/products.json'
 import siteInfoData from '@/data/siteInfo.json'
@@ -8,6 +8,9 @@ const SITE_INFO_KEY = 'tasly_site_info'
 const ORDERS_KEY = 'tasly_orders'
 const REVIEWS_KEY = 'tasly_reviews'
 const BANNERS_KEY = 'tasly_banners'
+const CATEGORIES_KEY = 'tasly_categories'
+const ADS_KEY = 'tasly_ads'
+const VISITOR_STATS_KEY = 'tasly_visitor_stats'
 
 const defaultProducts: Product[] = productsData as Product[]
 
@@ -266,4 +269,291 @@ export function getBanners(): Banner[] {
 
 export function saveBanners(banners: Banner[]): void {
   localStorage.setItem(BANNERS_KEY, JSON.stringify(banners))
+}
+
+// Categories
+export function getCategoriesData(): CategoryData[] {
+  const data = localStorage.getItem(CATEGORIES_KEY)
+  if (data) {
+    return JSON.parse(data)
+  }
+  
+  // Generate default categories from products
+  const products = getProducts()
+  const categoryNames = [...new Set(products.map((p) => p.category))]
+  const categoryMap = new Map<string, number>()
+  
+  products.forEach(product => {
+    const count = categoryMap.get(product.category) || 0
+    categoryMap.set(product.category, count + 1)
+  })
+  
+  const defaultCategories: CategoryData[] = categoryNames.map((name, index) => ({
+    id: generateId(),
+    name,
+    slug: slugify(name),
+    description: `Explore our ${name.toLowerCase()} collection`,
+    image: getDefaultCategoryImage(name),
+    color: getDefaultCategoryColor(name),
+    order: index,
+    visible: true,
+    productCount: categoryMap.get(name) || 0,
+  }))
+  
+  localStorage.setItem(CATEGORIES_KEY, JSON.stringify(defaultCategories))
+  return defaultCategories
+}
+
+function getDefaultCategoryImage(categoryName: string): string {
+  const imageMap: Record<string, string> = {
+    'Cardiovascular Health': 'https://images.unsplash.com/photo-1505751172876-fa1923c5c528?w=400',
+    'Immune Support': 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=400',
+    'Digestive Health': 'https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=400',
+    'Respiratory Health': 'https://images.unsplash.com/photo-1536064479547-7ee40b74b807?w=400',
+    'Energy & Vitality': 'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=400',
+    'Joint & Bone Health': 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400',
+    'Liver Health': 'https://images.unsplash.com/photo-1515377905703-c4788e51af15?w=400',
+    'Anti-Aging': 'https://images.unsplash.com/photo-1596755389378-c31d21fd1273?w=400',
+    'Weight Management': 'https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=400',
+    'Brain Health': 'https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=400',
+    'Sleep Support': 'https://images.unsplash.com/photo-1541781774459-bb2af2f05b55?w=400',
+    'Skin Health': 'https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?w=400',
+  }
+  return imageMap[categoryName] || 'https://images.unsplash.com/photo-1505751172876-fa1923c5c528?w=400'
+}
+
+function getDefaultCategoryColor(categoryName: string): string {
+  const colorMap: Record<string, string> = {
+    'Cardiovascular Health': 'from-rose-500 to-red-600',
+    'Immune Support': 'from-emerald-500 to-green-600',
+    'Digestive Health': 'from-amber-500 to-orange-600',
+    'Respiratory Health': 'from-cyan-500 to-blue-600',
+    'Energy & Vitality': 'from-yellow-500 to-orange-600',
+    'Joint & Bone Health': 'from-slate-500 to-gray-600',
+    'Liver Health': 'from-lime-500 to-green-600',
+    'Anti-Aging': 'from-purple-500 to-pink-600',
+    'Weight Management': 'from-indigo-500 to-purple-600',
+    'Brain Health': 'from-violet-500 to-purple-600',
+    'Sleep Support': 'from-blue-500 to-indigo-600',
+    'Skin Health': 'from-pink-500 to-rose-600',
+  }
+  return colorMap[categoryName] || 'from-gray-500 to-slate-600'
+}
+
+export function saveCategoriesData(categories: CategoryData[]): void {
+  localStorage.setItem(CATEGORIES_KEY, JSON.stringify(categories))
+}
+
+export function addCategoryData(category: Omit<CategoryData, 'id' | 'slug' | 'productCount'>): CategoryData {
+  const categories = getCategoriesData()
+  const newCategory: CategoryData = {
+    ...category,
+    id: generateId(),
+    slug: slugify(category.name),
+    productCount: 0,
+  }
+  categories.push(newCategory)
+  saveCategoriesData(categories)
+  return newCategory
+}
+
+export function updateCategoryData(id: string, updates: Partial<CategoryData>): CategoryData | null {
+  const categories = getCategoriesData()
+  const index = categories.findIndex((c) => c.id === id)
+  if (index === -1) return null
+  
+  categories[index] = {
+    ...categories[index],
+    ...updates,
+    slug: updates.name ? slugify(updates.name) : categories[index].slug,
+  }
+  saveCategoriesData(categories)
+  return categories[index]
+}
+
+export function deleteCategoryData(id: string): boolean {
+  const categories = getCategoriesData()
+  const category = categories.find((c) => c.id === id)
+  if (!category) return false
+  
+  // Check if any products use this category
+  const products = getProducts()
+  const hasProducts = products.some((p) => p.category === category.name)
+  
+  if (hasProducts) {
+    return false // Cannot delete category with products
+  }
+  
+  const filtered = categories.filter((c) => c.id !== id)
+  saveCategoriesData(filtered)
+  return true
+}
+
+export function updateCategoryProductCounts(): void {
+  const categories = getCategoriesData()
+  const products = getProducts()
+  const categoryMap = new Map<string, number>()
+  
+  products.forEach(product => {
+    const count = categoryMap.get(product.category) || 0
+    categoryMap.set(product.category, count + 1)
+  })
+  
+  categories.forEach(category => {
+    category.productCount = categoryMap.get(category.name) || 0
+  })
+  
+  saveCategoriesData(categories)
+}
+
+// Ads
+export function getAds(): Ad[] {
+  const data = localStorage.getItem(ADS_KEY)
+  return data ? JSON.parse(data) : []
+}
+
+export function saveAds(ads: Ad[]): void {
+  localStorage.setItem(ADS_KEY, JSON.stringify(ads))
+}
+
+export function addAd(ad: Omit<Ad, 'id'>): Ad {
+  const ads = getAds()
+  const newAd: Ad = {
+    ...ad,
+    id: generateId(),
+  }
+  ads.push(newAd)
+  saveAds(ads)
+  return newAd
+}
+
+export function updateAd(id: string, updates: Partial<Ad>): Ad | null {
+  const ads = getAds()
+  const index = ads.findIndex((a) => a.id === id)
+  if (index === -1) return null
+  
+  ads[index] = { ...ads[index], ...updates }
+  saveAds(ads)
+  return ads[index]
+}
+
+export function deleteAd(id: string): boolean {
+  const ads = getAds()
+  const filtered = ads.filter((a) => a.id !== id)
+  if (filtered.length === ads.length) return false
+  saveAds(filtered)
+  return true
+}
+
+export function getActiveAdsByPosition(position: Ad['position']): Ad[] {
+  const ads = getAds()
+  const now = new Date()
+  
+  return ads
+    .filter((ad) => {
+      if (!ad.active || ad.position !== position) return false
+      
+      // Check date range if specified
+      if (ad.startDate && new Date(ad.startDate) > now) return false
+      if (ad.endDate && new Date(ad.endDate) < now) return false
+      
+      return true
+    })
+    .sort((a, b) => a.order - b.order)
+}
+
+// Analytics & Visitor Tracking
+export function trackPageView(): void {
+  const today = new Date().toISOString().split('T')[0]
+  const stats = getVisitorStats()
+  
+  const todayStats = stats.find((s) => s.date === today)
+  if (todayStats) {
+    todayStats.pageViews++
+  } else {
+    stats.push({
+      date: today,
+      visitors: 1,
+      pageViews: 1,
+    })
+  }
+  
+  // Keep only last 90 days
+  const ninetyDaysAgo = new Date()
+  ninetyDaysAgo.setDate(ninetyDaysAgo.getDate() - 90)
+  const filtered = stats.filter((s) => new Date(s.date) >= ninetyDaysAgo)
+  
+  localStorage.setItem(VISITOR_STATS_KEY, JSON.stringify(filtered))
+}
+
+export function trackVisitor(): void {
+  const today = new Date().toISOString().split('T')[0]
+  const lastVisit = localStorage.getItem('tasly_last_visit')
+  
+  // Only count as new visitor if hasn't visited today
+  if (lastVisit !== today) {
+    const stats = getVisitorStats()
+    const todayStats = stats.find((s) => s.date === today)
+    
+    if (todayStats) {
+      todayStats.visitors++
+    } else {
+      stats.push({
+        date: today,
+        visitors: 1,
+        pageViews: 1,
+      })
+    }
+    
+    localStorage.setItem(VISITOR_STATS_KEY, JSON.stringify(stats))
+    localStorage.setItem('tasly_last_visit', today)
+  }
+}
+
+function getVisitorStats(): VisitorStats[] {
+  const data = localStorage.getItem(VISITOR_STATS_KEY)
+  return data ? JSON.parse(data) : []
+}
+
+export function getAnalytics(period: 'daily' | 'weekly' | 'monthly' = 'weekly'): Analytics {
+  const stats = getVisitorStats()
+  const orders = getOrders()
+  
+  // Calculate date range
+  const now = new Date()
+  const startDate = new Date()
+  
+  switch (period) {
+    case 'daily':
+      startDate.setHours(0, 0, 0, 0)
+      break
+    case 'weekly':
+      startDate.setDate(now.getDate() - 7)
+      break
+    case 'monthly':
+      startDate.setMonth(now.getMonth() - 1)
+      break
+  }
+  
+  // Filter stats by period
+  const periodStats = stats.filter((s) => new Date(s.date) >= startDate)
+  
+  // Calculate totals
+  const totalVisitors = periodStats.reduce((sum, s) => sum + s.visitors, 0)
+  
+  // Filter orders by period
+  const periodOrders = orders.filter((o) => new Date(o.createdAt) >= startDate)
+  const totalOrders = periodOrders.length
+  const totalRevenue = periodOrders.reduce((sum, o) => sum + o.total, 0)
+  
+  // Calculate conversion rate
+  const conversionRate = totalVisitors > 0 ? (totalOrders / totalVisitors) * 100 : 0
+  
+  return {
+    totalVisitors,
+    totalOrders,
+    totalRevenue,
+    conversionRate,
+    visitorStats: periodStats,
+  }
 }

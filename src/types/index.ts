@@ -1,3 +1,15 @@
+export interface CategoryData {
+  id: string
+  name: string
+  slug: string
+  description: string
+  image: string
+  color: string
+  order: number
+  visible: boolean
+  productCount?: number
+}
+
 export interface Product {
   id: string
   slug: string
@@ -129,6 +141,34 @@ export interface SiteInfo {
     image: string
     bio?: string
   }
+}
+
+export interface Ad {
+  id: string
+  title: string
+  description?: string
+  image: string
+  link?: string
+  buttonText?: string
+  position: 'homepage-top' | 'homepage-middle' | 'products-top' | 'products-sidebar' | 'cart-bottom'
+  active: boolean
+  order: number
+  startDate?: string
+  endDate?: string
+}
+
+export interface VisitorStats {
+  date: string
+  visitors: number
+  pageViews: number
+}
+
+export interface Analytics {
+  totalVisitors: number
+  totalOrders: number
+  totalRevenue: number
+  conversionRate: number
+  visitorStats: VisitorStats[]
 }
 
 export interface Category {

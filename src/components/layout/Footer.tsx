@@ -8,7 +8,6 @@ import {
   Phone,
   Mail,
   MapPin,
-  Heart,
 } from 'lucide-react'
 import { getSiteInfo } from '@/lib/storage'
 import { Separator } from '@/components/ui/separator'
@@ -26,7 +25,8 @@ export default function Footer() {
               <img 
                 src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSE5bpjWLc7v0MJ8EVqLPSOweMBQmvVU94YYw&s" 
                 alt="Tasly Ghana 346" 
-                className="h-10 w-10 object-contain"
+                className="h-10 w-10 object-contain mix-blend-multiply dark:mix-blend-screen"
+                style={{ background: 'transparent' }}
               />
               <span className="font-display text-xl font-bold">
                 Tasly Ghana <span className="text-primary">346</span>
@@ -225,10 +225,10 @@ export default function Footer() {
 
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-sm text-muted-foreground">
-            © {new Date().getFullYear()} Tasly Ghana 346. All rights reserved.
+            © {new Date().getFullYear()} {siteInfo.name}. All rights reserved.
           </p>
-          <p className="text-sm text-muted-foreground flex items-center gap-1">
-            Made with <Heart className="h-4 w-4 text-red-500 fill-current" /> in Ghana
+          <p className="text-sm text-muted-foreground">
+            Accra, Legon - Bawuleshi | {siteInfo.phone}
           </p>
         </div>
       </div>

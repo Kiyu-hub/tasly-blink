@@ -37,46 +37,15 @@ import {
   saveBanners,
   getSiteInfo,
   saveSiteInfo,
+  getCategoriesData,
+  saveCategoriesData,
+  updateCategoryProductCounts,
+  getAds,
+  saveAds,
+  getAnalytics,
 } from '@/lib/storage'
 import { formatCurrency, generateId, slugify } from '@/lib/utils'
-import type { Product, Banner, SiteInfo } from '@/types'
-import { PRODUCT_CATEGORIES } from '@/data/categories'
-
-// Mock stats data
-const stats = [
-  {
-    title: 'Total Orders',
-    value: '156',
-    change: '+12%',
-    icon: ShoppingCart,
-    color: 'text-blue-500',
-    bgColor: 'bg-blue-500/10',
-  },
-  {
-    title: 'Revenue',
-    value: 'GH₵45,678',
-    change: '+8%',
-    icon: DollarSign,
-    color: 'text-green-500',
-    bgColor: 'bg-green-500/10',
-  },
-  {
-    title: 'Customers',
-    value: '1,234',
-    change: '+15%',
-    icon: Users,
-    color: 'text-purple-500',
-    bgColor: 'bg-purple-500/10',
-  },
-  {
-    title: 'Conversion',
-    value: '3.2%',
-    change: '+2%',
-    icon: TrendingUp,
-    color: 'text-orange-500',
-    bgColor: 'bg-orange-500/10',
-  },
-]
+import type { Product, Banner, SiteInfo, CategoryData, Ad } from '@/types'
 
 const defaultProduct: Partial<Product> = {
   name: '',
@@ -108,6 +77,9 @@ export default function Admin() {
   const [products, setProducts] = useState<Product[]>([])
   const [banners, setBanners] = useState<Banner[]>([])
   const [siteInfo, setSiteInfo] = useState<SiteInfo | null>(null)
+  const [categories, setCategories] = useState<CategoryData[]>([])
+  const [ads, setAds] = useState<Ad[]>([])
+  const [analyticsPeriod, setAnalyticsPeriod] = useState<'daily' | 'weekly' | 'monthly'>('weekly')
 
   const [editingProduct, setEditingProduct] = useState<Partial<Product> | null>(
     null
@@ -115,8 +87,14 @@ export default function Admin() {
   const [editingBanner, setEditingBanner] = useState<Partial<Banner> | null>(
     null
   )
+  const [editingCategory, setEditingCategory] = useState<Partial<CategoryData> | null>(
+    null
+  )
+  const [editingAd, setEditingAd] = useState<Partial<Ad> | null>(null)
   const [isProductDialogOpen, setIsProductDialogOpen] = useState(false)
   const [isBannerDialogOpen, setIsBannerDialogOpen] = useState(false)
+  const [isCategoryDialogOpen, setIsCategoryDialogOpen] = useState(false)
+  const [isAdDialogOpen, setIsAdDialogOpen] = useState(false)
 
   useEffect(() => {
     // Check if already authenticated in session
@@ -131,6 +109,9 @@ export default function Admin() {
       setProducts(getProducts())
       setBanners(getBanners())
       setSiteInfo(getSiteInfo())
+      setCategories(getCategoriesData())
+      setAds(getAds())
+      updateCategoryProductCounts()
     }
   }, [isAuthenticated])
 
@@ -235,6 +216,8 @@ export default function Admin() {
 
     setProducts(updatedProducts)
     saveProducts(updatedProducts)
+    updateCategoryProductCounts()
+    setCategories(getCategoriesData())
     setEditingProduct(null)
     setIsProductDialogOpen(false)
     toast.success(isNew ? 'Product created' : 'Product updated')
@@ -244,6 +227,8 @@ export default function Admin() {
     const updatedProducts = products.filter((p) => p.id !== id)
     setProducts(updatedProducts)
     saveProducts(updatedProducts)
+    updateCategoryProductCounts()
+    setCategories(getCategoriesData())
     toast.success('Product deleted')
   }
 
@@ -304,6 +289,137 @@ export default function Admin() {
     }
   }
 
+  // Categories
+  const handleSaveCategory = () => {
+    if (!editingCategory?.name) {
+      toast.error('Please enter a category name')
+      return
+    }
+
+    const isNew = !editingCategory.id
+    const category: CategoryData = {
+      id: editingCategory.id || generateId(),
+      name: editingCategory.name,
+      slug: slugify(editingCategory.name),
+      description: editingCategory.description || `Explore our ${editingCategory.name.toLowerCase()} collection`,
+      image: editingCategory.image || 'https://images.unsplash.com/photo-1505751172876-fa1923c5c528?w=400',
+      color: editingCategory.color || 'from-gray-500 to-slate-600',
+      order: editingCategory.order ?? categories.length,
+      visible: editingCategory.visible ?? true,
+      productCount: editingCategory.productCount || 0,
+    }
+
+    let updatedCategories: CategoryData[]
+    if (isNew) {
+      updatedCategories = [...categories, category]
+    } else {
+      updatedCategories = categories.map((c) => (c.id === category.id ? category : c))
+    }
+
+    setCategories(updatedCategories)
+    saveCategoriesData(updatedCategories)
+    setEditingCategory(null)
+    setIsCategoryDialogOpen(false)
+    toast.success(isNew ? 'Category created' : 'Category updated')
+  }
+
+  const handleDeleteCategory = (id: string) => {
+    const category = categories.find((c) => c.id === id)
+    if (!category) return
+
+    // Check if any products use this category
+    const hasProducts = products.some((p) => p.category === category.name)
+    if (hasProducts) {
+      toast.error(`Cannot delete category "${category.name}" - it has products assigned to it`)
+      return
+    }
+
+    const updatedCategories = categories.filter((c) => c.id !== id)
+    setCategories(updatedCategories)
+    saveCategoriesData(updatedCategories)
+    toast.success('Category deleted')
+  }
+
+  const toggleCategoryVisible = (id: string) => {
+    const updatedCategories = categories.map((c) =>
+      c.id === id ? { ...c, visible: !c.visible } : c
+    )
+    setCategories(updatedCategories)
+    saveCategoriesData(updatedCategories)
+  }
+
+  const moveCategoryOrder = (id: string, direction: 'up' | 'down') => {
+    const index = categories.findIndex((c) => c.id === id)
+    if (index === -1) return
+    if (direction === 'up' && index === 0) return
+    if (direction === 'down' && index === categories.length - 1) return
+
+    const newCategories = [...categories]
+    const temp = newCategories[index]
+    const swapIndex = direction === 'up' ? index - 1 : index + 1
+    newCategories[index] = newCategories[swapIndex]
+    newCategories[swapIndex] = temp
+
+    // Update order values
+    newCategories.forEach((cat, idx) => {
+      cat.order = idx
+    })
+
+    setCategories(newCategories)
+    saveCategoriesData(newCategories)
+  }
+
+  // Ads
+  const handleSaveAd = () => {
+    if (!editingAd?.title || !editingAd?.image || !editingAd?.position) {
+      toast.error('Please fill in required fields')
+      return
+    }
+
+    const isNew = !editingAd.id
+    const ad: Ad = {
+      id: editingAd.id || generateId(),
+      title: editingAd.title,
+      description: editingAd.description || '',
+      image: editingAd.image,
+      link: editingAd.link || '',
+      buttonText: editingAd.buttonText || 'Learn More',
+      position: editingAd.position,
+      active: editingAd.active ?? true,
+      order: editingAd.order ?? ads.length,
+      startDate: editingAd.startDate,
+      endDate: editingAd.endDate,
+    }
+
+    let updatedAds: Ad[]
+    if (isNew) {
+      updatedAds = [...ads, ad]
+    } else {
+      updatedAds = ads.map((a) => (a.id === ad.id ? ad : a))
+    }
+
+    setAds(updatedAds)
+    saveAds(updatedAds)
+    setEditingAd(null)
+    setIsAdDialogOpen(false)
+    toast.success(isNew ? 'Ad created' : 'Ad updated')
+  }
+
+  const handleDeleteAd = (id: string) => {
+    const updatedAds = ads.filter((a) => a.id !== id)
+    setAds(updatedAds)
+    saveAds(updatedAds)
+    toast.success('Ad deleted')
+  }
+
+  const toggleAdActive = (id: string) => {
+    const updatedAds = ads.map((a) =>
+      a.id === id ? { ...a, active: !a.active } : a
+    )
+    setAds(updatedAds)
+    saveAds(updatedAds)
+  }
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -318,39 +434,98 @@ export default function Admin() {
             Logout
           </Button>
         </div>
-        <p className="text-muted-foreground mb-8">
+        <p className="text-muted-foreground mb-4">
           Manage your products, banners, and settings
         </p>
 
+        {/* Period Filter */}
+        <div className="flex gap-2 mb-4">
+          <Button
+            variant={analyticsPeriod === 'daily' ? 'default' : 'outline'}
+            size="sm"
+            onClick={() => setAnalyticsPeriod('daily')}
+          >
+            Today
+          </Button>
+          <Button
+            variant={analyticsPeriod === 'weekly' ? 'default' : 'outline'}
+            size="sm"
+            onClick={() => setAnalyticsPeriod('weekly')}
+          >
+            Last 7 Days
+          </Button>
+          <Button
+            variant={analyticsPeriod === 'monthly' ? 'default' : 'outline'}
+            size="sm"
+            onClick={() => setAnalyticsPeriod('monthly')}
+          >
+            Last 30 Days
+          </Button>
+        </div>
+
         {/* Stats */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          {stats.map((stat, index) => (
-            <motion.div
-              key={stat.title}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.1 }}
-            >
-              <Card>
-                <CardContent className="p-6">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-sm text-muted-foreground">
-                        {stat.title}
-                      </p>
-                      <p className="text-2xl font-bold">{stat.value}</p>
-                      <p className="text-sm text-green-500">{stat.change}</p>
+          {(() => {
+            const analytics = getAnalytics(analyticsPeriod)
+            
+            const stats = [
+              {
+                title: 'Total Visitors',
+                value: analytics.totalVisitors.toString(),
+                icon: Users,
+                color: 'text-purple-500',
+                bgColor: 'bg-purple-500/10',
+              },
+              {
+                title: 'Total Orders',
+                value: analytics.totalOrders.toString(),
+                icon: ShoppingCart,
+                color: 'text-blue-500',
+                bgColor: 'bg-blue-500/10',
+              },
+              {
+                title: 'Revenue',
+                value: formatCurrency(analytics.totalRevenue),
+                icon: DollarSign,
+                color: 'text-green-500',
+                bgColor: 'bg-green-500/10',
+              },
+              {
+                title: 'Conversion Rate',
+                value: `${analytics.conversionRate.toFixed(1)}%`,
+                icon: TrendingUp,
+                color: 'text-orange-500',
+                bgColor: 'bg-orange-500/10',
+              },
+            ]
+            
+            return stats.map((stat, index) => (
+              <motion.div
+                key={stat.title}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.1 }}
+              >
+                <Card>
+                  <CardContent className="p-6">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="text-sm text-muted-foreground">
+                          {stat.title}
+                        </p>
+                        <p className="text-2xl font-bold">{stat.value}</p>
+                      </div>
+                      <div
+                        className={`w-12 h-12 rounded-full ${stat.bgColor} flex items-center justify-center`}
+                      >
+                        <stat.icon className={`w-6 h-6 ${stat.color}`} />
+                      </div>
                     </div>
-                    <div
-                      className={`w-12 h-12 rounded-full ${stat.bgColor} flex items-center justify-center`}
-                    >
-                      <stat.icon className={`w-6 h-6 ${stat.color}`} />
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </motion.div>
-          ))}
+                  </CardContent>
+                </Card>
+              </motion.div>
+            ))
+          })()}
         </div>
 
         {/* Tabs */}
@@ -363,6 +538,14 @@ export default function Admin() {
             <TabsTrigger value="banners">
               <Image className="w-4 h-4 mr-2" />
               Banners
+            </TabsTrigger>
+            <TabsTrigger value="categories">
+              <Package className="w-4 h-4 mr-2" />
+              Categories
+            </TabsTrigger>
+            <TabsTrigger value="ads">
+              <Image className="w-4 h-4 mr-2" />
+              Ads
             </TabsTrigger>
             <TabsTrigger value="settings">
               <Settings className="w-4 h-4 mr-2" />
@@ -422,9 +605,9 @@ export default function Admin() {
                               className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                             >
                               <option value="">Select Category</option>
-                              {PRODUCT_CATEGORIES.map((cat) => (
-                                <option key={cat} value={cat}>
-                                  {cat}
+                              {categories.filter(c => c.visible).map((cat) => (
+                                <option key={cat.id} value={cat.name}>
+                                  {cat.name} ({cat.productCount || 0})
                                 </option>
                               ))}
                             </select>
@@ -777,6 +960,467 @@ export default function Admin() {
                           size="icon"
                           className="text-red-500"
                           onClick={() => handleDeleteBanner(banner.id)}
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </Button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          {/* Categories Tab */}
+          <TabsContent value="categories">
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between">
+                <CardTitle>Categories ({categories.length})</CardTitle>
+                <Dialog
+                  open={isCategoryDialogOpen}
+                  onOpenChange={setIsCategoryDialogOpen}
+                >
+                  <DialogTrigger asChild>
+                    <Button
+                      onClick={() => setEditingCategory({ 
+                        name: '',
+                        description: '',
+                        image: 'https://images.unsplash.com/photo-1505751172876-fa1923c5c528?w=400',
+                        color: 'from-gray-500 to-slate-600',
+                        order: categories.length,
+                        visible: true,
+                      })}
+                    >
+                      <Plus className="w-4 h-4 mr-2" />
+                      Add Category
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+                    <DialogHeader>
+                      <DialogTitle>
+                        {editingCategory?.id ? 'Edit Category' : 'Add Category'}
+                      </DialogTitle>
+                    </DialogHeader>
+                    {editingCategory && (
+                      <div className="space-y-4 py-4">
+                        <div className="grid grid-cols-2 gap-4">
+                          <div className="space-y-2">
+                            <Label>Name *</Label>
+                            <Input
+                              value={editingCategory.name}
+                              onChange={(e) =>
+                                setEditingCategory({
+                                  ...editingCategory,
+                                  name: e.target.value,
+                                })
+                              }
+                              placeholder="Category name"
+                            />
+                          </div>
+                          <div className="space-y-2">
+                            <Label>Gradient Color Class</Label>
+                            <Input
+                              value={editingCategory.color}
+                              onChange={(e) =>
+                                setEditingCategory({
+                                  ...editingCategory,
+                                  color: e.target.value,
+                                })
+                              }
+                              placeholder="from-blue-500 to-indigo-600"
+                            />
+                            <p className="text-xs text-muted-foreground">
+                              Tailwind gradient classes (e.g., from-rose-500 to-red-600)
+                            </p>
+                          </div>
+                        </div>
+
+                        <div className="space-y-2">
+                          <Label>Description</Label>
+                          <Textarea
+                            value={editingCategory.description}
+                            onChange={(e) =>
+                              setEditingCategory({
+                                ...editingCategory,
+                                description: e.target.value,
+                              })
+                            }
+                            placeholder="Category description"
+                            rows={2}
+                          />
+                        </div>
+
+                        <div className="space-y-2">
+                          <Label>Image URL</Label>
+                          <Input
+                            value={editingCategory.image}
+                            onChange={(e) =>
+                              setEditingCategory({
+                                ...editingCategory,
+                                image: e.target.value,
+                              })
+                            }
+                            placeholder="https://images.unsplash.com/photo-..."
+                          />
+                          {editingCategory.image && (
+                            <div className="mt-2">
+                              <img
+                                src={editingCategory.image}
+                                alt="Preview"
+                                className="w-32 h-32 object-cover rounded-lg"
+                              />
+                            </div>
+                          )}
+                        </div>
+
+                        <label className="flex items-center gap-2">
+                          <input
+                            type="checkbox"
+                            checked={editingCategory.visible}
+                            onChange={(e) =>
+                              setEditingCategory({
+                                ...editingCategory,
+                                visible: e.target.checked,
+                              })
+                            }
+                          />
+                          <span className="text-sm">Visible on site</span>
+                        </label>
+
+                        <div className="flex justify-end gap-2 pt-4">
+                          <Button
+                            variant="outline"
+                            onClick={() => {
+                              setEditingCategory(null)
+                              setIsCategoryDialogOpen(false)
+                            }}
+                          >
+                            Cancel
+                          </Button>
+                          <Button onClick={handleSaveCategory}>
+                            <Save className="w-4 h-4 mr-2" />
+                            Save Category
+                          </Button>
+                        </div>
+                      </div>
+                    )}
+                  </DialogContent>
+                </Dialog>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-3">
+                  {categories.sort((a, b) => a.order - b.order).map((category) => (
+                    <div
+                      key={category.id}
+                      className="flex items-center gap-4 p-4 border rounded-lg"
+                    >
+                      <img
+                        src={category.image}
+                        alt={category.name}
+                        className="w-16 h-16 object-cover rounded-lg"
+                      />
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2">
+                          <h3 className="font-medium">{category.name}</h3>
+                          <Badge variant={category.visible ? 'default' : 'secondary'}>
+                            {category.visible ? 'Visible' : 'Hidden'}
+                          </Badge>
+                          <Badge variant="outline">
+                            {category.productCount || 0} products
+                          </Badge>
+                        </div>
+                        <p className="text-sm text-muted-foreground mt-1">
+                          {category.description}
+                        </p>
+                        <div className="flex items-center gap-2 mt-2">
+                          <div className={`h-4 w-20 rounded bg-gradient-to-r ${category.color}`} />
+                          <span className="text-xs text-muted-foreground">{category.color}</span>
+                        </div>
+                      </div>
+                      <div className="flex gap-2">
+                        <Button
+                          variant="outline"
+                          size="icon"
+                          onClick={() => moveCategoryOrder(category.id, 'up')}
+                          disabled={category.order === 0}
+                        >
+                          ↑
+                        </Button>
+                        <Button
+                          variant="outline"
+                          size="icon"
+                          onClick={() => moveCategoryOrder(category.id, 'down')}
+                          disabled={category.order === categories.length - 1}
+                        >
+                          ↓
+                        </Button>
+                        <Button
+                          variant="outline"
+                          size="icon"
+                          onClick={() => toggleCategoryVisible(category.id)}
+                        >
+                          {category.visible ? (
+                            <EyeOff className="w-4 h-4" />
+                          ) : (
+                            <Eye className="w-4 h-4" />
+                          )}
+                        </Button>
+                        <Button
+                          variant="outline"
+                          size="icon"
+                          onClick={() => {
+                            setEditingCategory(category)
+                            setIsCategoryDialogOpen(true)
+                          }}
+                        >
+                          <Pencil className="w-4 h-4" />
+                        </Button>
+                        <Button
+                          variant="outline"
+                          size="icon"
+                          className="text-red-500"
+                          onClick={() => handleDeleteCategory(category.id)}
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </Button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          {/* Ads Tab */}
+          <TabsContent value="ads">
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between">
+                <CardTitle>Advertisements ({ads.length})</CardTitle>
+                <Dialog open={isAdDialogOpen} onOpenChange={setIsAdDialogOpen}>
+                  <DialogTrigger asChild>
+                    <Button
+                      onClick={() =>
+                        setEditingAd({
+                          title: '',
+                          description: '',
+                          image: '',
+                          link: '',
+                          buttonText: 'Learn More',
+                          position: 'homepage-top',
+                          active: true,
+                          order: ads.length,
+                        })
+                      }
+                    >
+                      <Plus className="w-4 h-4 mr-2" />
+                      Add Ad
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+                    <DialogHeader>
+                      <DialogTitle>
+                        {editingAd?.id ? 'Edit Advertisement' : 'Add Advertisement'}
+                      </DialogTitle>
+                    </DialogHeader>
+                    {editingAd && (
+                      <div className="space-y-4 py-4">
+                        <div className="grid grid-cols-2 gap-4">
+                          <div className="space-y-2">
+                            <Label>Title *</Label>
+                            <Input
+                              value={editingAd.title}
+                              onChange={(e) =>
+                                setEditingAd({ ...editingAd, title: e.target.value })
+                              }
+                              placeholder="Ad title"
+                            />
+                          </div>
+                          <div className="space-y-2">
+                            <Label>Position *</Label>
+                            <select
+                              value={editingAd.position}
+                              onChange={(e) =>
+                                setEditingAd({
+                                  ...editingAd,
+                                  position: e.target.value as Ad['position'],
+                                })
+                              }
+                              className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+                            >
+                              <option value="homepage-top">Homepage Top</option>
+                              <option value="homepage-middle">Homepage Middle</option>
+                              <option value="products-top">Products Page Top</option>
+                              <option value="products-sidebar">Products Sidebar</option>
+                              <option value="cart-bottom">Cart Bottom</option>
+                            </select>
+                          </div>
+                        </div>
+
+                        <div className="space-y-2">
+                          <Label>Description</Label>
+                          <Textarea
+                            value={editingAd.description}
+                            onChange={(e) =>
+                              setEditingAd({ ...editingAd, description: e.target.value })
+                            }
+                            placeholder="Ad description"
+                            rows={2}
+                          />
+                        </div>
+
+                        <div className="space-y-2">
+                          <Label>Image URL *</Label>
+                          <Input
+                            value={editingAd.image}
+                            onChange={(e) =>
+                              setEditingAd({ ...editingAd, image: e.target.value })
+                            }
+                            placeholder="https://..."
+                          />
+                          {editingAd.image && (
+                            <img
+                              src={editingAd.image}
+                              alt="Preview"
+                              className="w-full h-32 object-cover rounded"
+                            />
+                          )}
+                        </div>
+
+                        <div className="grid grid-cols-2 gap-4">
+                          <div className="space-y-2">
+                            <Label>Link URL</Label>
+                            <Input
+                              value={editingAd.link}
+                              onChange={(e) =>
+                                setEditingAd({ ...editingAd, link: e.target.value })
+                              }
+                              placeholder="https://..."
+                            />
+                          </div>
+                          <div className="space-y-2">
+                            <Label>Button Text</Label>
+                            <Input
+                              value={editingAd.buttonText}
+                              onChange={(e) =>
+                                setEditingAd({ ...editingAd, buttonText: e.target.value })
+                              }
+                              placeholder="Learn More"
+                            />
+                          </div>
+                        </div>
+
+                        <div className="grid grid-cols-2 gap-4">
+                          <div className="space-y-2">
+                            <Label>Start Date (Optional)</Label>
+                            <Input
+                              type="date"
+                              value={editingAd.startDate || ''}
+                              onChange={(e) =>
+                                setEditingAd({ ...editingAd, startDate: e.target.value })
+                              }
+                            />
+                          </div>
+                          <div className="space-y-2">
+                            <Label>End Date (Optional)</Label>
+                            <Input
+                              type="date"
+                              value={editingAd.endDate || ''}
+                              onChange={(e) =>
+                                setEditingAd({ ...editingAd, endDate: e.target.value })
+                              }
+                            />
+                          </div>
+                        </div>
+
+                        <label className="flex items-center gap-2">
+                          <input
+                            type="checkbox"
+                            checked={editingAd.active}
+                            onChange={(e) =>
+                              setEditingAd({ ...editingAd, active: e.target.checked })
+                            }
+                          />
+                          <span className="text-sm">Active</span>
+                        </label>
+
+                        <div className="flex justify-end gap-2 pt-4">
+                          <Button
+                            variant="outline"
+                            onClick={() => {
+                              setEditingAd(null)
+                              setIsAdDialogOpen(false)
+                            }}
+                          >
+                            Cancel
+                          </Button>
+                          <Button onClick={handleSaveAd}>
+                            <Save className="w-4 h-4 mr-2" />
+                            Save Ad
+                          </Button>
+                        </div>
+                      </div>
+                    )}
+                  </DialogContent>
+                </Dialog>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-3">
+                  {ads.map((ad) => (
+                    <div
+                      key={ad.id}
+                      className="flex items-center gap-4 p-4 border rounded-lg"
+                    >
+                      <img
+                        src={ad.image}
+                        alt={ad.title}
+                        className="w-24 h-16 object-cover rounded"
+                      />
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2">
+                          <h3 className="font-medium">{ad.title}</h3>
+                          <Badge variant={ad.active ? 'default' : 'secondary'}>
+                            {ad.active ? 'Active' : 'Inactive'}
+                          </Badge>
+                          <Badge variant="outline">{ad.position}</Badge>
+                        </div>
+                        <p className="text-sm text-muted-foreground mt-1">
+                          {ad.description || 'No description'}
+                        </p>
+                        {(ad.startDate || ad.endDate) && (
+                          <p className="text-xs text-muted-foreground mt-1">
+                            {ad.startDate && `From: ${ad.startDate}`}
+                            {ad.startDate && ad.endDate && ' | '}
+                            {ad.endDate && `To: ${ad.endDate}`}
+                          </p>
+                        )}
+                      </div>
+                      <div className="flex gap-2">
+                        <Button
+                          variant="outline"
+                          size="icon"
+                          onClick={() => toggleAdActive(ad.id)}
+                        >
+                          {ad.active ? (
+                            <EyeOff className="w-4 h-4" />
+                          ) : (
+                            <Eye className="w-4 h-4" />
+                          )}
+                        </Button>
+                        <Button
+                          variant="outline"
+                          size="icon"
+                          onClick={() => {
+                            setEditingAd(ad)
+                            setIsAdDialogOpen(true)
+                          }}
+                        >
+                          <Pencil className="w-4 h-4" />
+                        </Button>
+                        <Button
+                          variant="outline"
+                          size="icon"
+                          className="text-red-500"
+                          onClick={() => handleDeleteAd(ad.id)}
                         >
                           <Trash2 className="w-4 h-4" />
                         </Button>

@@ -12,18 +12,8 @@ import {
   AccordionTrigger,
 } from '@/components/ui/accordion'
 import { Badge } from '@/components/ui/badge'
-import { getProducts } from '@/lib/storage'
+import { getProducts, getCategories } from '@/lib/storage'
 import type { Product } from '@/types'
-
-const categories = [
-  { value: 'all', label: 'All Categories' },
-  { value: 'brain-nervous-system', label: 'Brain & Nervous System' },
-  { value: 'immune-support', label: 'Immune Support' },
-  { value: 'heart-cardiovascular', label: 'Heart & Cardiovascular' },
-  { value: 'digestive-health', label: 'Digestive Health' },
-  { value: 'energy-vitality', label: 'Energy & Vitality' },
-  { value: 'beauty-skincare', label: 'Beauty & Skincare' },
-]
 
 const sortOptions = [
   { value: 'featured', label: 'Featured' },
@@ -45,6 +35,7 @@ const priceRanges = [
 export default function Products() {
   const [searchParams, setSearchParams] = useSearchParams()
   const [products, setProducts] = useState<Product[]>([])
+  const [categories, setCategories] = useState<Array<{ value: string; label: string }>>([])
   const [showFilters, setShowFilters] = useState(false)
   const [view, setView] = useState<'grid' | 'list'>('grid')
 
@@ -56,7 +47,16 @@ export default function Products() {
   const [filter, setFilter] = useState(searchParams.get('filter') || '')
 
   useEffect(() => {
-    setProducts(getProducts())
+    const loadedProducts = getProducts()
+    setProducts(loadedProducts)
+    
+    // Get dynamic categories from products
+    const cats = getCategories()
+    const categoryOptions = [
+      { value: 'all', label: 'All Categories' },
+      ...cats.map(cat => ({ value: cat, label: cat }))
+    ]
+    setCategories(categoryOptions)
   }, [])
 
   // Filter and sort products
@@ -76,9 +76,7 @@ export default function Products() {
 
     // Category filter
     if (category && category !== 'all') {
-      result = result.filter((p) =>
-        p.category.toLowerCase().replace(/\s+/g, '-').includes(category)
-      )
+      result = result.filter((p) => p.category === category)
     }
 
     // Price range filter

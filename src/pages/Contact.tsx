@@ -40,12 +40,12 @@ export default function Contact() {
     {
       icon: MapPin,
       title: 'Visit Us',
-      details: [siteInfo?.address || 'Accra, Ghana'],
+      details: [siteInfo?.address || 'Accra, Legon - Bawuleshi'],
     },
     {
       icon: Phone,
       title: 'Call Us',
-      details: [siteInfo?.phone || '+233 59 900 4548'],
+      details: [siteInfo?.phone || '+233 59 900 4548', `WhatsApp: +${siteInfo?.whatsapp || '233 59 900 4548'}`],
     },
     {
       icon: Mail,

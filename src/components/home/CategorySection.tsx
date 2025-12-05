@@ -1,53 +1,39 @@
+import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { ArrowRight } from 'lucide-react'
-
-const categories = [
-  {
-    name: 'Brain & Nervous System',
-    slug: 'brain-nervous-system',
-    description: 'Support cognitive function and mental clarity',
-    image: 'https://images.unsplash.com/photo-1559757175-7cb036e0e67a?w=400&h=400&fit=crop',
-    color: 'from-purple-500 to-indigo-600',
-  },
-  {
-    name: 'Immune Support',
-    slug: 'immune-support',
-    description: 'Boost your natural defenses',
-    image: 'https://images.unsplash.com/photo-1584362917165-526a968579e8?w=400&h=400&fit=crop',
-    color: 'from-emerald-500 to-teal-600',
-  },
-  {
-    name: 'Heart & Cardiovascular',
-    slug: 'heart-cardiovascular',
-    description: 'Maintain a healthy heart',
-    image: 'https://images.unsplash.com/photo-1628348070889-0c7fab2529d0?w=400&h=400&fit=crop',
-    color: 'from-rose-500 to-red-600',
-  },
-  {
-    name: 'Digestive Health',
-    slug: 'digestive-health',
-    description: 'Support gut health and digestion',
-    image: 'https://images.unsplash.com/photo-1498837167922-ddd27525d352?w=400&h=400&fit=crop',
-    color: 'from-amber-500 to-orange-600',
-  },
-  {
-    name: 'Energy & Vitality',
-    slug: 'energy-vitality',
-    description: 'Natural energy boosters',
-    image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=400&fit=crop',
-    color: 'from-yellow-500 to-amber-600',
-  },
-  {
-    name: 'Beauty & Skincare',
-    slug: 'beauty-skincare',
-    description: 'Natural beauty from within',
-    image: 'https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=400&h=400&fit=crop',
-    color: 'from-pink-500 to-rose-600',
-  },
-]
+import { getCategoriesData, getProducts } from '@/lib/storage'
+import type { CategoryData } from '@/types'
 
 export default function CategorySection() {
+  const [categories, setCategories] = useState<CategoryData[]>([])
+
+  useEffect(() => {
+    const allCategories = getCategoriesData()
+    const products = getProducts()
+    
+    // Update product counts
+    const categoryMap = new Map<string, number>()
+    products.forEach(product => {
+      const count = categoryMap.get(product.category) || 0
+      categoryMap.set(product.category, count + 1)
+    })
+    
+    // Filter visible categories with products, update counts, and sort by product count
+    const visibleCategories = allCategories
+      .filter(cat => cat.visible)
+      .map(cat => ({
+        ...cat,
+        productCount: categoryMap.get(cat.name) || 0,
+      }))
+      .filter(cat => cat.productCount > 0)
+      .sort((a, b) => (b.productCount || 0) - (a.productCount || 0))
+      .slice(0, 6)
+    
+    setCategories(visibleCategories)
+  }, [])
+
+  if (categories.length === 0) return null
   return (
     <section className="py-16 md:py-24 bg-muted/30">
       <div className="container mx-auto px-4">
@@ -67,40 +53,44 @@ export default function CategorySection() {
         </motion.div>
 
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-          {categories.map((category, index) => (
-            <motion.div
-              key={category.slug}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.1 }}
-            >
-              <Link
-                to={`/products?category=${category.slug}`}
-                className="group block"
+          {categories.map((category, index) => {
+            const color = category.color || 'from-gray-500 to-slate-600'
+            
+            return (
+              <motion.div
+                key={category.id}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
               >
-                <div className="relative overflow-hidden rounded-2xl aspect-square">
-                  <img
-                    src={category.image}
-                    alt={category.name}
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                  />
-                  <div
-                    className={`absolute inset-0 bg-gradient-to-t ${category.color} opacity-60 group-hover:opacity-70 transition-opacity`}
-                  />
-                  <div className="absolute inset-0 flex flex-col items-center justify-center p-4 text-white text-center">
-                    <h3 className="font-bold text-lg mb-1">{category.name}</h3>
-                    <p className="text-xs opacity-90 hidden md:block">
-                      {category.description}
-                    </p>
-                    <div className="mt-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                      <ArrowRight className="w-5 h-5" />
+                <Link
+                  to={`/products?category=${encodeURIComponent(category.name)}`}
+                  className="group block"
+                >
+                  <div className="relative overflow-hidden rounded-2xl aspect-square">
+                    <img
+                      src={category.image}
+                      alt={category.name}
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                    />
+                    <div
+                      className={`absolute inset-0 bg-gradient-to-t ${color} opacity-60 group-hover:opacity-70 transition-opacity`}
+                    />
+                    <div className="absolute inset-0 flex flex-col items-center justify-center p-4 text-white text-center">
+                      <h3 className="font-bold text-lg mb-1">{category.name}</h3>
+                      <p className="text-xs opacity-90">
+                        {category.productCount} {category.productCount === 1 ? 'product' : 'products'}
+                      </p>
+                      <div className="mt-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <ArrowRight className="w-5 h-5" />
+                      </div>
                     </div>
                   </div>
-                </div>
-              </Link>
-            </motion.div>
-          ))}
+                </Link>
+              </motion.div>
+            )
+          })}
         </div>
       </div>
     </section>

@@ -12,6 +12,7 @@ import About from './pages/About'
 import Contact from './pages/Contact'
 import BecomeDistributor from './pages/BecomeDistributor'
 import Admin from './pages/Admin'
+import DynamicFavicon from './components/DynamicFavicon'
 import { initializeData } from './lib/storage'
 
 // Initialize data on app load
@@ -20,6 +21,7 @@ initializeData()
 function App() {
   return (
     <ThemeProvider defaultTheme="light" storageKey="tasly-theme">
+      <DynamicFavicon />
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Layout />}>

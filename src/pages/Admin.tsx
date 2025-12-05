@@ -1463,6 +1463,35 @@ export default function Admin() {
                           />
                         </div>
                       </div>
+
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="space-y-2">
+                          <Label>Logo URL</Label>
+                          <Input
+                            value={siteInfo.logo || ''}
+                            onChange={(e) =>
+                              setSiteInfo({ ...siteInfo, logo: e.target.value })
+                            }
+                            placeholder="https://example.com/logo.png"
+                          />
+                          <p className="text-xs text-muted-foreground">
+                            Enter the URL for your site logo (appears in header and footer)
+                          </p>
+                        </div>
+                        <div className="space-y-2">
+                          <Label>Favicon URL</Label>
+                          <Input
+                            value={siteInfo.favicon || ''}
+                            onChange={(e) =>
+                              setSiteInfo({ ...siteInfo, favicon: e.target.value })
+                            }
+                            placeholder="https://example.com/favicon.ico"
+                          />
+                          <p className="text-xs text-muted-foreground">
+                            Enter the URL for your favicon (browser tab icon)
+                          </p>
+                        </div>
+                      </div>
                       
                       <div className="space-y-2">
                         <Label>Description</Label>

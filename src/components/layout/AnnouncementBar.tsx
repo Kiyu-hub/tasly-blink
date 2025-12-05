@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react'
 import { X } from 'lucide-react'
 import { getSiteInfo } from '@/lib/storage'
-import { cn } from '@/lib/utils'
 
 export default function AnnouncementBar() {
   const [isVisible, setIsVisible] = useState(true)

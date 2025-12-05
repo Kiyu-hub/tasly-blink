@@ -94,6 +94,8 @@ export interface SiteInfo {
   tagline: string
   description: string
   aboutUs?: string
+  logo?: string
+  favicon?: string
   email: string
   phone: string
   whatsapp: string

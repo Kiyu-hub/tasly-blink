@@ -15,7 +15,7 @@ import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { useTheme } from '@/components/theme-provider'
 import { useCartStore, useWishlistStore, useUIStore } from '@/store'
-import { getCategories } from '@/lib/storage'
+import { getCategories, getSiteInfo } from '@/lib/storage'
 import { cn } from '@/lib/utils'
 
 export default function Header() {
@@ -29,6 +29,8 @@ export default function Header() {
   const { setCartOpen, setMobileMenuOpen, setSearchOpen } = useUIStore()
   
   const categories = getCategories()
+  const siteInfo = getSiteInfo()
+  const logoUrl = siteInfo?.logo || 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSE5bpjWLc7v0MJ8EVqLPSOweMBQmvVU94YYw&s'
 
   useEffect(() => {
     const handleScroll = () => {
@@ -62,8 +64,8 @@ export default function Header() {
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-2">
             <img 
-              src="https://i.ibb.co/ZzQZ8gK/tasly-logo-transparent.png" 
-              alt="Tasly Ghana 346" 
+              src={logoUrl} 
+              alt={siteInfo?.name || "Tasly Ghana 346"} 
               className="h-12 w-12 object-contain"
             />
             <span className="font-display text-xl font-bold">

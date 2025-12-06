@@ -9,15 +9,15 @@ import { getSiteInfo } from '@/lib/storage'
 export default function MobileHeader() {
   const [searchQuery, setSearchQuery] = useState('')
   const [isSearchFocused, setIsSearchFocused] = useState(false)
+  const [siteInfo, setSiteInfo] = useState(getSiteInfo())
   const navigate = useNavigate()
   const cartItems = useCartStore((state) => state.items)
   const totalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0)
-  const siteInfo = getSiteInfo()
   const logoUrl = siteInfo?.logo || 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSE5bpjWLc7v0MJ8EVqLPSOweMBQmvVU94YYw&s'
   
   useEffect(() => {
     const handleSiteInfoUpdate = () => {
-      window.location.reload() // Reload to get updated site info
+      setSiteInfo(getSiteInfo()) // Update state instead of reloading
     }
     window.addEventListener('siteInfoUpdated', handleSiteInfoUpdate)
     return () => window.removeEventListener('siteInfoUpdated', handleSiteInfoUpdate)

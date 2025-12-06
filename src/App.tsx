@@ -33,6 +33,7 @@ function App() {
             <Route path="wishlist" element={<Wishlist />} />
             <Route path="about" element={<About />} />
             <Route path="contact" element={<Contact />} />
+            <Route path="distributor" element={<BecomeDistributor />} />
             <Route path="become-distributor" element={<BecomeDistributor />} />
             <Route path="admin-tasly-ghana-346" element={<Admin />} />
           </Route>

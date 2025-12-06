@@ -1,19 +1,25 @@
 import { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { Search, ShoppingCart, UserPlus } from 'lucide-react'
+import { Search, ShoppingCart, UserPlus, Moon, Sun } from 'lucide-react'
 import { useCartStore } from '@/store'
 import { Badge } from '@/components/ui/badge'
 import { cn } from '@/lib/utils'
 import { getSiteInfo } from '@/lib/storage'
+import { useTheme } from '@/components/theme-provider'
 
 export default function MobileHeader() {
   const [searchQuery, setSearchQuery] = useState('')
   const [isSearchFocused, setIsSearchFocused] = useState(false)
   const [siteInfo, setSiteInfo] = useState(getSiteInfo())
   const navigate = useNavigate()
+  const { theme, setTheme } = useTheme()
   const cartItems = useCartStore((state) => state.items)
   const totalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0)
   const logoUrl = siteInfo?.logo || 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSE5bpjWLc7v0MJ8EVqLPSOweMBQmvVU94YYw&s'
+  
+  const toggleTheme = () => {
+    setTheme(theme === 'dark' ? 'light' : 'dark')
+  }
   
   useEffect(() => {
     const handleSiteInfoUpdate = () => {
@@ -78,6 +84,19 @@ export default function MobileHeader() {
             <UserPlus className="h-5 w-5 text-primary" />
           </div>
         </Link>
+
+        {/* Theme Toggle */}
+        <button
+          onClick={toggleTheme}
+          className="flex-shrink-0 w-10 h-10 rounded-full bg-muted/50 flex items-center justify-center"
+          aria-label="Toggle theme"
+        >
+          {theme === 'dark' ? (
+            <Sun className="h-5 w-5 text-yellow-500" />
+          ) : (
+            <Moon className="h-5 w-5 text-primary" />
+          )}
+        </button>
 
         {/* Cart Icon with Badge */}
         <Link to="/cart" className="relative flex-shrink-0">

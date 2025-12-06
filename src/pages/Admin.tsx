@@ -425,25 +425,26 @@ export default function Admin() {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="min-h-screen py-8"
+      className="min-h-screen py-4 md:py-8 pb-20 md:pb-8"
     >
-      <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between mb-2">
-          <h1 className="text-3xl font-bold">Admin Dashboard</h1>
-          <Button variant="outline" onClick={handleLogout}>
+      <div className="container mx-auto px-3 md:px-4">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-4 md:mb-6 gap-3">
+          <div>
+            <h1 className="text-2xl md:text-3xl font-bold">Admin Dashboard</h1>
+            <p className="text-sm md:text-base text-muted-foreground mt-1">Manage your store</p>
+          </div>
+          <Button variant="outline" onClick={handleLogout} size="sm" className="w-full sm:w-auto">
             Logout
           </Button>
         </div>
-        <p className="text-muted-foreground mb-4">
-          Manage your products, banners, and settings
-        </p>
 
         {/* Period Filter */}
-        <div className="flex gap-2 mb-4">
+        <div className="flex gap-2 mb-4 overflow-x-auto pb-2 scrollbar-hide">
           <Button
             variant={analyticsPeriod === 'daily' ? 'default' : 'outline'}
             size="sm"
             onClick={() => setAnalyticsPeriod('daily')}
+            className="whitespace-nowrap"
           >
             Today
           </Button>
@@ -464,7 +465,7 @@ export default function Admin() {
         </div>
 
         {/* Stats */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6 mb-6 md:mb-8">
           {(() => {
             const analytics = getAnalytics(analyticsPeriod)
             
@@ -506,19 +507,19 @@ export default function Admin() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.1 }}
               >
-                <Card>
-                  <CardContent className="p-6">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <p className="text-sm text-muted-foreground">
+                <Card className="overflow-hidden">
+                  <CardContent className="p-3 md:p-6">
+                    <div className="flex items-center justify-between gap-2">
+                      <div className="min-w-0 flex-1">
+                        <p className="text-xs md:text-sm text-muted-foreground truncate">
                           {stat.title}
                         </p>
-                        <p className="text-2xl font-bold">{stat.value}</p>
+                        <p className="text-lg md:text-2xl font-bold truncate">{stat.value}</p>
                       </div>
                       <div
-                        className={`w-12 h-12 rounded-full ${stat.bgColor} flex items-center justify-center`}
+                        className={`w-10 h-10 md:w-12 md:h-12 rounded-full ${stat.bgColor} flex items-center justify-center flex-shrink-0`}
                       >
-                        <stat.icon className={`w-6 h-6 ${stat.color}`} />
+                        <stat.icon className={`w-5 h-5 md:w-6 md:h-6 ${stat.color}`} />
                       </div>
                     </div>
                   </CardContent>
@@ -529,26 +530,28 @@ export default function Admin() {
         </div>
 
         {/* Tabs */}
-        <Tabs defaultValue="products" className="space-y-6">
-          <TabsList>
-            <TabsTrigger value="products">
-              <Package className="w-4 h-4 mr-2" />
-              Products
+        <Tabs defaultValue="products" className="space-y-4 md:space-y-6">
+          <TabsList className="w-full justify-start overflow-x-auto flex-nowrap h-auto p-1 bg-muted rounded-lg">
+            <TabsTrigger value="products" className="flex-shrink-0 text-xs md:text-sm px-2 md:px-3">
+              <Package className="w-3 h-3 md:w-4 md:h-4 mr-1 md:mr-2" />
+              <span className="hidden sm:inline">Products</span>
+              <span className="sm:hidden">Items</span>
             </TabsTrigger>
-            <TabsTrigger value="banners">
-              <Image className="w-4 h-4 mr-2" />
+            <TabsTrigger value="banners" className="flex-shrink-0 text-xs md:text-sm px-2 md:px-3">
+              <Image className="w-3 h-3 md:w-4 md:h-4 mr-1 md:mr-2" />
               Banners
             </TabsTrigger>
-            <TabsTrigger value="categories">
-              <Package className="w-4 h-4 mr-2" />
-              Categories
+            <TabsTrigger value="categories" className="flex-shrink-0 text-xs md:text-sm px-2 md:px-3">
+              <Package className="w-3 h-3 md:w-4 md:h-4 mr-1 md:mr-2" />
+              <span className="hidden sm:inline">Categories</span>
+              <span className="sm:hidden">Cats</span>
             </TabsTrigger>
-            <TabsTrigger value="ads">
-              <Image className="w-4 h-4 mr-2" />
+            <TabsTrigger value="ads" className="flex-shrink-0 text-xs md:text-sm px-2 md:px-3">
+              <Image className="w-3 h-3 md:w-4 md:h-4 mr-1 md:mr-2" />
               Ads
             </TabsTrigger>
-            <TabsTrigger value="settings">
-              <Settings className="w-4 h-4 mr-2" />
+            <TabsTrigger value="settings" className="flex-shrink-0 text-xs md:text-sm px-2 md:px-3">
+              <Settings className="w-3 h-3 md:w-4 md:h-4 mr-1 md:mr-2" />
               Settings
             </TabsTrigger>
           </TabsList>
@@ -556,8 +559,8 @@ export default function Admin() {
           {/* Products Tab */}
           <TabsContent value="products">
             <Card>
-              <CardHeader className="flex flex-row items-center justify-between">
-                <CardTitle>Products ({products.length})</CardTitle>
+              <CardHeader className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 p-4 md:p-6">
+                <CardTitle className="text-lg md:text-xl">Products ({products.length})</CardTitle>
                 <Dialog
                   open={isProductDialogOpen}
                   onOpenChange={setIsProductDialogOpen}
@@ -565,6 +568,8 @@ export default function Admin() {
                   <DialogTrigger asChild>
                     <Button
                       onClick={() => setEditingProduct({ ...defaultProduct })}
+                      size="sm"
+                      className="w-full sm:w-auto"
                     >
                       <Plus className="w-4 h-4 mr-2" />
                       Add Product
@@ -643,9 +648,9 @@ export default function Admin() {
                           />
                         </div>
 
-                        <div className="grid grid-cols-3 gap-4">
+                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 md:gap-4">
                           <div className="space-y-2">
-                            <Label>Price (GH₵) *</Label>
+                            <Label className="text-sm md:text-base">Price (GH₵) *</Label>
                             <Input
                               type="number"
                               value={editingProduct.price}
@@ -659,7 +664,7 @@ export default function Admin() {
                             />
                           </div>
                           <div className="space-y-2">
-                            <Label>Stock</Label>
+                            <Label className="text-sm md:text-base">Stock</Label>
                             <Input
                               type="number"
                               value={editingProduct.stock}
@@ -673,7 +678,7 @@ export default function Admin() {
                             />
                           </div>
                           <div className="space-y-2">
-                            <Label>Discount %</Label>
+                            <Label className="text-sm md:text-base">Discount %</Label>
                             <Input
                               type="number"
                               value={editingProduct.discount}
@@ -704,14 +709,15 @@ export default function Admin() {
                           </label>
                         </div>
 
-                        <div className="flex justify-end gap-2 pt-4">
+                        <div className="flex flex-col sm:flex-row justify-end gap-2 pt-4">
                           <Button
                             variant="outline"
                             onClick={() => setIsProductDialogOpen(false)}
+                            className="w-full sm:w-auto"
                           >
                             Cancel
                           </Button>
-                          <Button onClick={handleSaveProduct}>
+                          <Button onClick={handleSaveProduct} className="w-full sm:w-auto">
                             <Save className="w-4 h-4 mr-2" />
                             Save
                           </Button>
@@ -721,53 +727,54 @@ export default function Admin() {
                   </DialogContent>
                 </Dialog>
               </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
+              <CardContent className="p-3 md:p-6">
+                <div className="space-y-3 md:space-y-4">
                   {products.map((product) => (
                     <div
                       key={product.id}
-                      className="flex items-center gap-4 p-4 border rounded-lg"
+                      className="flex items-center gap-2 md:gap-4 p-3 md:p-4 border rounded-lg"
                     >
                       <img
                         src={product.imageURL}
                         alt={product.name}
-                        className="w-16 h-16 object-cover rounded-lg"
+                        className="w-12 h-12 md:w-16 md:h-16 object-cover rounded-lg flex-shrink-0"
                       />
                       <div className="flex-1 min-w-0">
-                        <h3 className="font-semibold truncate">{product.name}</h3>
-                        <p className="text-sm text-muted-foreground">
+                        <h3 className="font-semibold text-sm md:text-base truncate">{product.name}</h3>
+                        <p className="text-xs md:text-sm text-muted-foreground truncate">
                           {product.category}
                         </p>
-                        <div className="flex items-center gap-2 mt-1">
-                          <span className="font-bold text-primary">
+                        <div className="flex items-center gap-1 md:gap-2 mt-1 flex-wrap">
+                          <span className="font-bold text-primary text-sm md:text-base">
                             {formatCurrency(product.price)}
                           </span>
-                          <span className="text-sm text-muted-foreground">
+                          <span className="text-xs md:text-sm text-muted-foreground">
                             • Stock: {product.stock}
                           </span>
                           {product.discount && product.discount > 0 && (
-                            <Badge variant="sale">{product.discount}% OFF</Badge>
+                            <Badge variant="sale" className="text-xs">{product.discount}% OFF</Badge>
                           )}
                         </div>
                       </div>
-                      <div className="flex gap-2">
+                      <div className="flex gap-1 md:gap-2 flex-shrink-0">
                         <Button
                           variant="outline"
                           size="icon"
+                          className="h-8 w-8 md:h-10 md:w-10"
                           onClick={() => {
                             setEditingProduct(product)
                             setIsProductDialogOpen(true)
                           }}
                         >
-                          <Pencil className="w-4 h-4" />
+                          <Pencil className="w-3 h-3 md:w-4 md:h-4" />
                         </Button>
                         <Button
                           variant="outline"
                           size="icon"
-                          className="text-red-500"
+                          className="text-red-500 h-8 w-8 md:h-10 md:w-10"
                           onClick={() => handleDeleteProduct(product.id)}
                         >
-                          <Trash2 className="w-4 h-4" />
+                          <Trash2 className="w-3 h-3 md:w-4 md:h-4" />
                         </Button>
                       </div>
                     </div>
@@ -780,8 +787,8 @@ export default function Admin() {
           {/* Banners Tab */}
           <TabsContent value="banners">
             <Card>
-              <CardHeader className="flex flex-row items-center justify-between">
-                <CardTitle>Banners ({banners.length})</CardTitle>
+              <CardHeader className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 p-4 md:p-6">
+                <CardTitle className="text-lg md:text-xl">Banners ({banners.length})</CardTitle>
                 <Dialog
                   open={isBannerDialogOpen}
                   onOpenChange={setIsBannerDialogOpen}
@@ -789,12 +796,14 @@ export default function Admin() {
                   <DialogTrigger asChild>
                     <Button
                       onClick={() => setEditingBanner({ ...defaultBanner })}
+                      size="sm"
+                      className="w-full sm:w-auto"
                     >
                       <Plus className="w-4 h-4 mr-2" />
                       Add Banner
                     </Button>
                   </DialogTrigger>
-                  <DialogContent>
+                  <DialogContent className="max-w-full sm:max-w-2xl max-h-[90vh] overflow-y-auto p-4 sm:p-6">
                     <DialogHeader>
                       <DialogTitle>
                         {editingBanner?.id ? 'Edit Banner' : 'Add Banner'}
@@ -895,14 +904,15 @@ export default function Admin() {
                           />
                           <span className="text-sm">Active</span>
                         </label>
-                        <div className="flex justify-end gap-2 pt-4">
+                        <div className="flex flex-col sm:flex-row justify-end gap-2 pt-4">
                           <Button
                             variant="outline"
                             onClick={() => setIsBannerDialogOpen(false)}
+                            className="w-full sm:w-auto"
                           >
                             Cancel
                           </Button>
-                          <Button onClick={handleSaveBanner}>
+                          <Button onClick={handleSaveBanner} className="w-full sm:w-auto">
                             <Save className="w-4 h-4 mr-2" />
                             Save
                           </Button>
@@ -912,56 +922,58 @@ export default function Admin() {
                   </DialogContent>
                 </Dialog>
               </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
+              <CardContent className="p-3 md:p-6">
+                <div className="space-y-3 md:space-y-4">
                   {banners.map((banner) => (
                     <div
                       key={banner.id}
-                      className="flex items-center gap-4 p-4 border rounded-lg"
+                      className="flex items-center gap-2 md:gap-4 p-3 md:p-4 border rounded-lg"
                     >
                       <img
                         src={banner.image}
                         alt={banner.title}
-                        className="w-24 h-16 object-cover rounded-lg"
+                        className="w-16 h-12 md:w-24 md:h-16 object-cover rounded-lg flex-shrink-0"
                       />
                       <div className="flex-1 min-w-0">
-                        <h3 className="font-semibold truncate">{banner.title}</h3>
-                        <p className="text-sm text-muted-foreground truncate">
+                        <h3 className="font-semibold text-sm md:text-base truncate">{banner.title}</h3>
+                        <p className="text-xs md:text-sm text-muted-foreground truncate">
                           {banner.description}
                         </p>
                       </div>
-                      <Badge variant={banner.active ? 'success' : 'secondary'}>
+                      <Badge variant={banner.active ? 'success' : 'secondary'} className="flex-shrink-0 text-xs">
                         {banner.active ? 'Active' : 'Inactive'}
                       </Badge>
-                      <div className="flex gap-2">
+                      <div className="flex gap-1 md:gap-2 flex-shrink-0">
                         <Button
                           variant="outline"
                           size="icon"
+                          className="h-8 w-8 md:h-10 md:w-10"
                           onClick={() => toggleBannerActive(banner.id)}
                         >
                           {banner.active ? (
-                            <EyeOff className="w-4 h-4" />
+                            <EyeOff className="w-3 h-3 md:w-4 md:h-4" />
                           ) : (
-                            <Eye className="w-4 h-4" />
+                            <Eye className="w-3 h-3 md:w-4 md:h-4" />
                           )}
                         </Button>
                         <Button
                           variant="outline"
                           size="icon"
+                          className="h-8 w-8 md:h-10 md:w-10"
                           onClick={() => {
                             setEditingBanner(banner)
                             setIsBannerDialogOpen(true)
                           }}
                         >
-                          <Pencil className="w-4 h-4" />
+                          <Pencil className="w-3 h-3 md:w-4 md:h-4" />
                         </Button>
                         <Button
                           variant="outline"
                           size="icon"
-                          className="text-red-500"
+                          className="text-red-500 h-8 w-8 md:h-10 md:w-10"
                           onClick={() => handleDeleteBanner(banner.id)}
                         >
-                          <Trash2 className="w-4 h-4" />
+                          <Trash2 className="w-3 h-3 md:w-4 md:h-4" />
                         </Button>
                       </div>
                     </div>
@@ -974,8 +986,8 @@ export default function Admin() {
           {/* Categories Tab */}
           <TabsContent value="categories">
             <Card>
-              <CardHeader className="flex flex-row items-center justify-between">
-                <CardTitle>Categories ({categories.length})</CardTitle>
+              <CardHeader className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 p-4 md:p-6">
+                <CardTitle className="text-lg md:text-xl">Categories ({categories.length})</CardTitle>
                 <Dialog
                   open={isCategoryDialogOpen}
                   onOpenChange={setIsCategoryDialogOpen}
@@ -990,6 +1002,8 @@ export default function Admin() {
                         order: categories.length,
                         visible: true,
                       })}
+                      size="sm"
+                      className="w-full sm:w-auto"
                     >
                       <Plus className="w-4 h-4 mr-2" />
                       Add Category
@@ -1087,17 +1101,18 @@ export default function Admin() {
                           <span className="text-sm">Visible on site</span>
                         </label>
 
-                        <div className="flex justify-end gap-2 pt-4">
+                        <div className="flex flex-col sm:flex-row justify-end gap-2 pt-4">
                           <Button
                             variant="outline"
                             onClick={() => {
                               setEditingCategory(null)
                               setIsCategoryDialogOpen(false)
                             }}
+                            className="w-full sm:w-auto"
                           >
                             Cancel
                           </Button>
-                          <Button onClick={handleSaveCategory}>
+                          <Button onClick={handleSaveCategory} className="w-full sm:w-auto">
                             <Save className="w-4 h-4 mr-2" />
                             Save Category
                           </Button>
@@ -1107,40 +1122,41 @@ export default function Admin() {
                   </DialogContent>
                 </Dialog>
               </CardHeader>
-              <CardContent>
+              <CardContent className="p-3 md:p-6">
                 <div className="space-y-3">
                   {categories.sort((a, b) => a.order - b.order).map((category) => (
                     <div
                       key={category.id}
-                      className="flex items-center gap-4 p-4 border rounded-lg"
+                      className="flex items-start gap-2 md:gap-4 p-3 md:p-4 border rounded-lg"
                     >
                       <img
                         src={category.image}
                         alt={category.name}
-                        className="w-16 h-16 object-cover rounded-lg"
+                        className="w-12 h-12 md:w-16 md:h-16 object-cover rounded-lg flex-shrink-0"
                       />
-                      <div className="flex-1">
-                        <div className="flex items-center gap-2">
-                          <h3 className="font-medium">{category.name}</h3>
-                          <Badge variant={category.visible ? 'default' : 'secondary'}>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-1 md:gap-2 flex-wrap">
+                          <h3 className="font-medium text-sm md:text-base">{category.name}</h3>
+                          <Badge variant={category.visible ? 'default' : 'secondary'} className="text-xs">
                             {category.visible ? 'Visible' : 'Hidden'}
                           </Badge>
-                          <Badge variant="outline">
+                          <Badge variant="outline" className="text-xs">
                             {category.productCount || 0} products
                           </Badge>
                         </div>
-                        <p className="text-sm text-muted-foreground mt-1">
+                        <p className="text-xs md:text-sm text-muted-foreground mt-1 line-clamp-2">
                           {category.description}
                         </p>
                         <div className="flex items-center gap-2 mt-2">
-                          <div className={`h-4 w-20 rounded bg-gradient-to-r ${category.color}`} />
-                          <span className="text-xs text-muted-foreground">{category.color}</span>
+                          <div className={`h-3 md:h-4 w-16 md:w-20 rounded bg-gradient-to-r ${category.color}`} />
+                          <span className="text-xs text-muted-foreground truncate">{category.color}</span>
                         </div>
                       </div>
-                      <div className="flex gap-2">
+                      <div className="flex flex-wrap gap-1 md:gap-2 flex-shrink-0">
                         <Button
                           variant="outline"
                           size="icon"
+                          className="h-8 w-8 md:h-10 md:w-10"
                           onClick={() => moveCategoryOrder(category.id, 'up')}
                           disabled={category.order === 0}
                         >
@@ -1149,6 +1165,7 @@ export default function Admin() {
                         <Button
                           variant="outline"
                           size="icon"
+                          className="h-8 w-8 md:h-10 md:w-10"
                           onClick={() => moveCategoryOrder(category.id, 'down')}
                           disabled={category.order === categories.length - 1}
                         >
@@ -1157,31 +1174,33 @@ export default function Admin() {
                         <Button
                           variant="outline"
                           size="icon"
+                          className="h-8 w-8 md:h-10 md:w-10"
                           onClick={() => toggleCategoryVisible(category.id)}
                         >
                           {category.visible ? (
-                            <EyeOff className="w-4 h-4" />
+                            <EyeOff className="w-3 h-3 md:w-4 md:h-4" />
                           ) : (
-                            <Eye className="w-4 h-4" />
+                            <Eye className="w-3 h-3 md:w-4 md:h-4" />
                           )}
                         </Button>
                         <Button
                           variant="outline"
                           size="icon"
+                          className="h-8 w-8 md:h-10 md:w-10"
                           onClick={() => {
                             setEditingCategory(category)
                             setIsCategoryDialogOpen(true)
                           }}
                         >
-                          <Pencil className="w-4 h-4" />
+                          <Pencil className="w-3 h-3 md:w-4 md:h-4" />
                         </Button>
                         <Button
                           variant="outline"
                           size="icon"
-                          className="text-red-500"
+                          className="text-red-500 h-8 w-8 md:h-10 md:w-10"
                           onClick={() => handleDeleteCategory(category.id)}
                         >
-                          <Trash2 className="w-4 h-4" />
+                          <Trash2 className="w-3 h-3 md:w-4 md:h-4" />
                         </Button>
                       </div>
                     </div>
@@ -1194,8 +1213,8 @@ export default function Admin() {
           {/* Ads Tab */}
           <TabsContent value="ads">
             <Card>
-              <CardHeader className="flex flex-row items-center justify-between">
-                <CardTitle>Advertisements ({ads.length})</CardTitle>
+              <CardHeader className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 p-4 md:p-6">
+                <CardTitle className="text-lg md:text-xl">Advertisements ({ads.length})</CardTitle>
                 <Dialog open={isAdDialogOpen} onOpenChange={setIsAdDialogOpen}>
                   <DialogTrigger asChild>
                     <Button
@@ -1211,6 +1230,8 @@ export default function Admin() {
                           order: ads.length,
                         })
                       }
+                      size="sm"
+                      className="w-full sm:w-auto"
                     >
                       <Plus className="w-4 h-4 mr-2" />
                       Add Ad
@@ -1343,17 +1364,18 @@ export default function Admin() {
                           <span className="text-sm">Active</span>
                         </label>
 
-                        <div className="flex justify-end gap-2 pt-4">
+                        <div className="flex flex-col sm:flex-row justify-end gap-2 pt-4">
                           <Button
                             variant="outline"
                             onClick={() => {
                               setEditingAd(null)
                               setIsAdDialogOpen(false)
                             }}
+                            className="w-full sm:w-auto"
                           >
                             Cancel
                           </Button>
-                          <Button onClick={handleSaveAd}>
+                          <Button onClick={handleSaveAd} className="w-full sm:w-auto">
                             <Save className="w-4 h-4 mr-2" />
                             Save Ad
                           </Button>
@@ -1363,27 +1385,27 @@ export default function Admin() {
                   </DialogContent>
                 </Dialog>
               </CardHeader>
-              <CardContent>
+              <CardContent className="p-3 md:p-6">
                 <div className="space-y-3">
                   {ads.map((ad) => (
                     <div
                       key={ad.id}
-                      className="flex items-center gap-4 p-4 border rounded-lg"
+                      className="flex items-start gap-2 md:gap-4 p-3 md:p-4 border rounded-lg"
                     >
                       <img
                         src={ad.image}
                         alt={ad.title}
-                        className="w-24 h-16 object-cover rounded"
+                        className="w-16 h-12 md:w-24 md:h-16 object-cover rounded flex-shrink-0"
                       />
-                      <div className="flex-1">
-                        <div className="flex items-center gap-2">
-                          <h3 className="font-medium">{ad.title}</h3>
-                          <Badge variant={ad.active ? 'default' : 'secondary'}>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-1 md:gap-2 flex-wrap">
+                          <h3 className="font-medium text-sm md:text-base">{ad.title}</h3>
+                          <Badge variant={ad.active ? 'default' : 'secondary'} className="text-xs">
                             {ad.active ? 'Active' : 'Inactive'}
                           </Badge>
-                          <Badge variant="outline">{ad.position}</Badge>
+                          <Badge variant="outline" className="text-xs truncate">{ad.position}</Badge>
                         </div>
-                        <p className="text-sm text-muted-foreground mt-1">
+                        <p className="text-xs md:text-sm text-muted-foreground mt-1 line-clamp-2">
                           {ad.description || 'No description'}
                         </p>
                         {(ad.startDate || ad.endDate) && (
@@ -1394,35 +1416,37 @@ export default function Admin() {
                           </p>
                         )}
                       </div>
-                      <div className="flex gap-2">
+                      <div className="flex gap-1 md:gap-2 flex-shrink-0 flex-wrap">
                         <Button
                           variant="outline"
                           size="icon"
+                          className="h-8 w-8 md:h-10 md:w-10"
                           onClick={() => toggleAdActive(ad.id)}
                         >
                           {ad.active ? (
-                            <EyeOff className="w-4 h-4" />
+                            <EyeOff className="w-3 h-3 md:w-4 md:h-4" />
                           ) : (
-                            <Eye className="w-4 h-4" />
+                            <Eye className="w-3 h-3 md:w-4 md:h-4" />
                           )}
                         </Button>
                         <Button
                           variant="outline"
                           size="icon"
+                          className="h-8 w-8 md:h-10 md:w-10"
                           onClick={() => {
                             setEditingAd(ad)
                             setIsAdDialogOpen(true)
                           }}
                         >
-                          <Pencil className="w-4 h-4" />
+                          <Pencil className="w-3 h-3 md:w-4 md:h-4" />
                         </Button>
                         <Button
                           variant="outline"
                           size="icon"
-                          className="text-red-500"
+                          className="text-red-500 h-8 w-8 md:h-10 md:w-10"
                           onClick={() => handleDeleteAd(ad.id)}
                         >
-                          <Trash2 className="w-4 h-4" />
+                          <Trash2 className="w-3 h-3 md:w-4 md:h-4" />
                         </Button>
                       </div>
                     </div>
@@ -1434,13 +1458,13 @@ export default function Admin() {
 
           {/* Settings Tab */}
           <TabsContent value="settings">
-            <div className="space-y-6">
+            <div className="space-y-4 md:space-y-6">
               {/* Basic Information */}
               <Card>
-                <CardHeader>
-                  <CardTitle>Basic Information</CardTitle>
+                <CardHeader className="p-4 md:p-6">
+                  <CardTitle className="text-lg md:text-xl">Basic Information</CardTitle>
                 </CardHeader>
-                <CardContent>
+                <CardContent className="p-4 md:p-6">
                   {siteInfo && (
                     <div className="space-y-4">
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -1616,10 +1640,10 @@ export default function Admin() {
 
               {/* Contact Information */}
               <Card>
-                <CardHeader>
-                  <CardTitle>Contact Information</CardTitle>
+                <CardHeader className="p-4 md:p-6">
+                  <CardTitle className="text-lg md:text-xl">Contact Information</CardTitle>
                 </CardHeader>
-                <CardContent>
+                <CardContent className="p-4 md:p-6">
                   {siteInfo && (
                     <div className="space-y-4">
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -1683,10 +1707,10 @@ export default function Admin() {
 
               {/* Social Media Links */}
               <Card>
-                <CardHeader>
-                  <CardTitle>Social Media Links</CardTitle>
+                <CardHeader className="p-4 md:p-6">
+                  <CardTitle className="text-lg md:text-xl">Social Media Links</CardTitle>
                 </CardHeader>
-                <CardContent>
+                <CardContent className="p-4 md:p-6">
                   {siteInfo && (
                     <>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -1903,10 +1927,10 @@ export default function Admin() {
 
               {/* Policies & Settings */}
               <Card>
-                <CardHeader>
-                  <CardTitle>Policies & Settings</CardTitle>
+                <CardHeader className="p-4 md:p-6">
+                  <CardTitle className="text-lg md:text-xl">Policies & Settings</CardTitle>
                 </CardHeader>
-                <CardContent>
+                <CardContent className="p-4 md:p-6">
                   {siteInfo && (
                     <div className="space-y-4">
                       <div className="space-y-2">
@@ -2013,10 +2037,10 @@ export default function Admin() {
 
               {/* Manager Information */}
               <Card>
-                <CardHeader>
-                  <CardTitle>Manager Information</CardTitle>
+                <CardHeader className="p-4 md:p-6">
+                  <CardTitle className="text-lg md:text-xl">Manager Information</CardTitle>
                 </CardHeader>
-                <CardContent>
+                <CardContent className="p-4 md:p-6">
                   {siteInfo && (
                     <div className="space-y-4">
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -2104,7 +2128,7 @@ export default function Admin() {
 
               {/* Save Button */}
               <div className="flex justify-end">
-                <Button onClick={handleSaveSiteInfo} size="lg">
+                <Button onClick={handleSaveSiteInfo} size="lg" className="w-full sm:w-auto">
                   <Save className="w-4 h-4 mr-2" />
                   Save All Settings
                 </Button>

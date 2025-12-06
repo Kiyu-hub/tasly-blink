@@ -40,11 +40,19 @@ export default function Products() {
   const [view, setView] = useState<'grid' | 'list'>('grid')
 
   // Filter states
-  const [search, setSearch] = useState(searchParams.get('search') || '')
+  const [search, setSearch] = useState(searchParams.get('q') || searchParams.get('search') || '')
   const [category, setCategory] = useState(searchParams.get('category') || 'all')
   const [sort, setSort] = useState(searchParams.get('sort') || 'featured')
   const [priceRange, setPriceRange] = useState(searchParams.get('price') || 'all')
   const [filter, setFilter] = useState(searchParams.get('filter') || '')
+
+  // Update search when URL parameter changes
+  useEffect(() => {
+    const qParam = searchParams.get('q')
+    if (qParam && qParam !== search) {
+      setSearch(qParam)
+    }
+  }, [searchParams])
 
   useEffect(() => {
     const loadedProducts = getProducts()

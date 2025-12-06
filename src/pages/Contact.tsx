@@ -152,6 +152,52 @@ export default function Contact() {
         </div>
       </section>
 
+      {/* WhatsApp Community CTA */}
+      {(siteInfo?.whatsappCommunityLink || siteInfo?.whatsapp) && (
+        <section className="py-16 bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-950/20 dark:to-emerald-950/20">
+          <div className="container mx-auto px-4">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="max-w-4xl mx-auto"
+            >
+              <Card className="border-2 border-green-500/20 shadow-xl bg-white dark:bg-gray-900">
+                <CardContent className="p-8 md:p-12">
+                  <div className="flex flex-col md:flex-row items-center gap-8">
+                    <div className="w-20 h-20 rounded-full bg-green-500 flex items-center justify-center flex-shrink-0">
+                      <MessageCircle className="w-10 h-10 text-white" />
+                    </div>
+                    <div className="flex-1 text-center md:text-left">
+                      <h2 className="text-2xl md:text-3xl font-bold mb-3">
+                        Join Our WhatsApp Community
+                      </h2>
+                      <p className="text-muted-foreground text-lg mb-1">
+                        Get instant access to product information, health tips, exclusive offers, and expert guidance.
+                      </p>
+                      <p className="text-sm text-muted-foreground">
+                        Learn about Tasly products and their amazing health benefits from our community of wellness enthusiasts.
+                      </p>
+                    </div>
+                    <div className="flex-shrink-0">
+                      <a
+                        href={siteInfo.whatsappCommunityLink || `https://wa.me/${siteInfo.whatsapp.replace(/\D/g, '')}?text=${encodeURIComponent(`Hello! I'm visiting from the ${siteInfo.name} website and I would like to join the Tasly Ghana community to learn more about your products and their benefits.`)}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-3 px-8 py-4 bg-green-500 hover:bg-green-600 text-white text-lg font-bold rounded-full transition-all transform hover:scale-105 shadow-lg"
+                      >
+                        <MessageCircle className="h-6 w-6" />
+                        Join Now
+                      </a>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </motion.div>
+          </div>
+        </section>
+      )}
+
       {/* Contact Form & Map */}
       <section className="py-16 bg-muted/30">
         <div className="container mx-auto px-4">

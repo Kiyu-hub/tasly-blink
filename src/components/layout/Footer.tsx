@@ -241,6 +241,19 @@ export default function Footer() {
                   {siteInfo.email}
                 </a>
               </li>
+              {(siteInfo.whatsappCommunityLink || siteInfo.whatsapp) && (
+                <li className="pt-2">
+                  <a
+                    href={siteInfo.whatsappCommunityLink || `https://wa.me/${siteInfo.whatsapp.replace(/\D/g, '')}?text=${encodeURIComponent(`Hello! I'm visiting from the ${siteInfo.name} website and I would like to join the Tasly Ghana community to learn more about your products and their benefits.`)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 px-4 py-2 bg-green-500 hover:bg-green-600 text-white text-sm font-semibold rounded-lg transition-colors"
+                  >
+                    <MessageCircle className="h-4 w-4" />
+                    Join WhatsApp Community
+                  </a>
+                </li>
+              )}
             </ul>
           </div>
         </div>

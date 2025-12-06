@@ -99,6 +99,7 @@ export interface SiteInfo {
   email: string
   phone: string
   whatsapp: string
+  whatsappCommunityLink?: string
   address: string
   businessHours?: string
   announcement?: string

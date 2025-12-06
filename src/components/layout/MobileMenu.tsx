@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { X, Home, ShoppingBag, Info, Phone, Heart, UserPlus } from 'lucide-react'
+import { X, Home, ShoppingBag, Info, Phone, Heart, UserPlus, MessageCircle } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import { useUIStore } from '@/store'
@@ -10,6 +10,18 @@ export default function MobileMenu() {
   const { isMobileMenuOpen, setMobileMenuOpen } = useUIStore()
   const categories = getCategories()
   const siteInfo = getSiteInfo()
+
+  const handleJoinCommunity = () => {
+    if (siteInfo.whatsappCommunityLink) {
+      // Direct auto-join link
+      window.open(siteInfo.whatsappCommunityLink, '_blank')
+    } else if (siteInfo.whatsapp) {
+      // Fallback: Send message to WhatsApp number
+      const message = encodeURIComponent(`Hello! I'm visiting from the ${siteInfo.name} website and I would like to join the Tasly Ghana community to learn more about your products and their benefits.`)
+      window.open(`https://wa.me/${siteInfo.whatsapp.replace(/\D/g, '')}?text=${message}`, '_blank')
+    }
+    setMobileMenuOpen(false)
+  }
 
   const menuItems = [
     { icon: Home, label: 'Home', href: '/' },
@@ -87,6 +99,20 @@ export default function MobileMenu() {
                     </Link>
                   ))}
                 </div>
+
+                {/* WhatsApp Community Join Button */}
+                {(siteInfo.whatsappCommunityLink || siteInfo.whatsapp) && (
+                  <>
+                    <Separator className="my-4" />
+                    <button
+                      onClick={handleJoinCommunity}
+                      className="w-full flex items-center gap-3 rounded-lg px-3 py-3 text-sm font-medium bg-green-500/10 text-green-600 dark:text-green-500 hover:bg-green-500/20 transition-colors border border-green-500/20"
+                    >
+                      <MessageCircle className="h-5 w-5" />
+                      <span className="font-semibold">Join WhatsApp Community</span>
+                    </button>
+                  </>
+                )}
 
                 <Separator className="my-4" />
 

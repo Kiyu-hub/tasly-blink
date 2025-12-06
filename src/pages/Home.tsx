@@ -7,6 +7,7 @@ import FeaturedProducts from '@/components/home/FeaturedProducts'
 import TestimonialsSection from '@/components/home/TestimonialsSection'
 import FeaturesSection from '@/components/home/FeaturesSection'
 import NewsletterSection from '@/components/home/NewsletterSection'
+import WhatsAppCommunityBanner from '@/components/home/WhatsAppCommunityBanner'
 import { getProducts, getBanners } from '@/lib/storage'
 import type { Product, Banner } from '@/types'
 
@@ -143,6 +144,9 @@ export default function Home() {
 
       {/* Testimonials */}
       <TestimonialsSection />
+
+      {/* WhatsApp Community Banner */}
+      <WhatsAppCommunityBanner />
 
       {/* Newsletter */}
       <NewsletterSection />

@@ -1680,6 +1680,21 @@ export default function Admin() {
                       </div>
 
                       <div className="space-y-2">
+                        <Label>WhatsApp Community Auto-Join Link</Label>
+                        <Input
+                          value={siteInfo.whatsappCommunityLink || ''}
+                          onChange={(e) =>
+                            setSiteInfo({ ...siteInfo, whatsappCommunityLink: e.target.value })
+                          }
+                          placeholder="https://chat.whatsapp.com/..."
+                        />
+                        <p className="text-xs text-muted-foreground">
+                          Add your WhatsApp community invite link. Users will be automatically added when they click "Join Community".
+                          Leave empty to use regular WhatsApp chat.
+                        </p>
+                      </div>
+
+                      <div className="space-y-2">
                         <Label>Address</Label>
                         <Textarea
                           value={siteInfo.address}

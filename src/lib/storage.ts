@@ -217,6 +217,8 @@ async function loadFromGitHub(): Promise<void> {
         visionStatement: siteInfoRaw.visionStatement,
         ourStory: siteInfoRaw.ourStory,
         coreValues: siteInfoRaw.coreValues,
+        stats: siteInfoRaw.stats,
+        healthBanners: siteInfoRaw.healthBanners,
         certifications: siteInfoRaw.certifications,
         paymentMethods: siteInfoRaw.paymentMethods,
         deliveryLocations: siteInfoRaw.deliveryLocations,

@@ -50,14 +50,19 @@ export default function MobileMenu() {
                   className="flex items-center space-x-2"
                 >
                   <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-r from-primary to-green-600">
-                    <span className="text-sm font-bold text-white">T</span>
+                    <span className="text-sm font-bold text-white">
+                      {siteInfo.name.charAt(0).toUpperCase()}
+                    </span>
                   </div>
-                  <span className="font-display text-lg font-bold">Tasly Ghana</span>
+                  <span className="font-display text-lg font-bold text-foreground">
+                    {siteInfo.name}
+                  </span>
                 </Link>
                 <Button
                   variant="ghost"
                   size="icon"
                   onClick={() => setMobileMenuOpen(false)}
+                  className="text-foreground"
                 >
                   <X className="h-5 w-5" />
                 </Button>
@@ -72,11 +77,13 @@ export default function MobileMenu() {
                       to={item.href}
                       onClick={() => setMobileMenuOpen(false)}
                       className={`flex items-center gap-3 rounded-lg px-3 py-3 text-sm font-medium hover:bg-accent transition-colors ${
-                        item.highlight ? 'text-primary' : ''
+                        item.highlight ? 'bg-primary/10 text-primary' : 'text-foreground'
                       }`}
                     >
                       <item.icon className={`h-5 w-5 ${item.highlight ? 'text-primary' : 'text-muted-foreground'}`} />
-                      {item.label}
+                      <span className={item.highlight ? 'text-primary font-semibold' : 'text-foreground'}>
+                        {item.label}
+                      </span>
                     </Link>
                   ))}
                 </div>
@@ -93,7 +100,7 @@ export default function MobileMenu() {
                         key={category}
                         to={`/products?category=${encodeURIComponent(category)}`}
                         onClick={() => setMobileMenuOpen(false)}
-                        className="block rounded-lg px-3 py-2 text-sm hover:bg-accent transition-colors"
+                        className="block rounded-lg px-3 py-2 text-sm text-foreground hover:bg-accent transition-colors"
                       >
                         {category}
                       </Link>

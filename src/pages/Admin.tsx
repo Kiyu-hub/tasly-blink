@@ -1549,6 +1549,66 @@ export default function Admin() {
                           />
                         </div>
                       </div>
+
+                      <div className="space-y-4 border-t pt-4">
+                        <h3 className="text-lg font-semibold">Our Story Section</h3>
+                        <div className="space-y-2">
+                          <Label>Story Title</Label>
+                          <Input
+                            value={siteInfo.ourStory?.title || 'Our Story'}
+                            onChange={(e) =>
+                              setSiteInfo({
+                                ...siteInfo,
+                                ourStory: {
+                                  ...siteInfo.ourStory,
+                                  title: e.target.value,
+                                },
+                              })
+                            }
+                            placeholder="Our Story"
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label>Story Content</Label>
+                          <Textarea
+                            value={siteInfo.ourStory?.content || ''}
+                            onChange={(e) =>
+                              setSiteInfo({
+                                ...siteInfo,
+                                ourStory: {
+                                  ...siteInfo.ourStory,
+                                  content: e.target.value,
+                                },
+                              })
+                            }
+                            rows={8}
+                            placeholder="Tell your story... You can use \n\n to separate paragraphs."
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label>Story Image URL</Label>
+                          <Input
+                            value={siteInfo.ourStory?.image || ''}
+                            onChange={(e) =>
+                              setSiteInfo({
+                                ...siteInfo,
+                                ourStory: {
+                                  ...siteInfo.ourStory,
+                                  image: e.target.value,
+                                },
+                              })
+                            }
+                            placeholder="https://example.com/story-image.jpg"
+                          />
+                          {siteInfo.ourStory?.image && (
+                            <img
+                              src={siteInfo.ourStory.image}
+                              alt="Story preview"
+                              className="w-full max-w-md rounded-lg mt-2"
+                            />
+                          )}
+                        </div>
+                      </div>
                     </div>
                   )}
                 </CardContent>

@@ -35,6 +35,7 @@ const defaultSiteInfo: SiteInfo = {
   returnPolicy: siteInfoData.returnPolicy,
   missionStatement: siteInfoData.missionStatement,
   visionStatement: siteInfoData.visionStatement,
+  ourStory: siteInfoData.ourStory,
   coreValues: siteInfoData.coreValues,
   certifications: siteInfoData.certifications,
   paymentMethods: siteInfoData.paymentMethods,

@@ -101,7 +101,7 @@ export default function About() {
               viewport={{ once: true }}
             >
               <img
-                src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1f?w=800&h=600&fit=crop"
+                src={siteInfo?.ourStory?.image || "https://images.unsplash.com/photo-1576091160399-112ba8d25d1f?w=800&h=600&fit=crop"}
                 alt="Our Story"
                 className="rounded-2xl shadow-lg"
               />
@@ -112,27 +112,35 @@ export default function About() {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
             >
-              <h2 className="text-3xl font-bold mb-6">Our Story</h2>
+              <h2 className="text-3xl font-bold mb-6">{siteInfo?.ourStory?.title || 'Our Story'}</h2>
               <div className="space-y-4 text-muted-foreground">
-                <p>
-                  Tasly Ghana was founded with a simple mission: to make premium
-                  health supplements accessible to everyone in Ghana and beyond.
-                  We believe that everyone deserves access to products that can
-                  truly make a difference in their health and quality of life.
-                </p>
-                <p>
-                  Our journey began over a decade ago when our founders
-                  discovered the incredible potential of combining traditional
-                  Chinese medicine with modern scientific research. This unique
-                  approach allows us to create products that are both effective
-                  and gentle on the body.
-                </p>
-                <p>
-                  Today, we serve thousands of satisfied customers across Ghana,
-                  offering a wide range of supplements for brain health, immune
-                  support, heart health, and more. Our commitment to quality and
-                  customer satisfaction remains at the core of everything we do.
-                </p>
+                {siteInfo?.ourStory?.content ? (
+                  siteInfo.ourStory.content.split('\n\n').map((paragraph, index) => (
+                    <p key={index}>{paragraph}</p>
+                  ))
+                ) : (
+                  <>
+                    <p>
+                      Tasly Ghana was founded with a simple mission: to make premium
+                      health supplements accessible to everyone in Ghana and beyond.
+                      We believe that everyone deserves access to products that can
+                      truly make a difference in their health and quality of life.
+                    </p>
+                    <p>
+                      Our journey began over a decade ago when our founders
+                      discovered the incredible potential of combining traditional
+                      Chinese medicine with modern scientific research. This unique
+                      approach allows us to create products that are both effective
+                      and gentle on the body.
+                    </p>
+                    <p>
+                      Today, we serve thousands of satisfied customers across Ghana,
+                      offering a wide range of supplements for brain health, immune
+                      support, heart health, and more. Our commitment to quality and
+                      customer satisfaction remains at the core of everything we do.
+                    </p>
+                  </>
+                )}
               </div>
             </motion.div>
           </div>
@@ -155,10 +163,7 @@ export default function About() {
                   </div>
                   <h3 className="text-2xl font-bold mb-4">Our Mission</h3>
                   <p className="text-muted-foreground">
-                    To empower individuals to take control of their health through
-                    high-quality, natural supplements that promote overall wellness
-                    and vitality, while providing exceptional customer service and
-                    education about holistic health practices.
+                    {siteInfo?.missionStatement || 'To empower individuals to take control of their health through high-quality, natural supplements that promote overall wellness and vitality, while providing exceptional customer service and education about holistic health practices.'}
                   </p>
                 </CardContent>
               </Card>
@@ -177,11 +182,7 @@ export default function About() {
                   </div>
                   <h3 className="text-2xl font-bold mb-4">Our Vision</h3>
                   <p className="text-muted-foreground">
-                    To be the leading provider of premium health supplements in
-                    West Africa, recognized for our commitment to quality,
-                    innovation, and customer care. We envision a future where
-                    everyone has access to natural health solutions that enhance
-                    their quality of life.
+                    {siteInfo?.visionStatement || 'To be the leading provider of premium health supplements in West Africa, recognized for our commitment to quality, innovation, and customer care. We envision a future where everyone has access to natural health solutions that enhance their quality of life.'}
                   </p>
                 </CardContent>
               </Card>

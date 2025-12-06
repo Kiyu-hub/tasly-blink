@@ -43,6 +43,11 @@
   ],
   "missionStatement": "To empower every Ghanaian with access to premium natural health solutions that enhance quality of life and promote overall wellness through authentic Tasly products.",
   "visionStatement": "To be the leading provider of premium herbal and food supplements in West Africa, recognized for quality, authenticity, and customer care.",
+  "ourStory": {
+    "title": "Our Story",
+    "content": "Tasly Ghana was founded with a simple mission: to make premium health supplements accessible to everyone in Ghana and beyond. We believe that everyone deserves access to products that can truly make a difference in their health and quality of life.\n\nOur journey began over a decade ago when our founders discovered the incredible potential of combining traditional Chinese medicine with modern scientific research. This unique approach allows us to create products that are both effective and gentle on the body.\n\nToday, we serve thousands of satisfied customers across Ghana, offering a wide range of supplements for brain health, immune support, heart health, and more. Our commitment to quality and customer satisfaction remains at the core of everything we do.",
+    "image": "https://images.unsplash.com/photo-1576091160399-112ba8d25d1f?w=800&h=600&fit=crop"
+  },
   "coreValues": [
     {
       "title": "Authenticity",

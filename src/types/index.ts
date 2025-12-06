@@ -126,6 +126,11 @@ export interface SiteInfo {
   returnPolicy?: string
   missionStatement?: string
   visionStatement?: string
+  ourStory?: {
+    title?: string
+    content?: string
+    image?: string
+  }
   coreValues?: Array<{
     title: string
     description: string

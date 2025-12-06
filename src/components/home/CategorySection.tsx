@@ -53,13 +53,13 @@ export default function CategorySection() {
   if (categories.length === 0) return null
 
   return (
-    <section className="py-6 md:py-12 lg:py-16 bg-muted/30">
-      <div className="container mx-auto px-4">
+    <section className="py-4 md:py-12 lg:py-16 bg-muted/30">
+      <div className="container mx-auto px-3">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="mb-4 md:mb-6 md:text-center"
+          className="mb-3 md:mb-6 md:text-center"
         >
           <h2 className="text-xl md:text-3xl lg:text-4xl font-bold mb-1.5 md:mb-2">
             Shop by Category

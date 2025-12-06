@@ -698,10 +698,9 @@ export default function ProductDetail() {
       {/* Mobile Sticky Action Bar */}
       <MobileStickyActions
         onAddToCart={handleAddToCart}
-        onAddToWishlist={handleWishlist}
-        inWishlist={inWishlist}
         disabled={product.stock <= 0}
-        price={formatCurrency(finalPrice)}
+        price={formatCurrency(finalPrice * quantity)}
+        quantity={quantity}
       />
     </motion.div>
   )

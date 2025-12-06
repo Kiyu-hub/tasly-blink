@@ -21,7 +21,7 @@ export default function FeaturedProducts({
   const featuredProducts = products.slice(0, 8)
 
   return (
-    <section className="py-6 md:py-12 lg:py-20">
+    <section className="py-4 md:py-12 lg:py-20">
       <div className="container mx-auto px-4">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

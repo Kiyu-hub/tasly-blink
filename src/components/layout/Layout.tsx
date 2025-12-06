@@ -33,7 +33,7 @@ export default function Layout() {
       {/* Mobile Compact Header */}
       <MobileHeader />
       
-      <main className="flex-1 pb-16 md:pb-0">
+      <main className="flex-1 pb-14 md:pb-0">
         <Outlet />
       </main>
       {/* Footer - Hidden on mobile, visible on desktop */}

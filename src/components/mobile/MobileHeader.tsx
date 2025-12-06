@@ -21,9 +21,18 @@ export default function MobileHeader() {
     }
   }
 
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value
+    setSearchQuery(value)
+    // Real-time search: navigate as user types (debounced effect)
+    if (value.trim().length >= 2) {
+      navigate(`/products?q=${encodeURIComponent(value.trim())}`)
+    }
+  }
+
   return (
     <header className="md:hidden sticky top-0 z-50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80 border-b">
-      <div className="flex items-center gap-2 px-3 py-2">
+      <div className="flex items-center gap-2 px-2.5 py-1.5">
         {/* Logo - Compact */}
         <Link to="/" className="flex-shrink-0">
           <div className="flex items-center gap-1.5">
@@ -50,7 +59,7 @@ export default function MobileHeader() {
               type="text"
               placeholder="Search products..."
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              onChange={handleSearchChange}
               onFocus={() => setIsSearchFocused(true)}
               onBlur={() => setIsSearchFocused(false)}
               className="w-full pl-9 pr-3 py-2 text-sm bg-transparent border-0 outline-none placeholder:text-muted-foreground/60"

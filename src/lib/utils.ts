@@ -58,22 +58,3 @@ export function calculateRating(reviews: { rating: number }[]): number {
   const sum = reviews.reduce((acc, review) => acc + review.rating, 0)
   return Math.round((sum / reviews.length) * 10) / 10
 }
-
-export function getSiteInfo() {
-  const stored = localStorage.getItem('tasly_site_info')
-  if (stored) {
-    return JSON.parse(stored)
-  }
-  return {
-    name: 'Tasly Ghana',
-    tagline: 'Your Trusted Health Partner',
-    description: 'Premium health supplements for your wellness journey',
-    email: 'info@taslyghana.com',
-    phone: '+233 20 000 0000',
-    whatsapp: '233200000000',
-    address: '123 Health Street, Osu, Accra, Ghana',
-    announcement: 'Free delivery on orders over GH₵500!',
-    currency: 'GH₵',
-    freeDeliveryThreshold: 500,
-  }
-}

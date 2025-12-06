@@ -14,9 +14,6 @@ import {
   TrendingUp,
   Users,
   DollarSign,
-  Download,
-  Upload,
-  Database,
 } from 'lucide-react'
 import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
@@ -553,10 +550,6 @@ export default function Admin() {
             <TabsTrigger value="settings">
               <Settings className="w-4 h-4 mr-2" />
               Settings
-            </TabsTrigger>
-            <TabsTrigger value="data">
-              <Database className="w-4 h-4 mr-2" />
-              Export/Import
             </TabsTrigger>
           </TabsList>
 
@@ -2116,170 +2109,6 @@ export default function Admin() {
                   Save All Settings
                 </Button>
               </div>
-            </div>
-          </TabsContent>
-
-          {/* Export/Import Tab */}
-          <TabsContent value="data">
-            <div className="space-y-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Export Configuration</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <p className="text-sm text-muted-foreground">
-                    Export all your data (products, banners, site info, categories, ads) to a JSON file. 
-                    You can use this file to import your configuration into another browser or as a backup.
-                  </p>
-                  <Button
-                    onClick={() => {
-                      const data = {
-                        products: getProducts(),
-                        banners: getBanners(),
-                        siteInfo: getSiteInfo(),
-                        categories: getCategoriesData(),
-                        ads: getAds(),
-                        exportDate: new Date().toISOString(),
-                      }
-                      const blob = new Blob([JSON.stringify(data, null, 2)], {
-                        type: 'application/json',
-                      })
-                      const url = URL.createObjectURL(blob)
-                      const a = document.createElement('a')
-                      a.href = url
-                      a.download = `tasly-ghana-backup-${new Date().toISOString().split('T')[0]}.json`
-                      document.body.appendChild(a)
-                      a.click()
-                      document.body.removeChild(a)
-                      URL.revokeObjectURL(url)
-                      toast.success('Configuration exported successfully!')
-                    }}
-                    className="w-full"
-                  >
-                    <Download className="w-4 h-4 mr-2" />
-                    Export All Data
-                  </Button>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader>
-                  <CardTitle>Import Configuration</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <p className="text-sm text-muted-foreground">
-                    Import a previously exported configuration file. This will replace all current data.
-                  </p>
-                  <div className="border-2 border-dashed rounded-lg p-8 text-center">
-                    <Upload className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
-                    <Input
-                      type="file"
-                      accept=".json"
-                      onChange={(e) => {
-                        const file = e.target.files?.[0]
-                        if (!file) return
-
-                        const reader = new FileReader()
-                        reader.onload = (event) => {
-                          try {
-                            const data = JSON.parse(event.target?.result as string)
-                            
-                            // Validate data structure
-                            if (!data.products || !data.siteInfo) {
-                              toast.error('Invalid configuration file')
-                              return
-                            }
-
-                            // Import data
-                            if (data.products) {
-                              saveProducts(data.products)
-                              setProducts(data.products)
-                            }
-                            if (data.banners) {
-                              saveBanners(data.banners)
-                              setBanners(data.banners)
-                            }
-                            if (data.siteInfo) {
-                              saveSiteInfo(data.siteInfo)
-                              setSiteInfo(data.siteInfo)
-                              // Dispatch event for other components
-                              window.dispatchEvent(new Event('siteInfoUpdated'))
-                            }
-                            if (data.categories) {
-                              saveCategoriesData(data.categories)
-                              setCategories(data.categories)
-                            }
-                            if (data.ads) {
-                              saveAds(data.ads)
-                              setAds(data.ads)
-                            }
-
-                            toast.success('Configuration imported successfully! Refreshing page...')
-                            setTimeout(() => window.location.reload(), 1500)
-                          } catch (error) {
-                            console.error('Import error:', error)
-                            toast.error('Failed to import configuration. Invalid file format.')
-                          }
-                        }
-                        reader.readAsText(file)
-                        e.target.value = '' // Reset input
-                      }}
-                      className="cursor-pointer"
-                    />
-                    <p className="text-sm text-muted-foreground mt-2">
-                      Click to select a JSON configuration file
-                    </p>
-                  </div>
-                  
-                  <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-4">
-                    <p className="text-sm font-semibold text-yellow-800 dark:text-yellow-200 mb-1">
-                      ⚠️ Warning
-                    </p>
-                    <p className="text-sm text-yellow-700 dark:text-yellow-300">
-                      Importing will replace all current data. Make sure to export your current configuration first as a backup.
-                    </p>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader>
-                  <CardTitle>How to Sync Across Browsers</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-3">
-                  <div className="space-y-2 text-sm">
-                    <p className="font-semibold">Step 1: Export from current browser</p>
-                    <p className="text-muted-foreground pl-4">
-                      Click "Export All Data" above to download your configuration file.
-                    </p>
-                    
-                    <p className="font-semibold mt-4">Step 2: Open target browser</p>
-                    <p className="text-muted-foreground pl-4">
-                      Access this admin panel on the other browser or device.
-                    </p>
-                    
-                    <p className="font-semibold mt-4">Step 3: Import configuration</p>
-                    <p className="text-muted-foreground pl-4">
-                      Use the "Import Configuration" section to upload the JSON file.
-                    </p>
-                    
-                    <p className="font-semibold mt-4">Step 4: Verify changes</p>
-                    <p className="text-muted-foreground pl-4">
-                      After import, the page will refresh and all your data will be synced.
-                    </p>
-                  </div>
-                  
-                  <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4 mt-4">
-                    <p className="text-sm font-semibold text-blue-800 dark:text-blue-200 mb-1">
-                      💡 Pro Tip
-                    </p>
-                    <p className="text-sm text-blue-700 dark:text-blue-300">
-                      Keep your exported file in a safe place (Google Drive, Dropbox, etc.) as a backup. 
-                      You can also use it to quickly set up the site on new browsers or after clearing browser data.
-                    </p>
-                  </div>
-                </CardContent>
-              </Card>
             </div>
           </TabsContent>
         </Tabs>

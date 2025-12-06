@@ -24,7 +24,7 @@ import { Textarea } from '@/components/ui/textarea'
 import { Label } from '@/components/ui/label'
 import FeaturedProducts from '@/components/home/FeaturedProducts'
 import { useCartStore, useWishlistStore } from '@/store'
-import { getProducts, getProductReviews, addReview } from '@/lib/storage'
+import { getProducts, getProductReviews, addReview, getSiteInfo } from '@/lib/storage'
 import { formatCurrency, getDiscountedPrice, cn } from '@/lib/utils'
 import type { Product } from '@/types'
 
@@ -147,11 +147,6 @@ export default function ProductDetail() {
     const message = `Hi ${siteInfo?.name || 'Tasly Ghana 346'}, I would like to pre-order the following product:\n\nProduct: ${product.name}\nQuantity: ${quantity}\n\nPlease let me know when it will be available.`
     const whatsappUrl = `https://wa.me/${siteInfo?.whatsapp || '233599004548'}?text=${encodeURIComponent(message)}`
     window.open(whatsappUrl, '_blank')
-  }
-
-  const getSiteInfo = () => {
-    const data = localStorage.getItem('tasly_site_info')
-    return data ? JSON.parse(data) : null
   }
 
   const handleSubmitReview = () => {

@@ -6,7 +6,8 @@ import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import { Card, CardContent } from '@/components/ui/card'
 import { useCartStore } from '@/store'
-import { formatCurrency, getDiscountedPrice, getSiteInfo } from '@/lib/utils'
+import { formatCurrency, getDiscountedPrice } from '@/lib/utils'
+import { getSiteInfo } from '@/lib/storage'
 
 export default function Cart() {
   const { items, updateQuantity, removeItem, clearCart, getTotalPrice, getTotalItems } =

@@ -3,7 +3,8 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { X, ShoppingCart, Minus, Plus, Trash2, ShoppingBag } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { useCartStore, useUIStore } from '@/store'
-import { formatCurrency, getDiscountedPrice, getSiteInfo } from '@/lib/utils'
+import { formatCurrency, getDiscountedPrice } from '@/lib/utils'
+import { getSiteInfo } from '@/lib/storage'
 
 export default function CartSidebar() {
   const { isCartOpen, setCartOpen } = useUIStore()

@@ -40,12 +40,23 @@ Tasly Ghana 346 is a **static e-commerce platform** for authentic Tasly herbal a
    - Toggle active/inactive status
    - Reorder banners
 
-3. **Complete Site Editor**
+3. **Category Management**
+   - Add/edit/delete product categories
+   - Set category images and colors
+   - Auto product count tracking
+
+4. **Ads Management**
+   - Create promotional ads for homepage/product pages
+   - Set images, links, and display positions
+   - Toggle active/inactive status
+
+5. **Complete Site Editor**
    - Basic Information (name, tagline, description, about us)
    - Contact Details (email, phone, WhatsApp, address, business hours)
    - Social Media Links (Facebook, Instagram, Twitter, YouTube, TikTok)
    - Policies (delivery info, return policy, announcements)
    - Mission & Vision statements
+   - Our Story section (title, content, image)
    - All header and footer content editable
 
 ### GitHub Auto-Sync (NEW) 🔄
@@ -184,7 +195,7 @@ Positioned below hero section on homepage for maximum visibility
 - ✅ Policy management
 - ✅ Real-time preview
 - ✅ Session-based authentication
-- ✅ **Export/Import configuration** (sync across browsers)
+- ✅ **GitHub Auto-Sync** (automatic repository commits)
 
 ## 🚀 Getting Started
 

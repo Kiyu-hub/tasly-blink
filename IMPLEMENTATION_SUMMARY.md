@@ -62,9 +62,9 @@ const handleLogin = (e: React.FormEvent) => {
 - ✅ **Basic Information**: Site name, tagline, description, about us
 - ✅ **Contact Details**: Email, phone, WhatsApp (+233 59 900 4548), address, business hours
 - ✅ **Social Media**: Facebook, Instagram, Twitter, YouTube, TikTok
-- ✅ **Policies**: Shipping info, return policy, announcement banner
+- ✅ **Policies**: Delivery info, return policy, announcement banner
 - ✅ **Business Info**: Mission statement, vision statement
-- ✅ **Settings**: Currency, delivery fee, free shipping threshold
+- ✅ **Settings**: Currency, delivery fee, free delivery threshold
 
 **Files**:
 - `/src/types/index.ts` - Expanded `SiteInfo` interface with 15+ editable fields
@@ -285,7 +285,7 @@ export interface SiteInfo {
   businessHours?: string
   announcement?: string
   currency: string
-  freeShippingThreshold: number
+  freeDeliveryThreshold: number
   deliveryFee?: number
   socialMedia?: {
     facebook?: string
@@ -295,7 +295,7 @@ export interface SiteInfo {
     tiktok?: string
     whatsapp?: string
   }
-  shippingInfo?: string
+  deliveryInfo?: string
   returnPolicy?: string
   missionStatement?: string
   visionStatement?: string

@@ -11,9 +11,9 @@
   "currency": "GH₵",
   "announcement": "",
   "showAnnouncement": false,
-  "freeShippingThreshold": 0,
-  "deliveryFee": 30,
-  "shippingInfo": "We deliver across all regions of Ghana. Delivery within Accra: 1-2 business days. Delivery outside Accra: 3-5 business days. Same-day delivery available for orders placed before 12:00 PM in selected areas of Accra.",
+  "freeDeliveryThreshold": 0,
+  "deliveryFee": 0,
+  "deliveryInfo": "We deliver across all regions of Ghana. Delivery within Accra: 1-2 business days. Delivery outside Accra: 3-5 business days. Same-day delivery available for orders placed before 12:00 PM in selected areas of Accra.",
   "returnPolicy": "We accept returns within 7 days of delivery for unopened products in original packaging. Product must be unused and in resalable condition. Contact our customer service team to initiate a return. Refunds will be processed within 5-7 business days after we receive the returned product.",
   "socialMedia": {
     "facebook": "https://facebook.com/taslyghana346",

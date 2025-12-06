@@ -44,7 +44,7 @@ Open browser: `http://localhost:5174`
 - ✅ **Banner management** (hero carousel)
 - ✅ **Social media links** editor
 - ✅ **Contact information** editor
-- ✅ **Policies editor** (shipping, returns)
+- ✅ **Policies editor** (delivery, returns)
 - ✅ All changes save to localStorage instantly
 
 ---
@@ -130,7 +130,7 @@ Open browser: `http://localhost:5174`
 
 **Policies:**
 1. In Settings tab
-2. Edit "Shipping Information"
+2. Edit "Delivery Information"
 3. Edit "Return Policy"
 4. Edit "Announcement Banner"
 5. Save changes
@@ -326,7 +326,7 @@ npm run dev
 4. **Policies & Settings**
    - Announcement banner
    - Currency, delivery fee
-   - Shipping info, return policy
+   - Delivery info, return policy
 
 ---
 

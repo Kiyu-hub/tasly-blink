@@ -74,6 +74,6 @@ export function getSiteInfo() {
     address: '123 Health Street, Osu, Accra, Ghana',
     announcement: 'Free delivery on orders over GH₵500!',
     currency: 'GH₵',
-    freeShippingThreshold: 500,
+    freeDeliveryThreshold: 500,
   }
 }

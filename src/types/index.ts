@@ -104,7 +104,7 @@ export interface SiteInfo {
   announcement?: string
   showAnnouncement?: boolean
   currency: string
-  freeShippingThreshold: number
+  freeDeliveryThreshold: number
   deliveryFee?: number
   socialMedia?: {
     facebook?: string
@@ -122,7 +122,7 @@ export interface SiteInfo {
     showYoutube?: boolean
     showWhatsApp?: boolean
   }
-  shippingInfo?: string
+  deliveryInfo?: string
   returnPolicy?: string
   missionStatement?: string
   visionStatement?: string

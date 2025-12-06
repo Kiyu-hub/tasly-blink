@@ -1,5 +1,6 @@
 import type { Product, SiteInfo, Order, Review, Banner, CategoryData, Ad, Analytics, VisitorStats } from '@/types'
 import { generateId, slugify } from './utils'
+import { syncProductsToGitHub, syncSiteInfoToGitHub } from './githubSync'
 import productsData from '@/data/products.json'
 import siteInfoData from '@/data/siteInfo.json'
 
@@ -64,11 +65,11 @@ const defaultSiteInfo: SiteInfo = {
   announcement: siteInfoData.announcement,
   showAnnouncement: siteInfoData.showAnnouncement,
   currency: siteInfoData.currency,
-  freeShippingThreshold: siteInfoData.freeShippingThreshold,
+  freeDeliveryThreshold: siteInfoData.freeDeliveryThreshold,
   deliveryFee: siteInfoData.deliveryFee,
   socialMedia: siteInfoData.socialMedia,
   socialMediaDisplay: siteInfoData.socialMediaDisplay,
-  shippingInfo: siteInfoData.shippingInfo,
+  deliveryInfo: siteInfoData.deliveryInfo,
   returnPolicy: siteInfoData.returnPolicy,
   missionStatement: siteInfoData.missionStatement,
   visionStatement: siteInfoData.visionStatement,
@@ -204,11 +205,11 @@ async function loadFromGitHub(): Promise<void> {
         announcement: siteInfoRaw.announcement,
         showAnnouncement: siteInfoRaw.showAnnouncement,
         currency: siteInfoRaw.currency,
-        freeShippingThreshold: siteInfoRaw.freeShippingThreshold,
+        freeDeliveryThreshold: siteInfoRaw.freeDeliveryThreshold,
         deliveryFee: siteInfoRaw.deliveryFee,
         socialMedia: siteInfoRaw.socialMedia,
         socialMediaDisplay: siteInfoRaw.socialMediaDisplay,
-        shippingInfo: siteInfoRaw.shippingInfo,
+        deliveryInfo: siteInfoRaw.deliveryInfo,
         returnPolicy: siteInfoRaw.returnPolicy,
         missionStatement: siteInfoRaw.missionStatement,
         visionStatement: siteInfoRaw.visionStatement,
@@ -249,6 +250,11 @@ export function getProductById(id: string): Product | undefined {
 export function saveProducts(products: Product[]): void {
   localStorage.setItem(PRODUCTS_KEY, JSON.stringify(products))
   window.dispatchEvent(new CustomEvent('productsUpdated', { detail: products }))
+  
+  // Sync to GitHub if enabled (async, non-blocking)
+  syncProductsToGitHub(products).catch(error => {
+    console.error('Failed to sync products to GitHub:', error)
+  })
 }
 
 export function addProduct(product: Omit<Product, 'id' | 'slug' | 'createdAt'>): Product {
@@ -308,6 +314,11 @@ export function getSiteInfo(): SiteInfo {
 export function saveSiteInfo(info: SiteInfo): void {
   localStorage.setItem(SITE_INFO_KEY, JSON.stringify(info))
   window.dispatchEvent(new CustomEvent('siteInfoUpdated', { detail: info }))
+  
+  // Sync to GitHub if enabled (async, non-blocking)
+  syncSiteInfoToGitHub(info).catch(error => {
+    console.error('Failed to sync site info to GitHub:', error)
+  })
 }
 
 // Orders

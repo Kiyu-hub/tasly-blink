@@ -21,6 +21,7 @@ const BANNERS_KEY = 'tasly_banners'
 const CATEGORIES_KEY = 'tasly_categories'
 const ADS_KEY = 'tasly_ads'
 const VISITOR_STATS_KEY = 'tasly_visitor_stats'
+const ADMIN_MODIFIED_KEY = 'tasly_admin_modified' // Track if admin has made changes
 
 // Cache for GitHub data (5 minutes)
 const githubCache = new Map<string, { data: any; timestamp: number }>()
@@ -59,8 +60,8 @@ const defaultSiteInfo: SiteInfo = {
   tagline: siteInfoData.tagline,
   description: siteInfoData.description,
   aboutUs: siteInfoData.aboutUs,
-  logo: siteInfoData.logo,
-  favicon: siteInfoData.favicon,
+  logo: siteInfoData.logo || '',
+  favicon: siteInfoData.favicon || '',
   email: siteInfoData.contactEmail,
   phone: siteInfoData.contactPhone,
   whatsapp: siteInfoData.whatsapp,
@@ -80,8 +81,8 @@ const defaultSiteInfo: SiteInfo = {
   visionStatement: siteInfoData.visionStatement,
   ourStory: siteInfoData.ourStory,
   coreValues: siteInfoData.coreValues,
-  stats: siteInfoData.stats,
-  healthBanners: siteInfoData.healthBanners,
+  stats: siteInfoData.stats || [],
+  healthBanners: siteInfoData.healthBanners || [],
   certifications: siteInfoData.certifications,
   paymentMethods: siteInfoData.paymentMethods,
   deliveryLocations: siteInfoData.deliveryLocations,
@@ -189,6 +190,13 @@ export function initializeData(): void {
 // Load data from GitHub (production only)
 async function loadFromGitHub(): Promise<void> {
   try {
+    // Don't overwrite if admin has made changes
+    const adminModified = localStorage.getItem(ADMIN_MODIFIED_KEY)
+    if (adminModified === 'true') {
+      console.log('⚠️ Skipping GitHub data load - admin modifications present')
+      return
+    }
+
     // Fetch products
     const products = await fetchFromGitHub<Product[]>('products.json')
     if (products) {
@@ -204,12 +212,12 @@ async function loadFromGitHub(): Promise<void> {
         tagline: siteInfoRaw.tagline,
         description: siteInfoRaw.description,
         aboutUs: siteInfoRaw.aboutUs,
-        logo: siteInfoRaw.logo,
-        favicon: siteInfoRaw.favicon,
+        logo: siteInfoRaw.logo || '',
+        favicon: siteInfoRaw.favicon || '',
         email: siteInfoRaw.contactEmail,
         phone: siteInfoRaw.contactPhone,
         whatsapp: siteInfoRaw.whatsapp,
-        whatsappCommunityLink: siteInfoRaw.whatsappCommunityLink,
+        whatsappCommunityLink: siteInfoRaw.whatsappCommunityLink || '',
         address: siteInfoRaw.address,
         businessHours: siteInfoRaw.businessHours,
         announcement: siteInfoRaw.announcement,
@@ -225,8 +233,8 @@ async function loadFromGitHub(): Promise<void> {
         visionStatement: siteInfoRaw.visionStatement,
         ourStory: siteInfoRaw.ourStory,
         coreValues: siteInfoRaw.coreValues,
-        stats: siteInfoRaw.stats,
-        healthBanners: siteInfoRaw.healthBanners,
+        stats: siteInfoRaw.stats || [],
+        healthBanners: siteInfoRaw.healthBanners || [],
         certifications: siteInfoRaw.certifications,
         paymentMethods: siteInfoRaw.paymentMethods,
         deliveryLocations: siteInfoRaw.deliveryLocations,
@@ -325,6 +333,7 @@ export function getSiteInfo(): SiteInfo {
 
 export function saveSiteInfo(info: SiteInfo): void {
   localStorage.setItem(SITE_INFO_KEY, JSON.stringify(info))
+  localStorage.setItem(ADMIN_MODIFIED_KEY, 'true') // Mark as admin-modified
   window.dispatchEvent(new CustomEvent('siteInfoUpdated', { detail: info }))
   
   // Sync to GitHub if enabled (async, non-blocking)

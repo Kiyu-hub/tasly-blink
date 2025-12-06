@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
+import { Link } from 'react-router-dom'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 import type { Banner } from '@/types'
@@ -136,9 +137,9 @@ export default function HeroCarousel({
                         className="bg-gradient-to-r from-primary to-green-600 text-white rounded-full px-4 sm:px-6 md:px-8 h-10 sm:h-11 md:h-12 text-sm sm:text-base shadow-lg hover:shadow-xl transition-shadow"
                         asChild
                       >
-                        <a href={currentBanner.link}>
+                        <Link to={currentBanner.link}>
                           {currentBanner.buttonText || 'Shop Now'}
-                        </a>
+                        </Link>
                       </Button>
                     </motion.div>
                   )}

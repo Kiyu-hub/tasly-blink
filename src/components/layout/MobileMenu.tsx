@@ -116,11 +116,11 @@ export default function MobileMenu() {
                       to={item.href}
                       onClick={() => setMobileMenuOpen(false)}
                       className={`flex items-center gap-3 rounded-lg px-3 py-3 text-sm font-medium hover:bg-accent transition-colors ${
-                        item.highlight ? 'bg-primary/10 text-primary' : 'text-foreground'
+                        item.highlight ? 'bg-primary/10' : ''
                       }`}
                     >
-                      <item.icon className={`h-5 w-5 ${item.highlight ? 'text-primary' : 'text-muted-foreground'}`} />
-                      <span className={item.highlight ? 'text-primary font-semibold' : 'text-foreground'}>
+                      <item.icon className={`h-5 w-5 flex-shrink-0 ${item.highlight ? 'text-primary' : 'text-foreground dark:text-foreground'}`} />
+                      <span className={`${item.highlight ? 'text-primary' : 'text-foreground dark:text-foreground'} font-medium`}>
                         {item.label}
                       </span>
                     </Link>
@@ -133,10 +133,10 @@ export default function MobileMenu() {
                     <Separator className="my-4" />
                     <button
                       onClick={handleJoinCommunity}
-                      className="w-full flex items-center gap-3 rounded-lg px-3 py-3 text-sm font-medium bg-green-500/10 text-green-600 dark:text-green-500 hover:bg-green-500/20 transition-colors border border-green-500/20"
+                      className="w-full flex items-center gap-3 rounded-lg px-3 py-3 text-sm font-medium bg-green-500/10 hover:bg-green-500/20 transition-colors border border-green-500/20"
                     >
-                      <MessageCircle className="h-5 w-5" />
-                      <span className="font-semibold">Join WhatsApp Community</span>
+                      <MessageCircle className="h-5 w-5 flex-shrink-0 text-green-600 dark:text-green-400" />
+                      <span className="font-semibold text-green-700 dark:text-green-300">Join WhatsApp Community</span>
                     </button>
                   </>
                 )}
@@ -153,7 +153,7 @@ export default function MobileMenu() {
                         key={category}
                         to={`/products?category=${encodeURIComponent(category)}`}
                         onClick={() => setMobileMenuOpen(false)}
-                        className="block rounded-lg px-3 py-2 text-sm text-foreground hover:bg-accent transition-colors"
+                        className="block rounded-lg px-3 py-2 text-sm text-foreground dark:text-foreground hover:bg-accent transition-colors font-medium"
                       >
                         {category}
                       </Link>

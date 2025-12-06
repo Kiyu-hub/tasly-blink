@@ -1,16 +1,18 @@
 import { useState, useRef, useEffect } from 'react'
 import { MessageCircle } from 'lucide-react'
 import { motion, useMotionValue, type PanInfo } from 'framer-motion'
+import { getSiteInfo } from '@/lib/storage'
 
 export default function FloatingWhatsAppButton() {
-  const phoneNumber = '2348012345678' // Replace with actual WhatsApp business number
-  const message = 'Hello! I have a question about your products.'
+  const siteInfo = getSiteInfo()
+  const phoneNumber = siteInfo?.whatsapp || '233599004548' // Dynamic from admin panel
+  const message = `Hello! I have a question about ${siteInfo?.name || 'your products'}.`
   const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`
   
   const [isMobile, setIsMobile] = useState(false)
   const constraintsRef = useRef<HTMLDivElement>(null)
   
-  // Track position with motion values
+  // Track position with motion values - resets on page refresh (no persistence)
   const x = useMotionValue(0)
   const y = useMotionValue(0)
 

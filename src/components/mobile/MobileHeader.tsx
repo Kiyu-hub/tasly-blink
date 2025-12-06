@@ -1,9 +1,10 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { Search, ShoppingCart } from 'lucide-react'
+import { Search, ShoppingCart, UserPlus } from 'lucide-react'
 import { useCartStore } from '@/store'
 import { Badge } from '@/components/ui/badge'
 import { cn } from '@/lib/utils'
+import { getSiteInfo } from '@/lib/storage'
 
 export default function MobileHeader() {
   const [searchQuery, setSearchQuery] = useState('')
@@ -11,6 +12,16 @@ export default function MobileHeader() {
   const navigate = useNavigate()
   const cartItems = useCartStore((state) => state.items)
   const totalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0)
+  const siteInfo = getSiteInfo()
+  const logoUrl = siteInfo?.logo || 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSE5bpjWLc7v0MJ8EVqLPSOweMBQmvVU94YYw&s'
+  
+  useEffect(() => {
+    const handleSiteInfoUpdate = () => {
+      window.location.reload() // Reload to get updated site info
+    }
+    window.addEventListener('siteInfoUpdated', handleSiteInfoUpdate)
+    return () => window.removeEventListener('siteInfoUpdated', handleSiteInfoUpdate)
+  }, [])
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault()
@@ -33,19 +44,13 @@ export default function MobileHeader() {
   return (
     <header className="md:hidden sticky top-0 z-50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80 border-b">
       <div className="flex items-center gap-2 px-2.5 py-1.5">
-        {/* Logo - Compact */}
+        {/* Logo - Compact (Dynamic from Admin) */}
         <Link to="/" className="flex-shrink-0">
-          <div className="flex items-center gap-1.5">
-            <img 
-              src="/tasly-logo.svg" 
-              alt="Tasly Ghana 346" 
-              className="h-9 w-9 object-contain"
-            />
-            <div className="flex flex-col leading-tight">
-              <span className="text-xs font-bold text-primary">Tasly Ghana</span>
-              <span className="text-[10px] font-semibold text-muted-foreground">346</span>
-            </div>
-          </div>
+          <img 
+            src={logoUrl} 
+            alt={siteInfo?.name || "Logo"} 
+            className="h-10 w-10 object-contain"
+          />
         </Link>
 
         {/* Search Bar - Expandable */}
@@ -66,6 +71,13 @@ export default function MobileHeader() {
             />
           </div>
         </form>
+
+        {/* Distributor Icon */}
+        <Link to="/distributor" className="flex-shrink-0">
+          <div className="w-10 h-10 rounded-full bg-muted/50 flex items-center justify-center">
+            <UserPlus className="h-5 w-5 text-primary" />
+          </div>
+        </Link>
 
         {/* Cart Icon with Badge */}
         <Link to="/cart" className="relative flex-shrink-0">

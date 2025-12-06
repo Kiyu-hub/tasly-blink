@@ -48,6 +48,23 @@ Tasly Ghana 346 is a **static e-commerce platform** for authentic Tasly herbal a
    - Mission & Vision statements
    - All header and footer content editable
 
+### GitHub Auto-Sync (NEW) 🔄
+
+The admin panel now supports **automatic syncing** to GitHub! When configured:
+
+- ✅ **Auto-commit**: Changes made in admin panel automatically push to GitHub
+- ✅ **Universal Updates**: All users see updates within 5 minutes
+- ✅ **No Manual Export**: No need to export/import JSON files
+- ✅ **Optional**: Works with or without GitHub token
+
+**Setup Required**: Configure a GitHub Personal Access Token (takes 2 minutes)
+- See [GITHUB_SYNC_SETUP.md](./GITHUB_SYNC_SETUP.md) for detailed setup instructions
+- Without token: Changes save locally only, update GitHub manually
+
+**Supported**:
+- Product updates → `src/data/products.json`
+- Site settings → `src/data/siteInfo.json`
+
 ## 📦 Product Catalog (12 Authentic Tasly Products)
 1. **Tasly Danshen Plus Capsule** (GH₵250) - Cardiovascular health & heart support
 2. **Tasly Cordyceps Mycelium Capsule** (GH₵280) - Immunity & energy boost

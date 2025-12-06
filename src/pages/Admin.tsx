@@ -1962,11 +1962,11 @@ export default function Admin() {
                           <Label>Free Delivery Threshold</Label>
                           <Input
                             type="number"
-                            value={siteInfo.freeShippingThreshold}
+                            value={siteInfo.freeDeliveryThreshold}
                             onChange={(e) =>
                               setSiteInfo({
                                 ...siteInfo,
-                                freeShippingThreshold: Number(e.target.value),
+                                freeDeliveryThreshold: Number(e.target.value),
                               })
                             }
                           />
@@ -1989,11 +1989,11 @@ export default function Admin() {
                       <div className="space-y-2">
                         <Label>Delivery Information</Label>
                         <Textarea
-                          value={siteInfo.shippingInfo || ''}
+                          value={siteInfo.deliveryInfo || ''}
                           onChange={(e) =>
                             setSiteInfo({
                               ...siteInfo,
-                              shippingInfo: e.target.value,
+                              deliveryInfo: e.target.value,
                             })
                           }
                           rows={4}

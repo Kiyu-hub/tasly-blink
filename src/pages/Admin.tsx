@@ -2035,6 +2035,310 @@ export default function Admin() {
                 </CardContent>
               </Card>
 
+              {/* Core Values */}
+              <Card>
+                <CardHeader className="p-4 md:p-6">
+                  <CardTitle className="text-lg md:text-xl">Core Values</CardTitle>
+                  <p className="text-sm text-muted-foreground mt-1">
+                    Manage the core values displayed on the About page
+                  </p>
+                </CardHeader>
+                <CardContent className="p-4 md:p-6">
+                  {siteInfo && (
+                    <div className="space-y-4">
+                      {(siteInfo.coreValues || []).map((value, index) => (
+                        <div key={index} className="p-4 border rounded-lg space-y-3">
+                          <div className="flex items-center justify-between">
+                            <h4 className="font-semibold">Value {index + 1}</h4>
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              className="text-red-500"
+                              onClick={() => {
+                                const newValues = [...(siteInfo.coreValues || [])]
+                                newValues.splice(index, 1)
+                                setSiteInfo({ ...siteInfo, coreValues: newValues })
+                              }}
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </Button>
+                          </div>
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div className="space-y-2">
+                              <Label>Title</Label>
+                              <Input
+                                value={value.title}
+                                onChange={(e) => {
+                                  const newValues = [...(siteInfo.coreValues || [])]
+                                  newValues[index] = { ...value, title: e.target.value }
+                                  setSiteInfo({ ...siteInfo, coreValues: newValues })
+                                }}
+                                placeholder="Quality Assured"
+                              />
+                            </div>
+                            <div className="space-y-2">
+                              <Label>Icon</Label>
+                              <select
+                                value={value.icon || 'Heart'}
+                                onChange={(e) => {
+                                  const newValues = [...(siteInfo.coreValues || [])]
+                                  newValues[index] = { ...value, icon: e.target.value }
+                                  setSiteInfo({ ...siteInfo, coreValues: newValues })
+                                }}
+                                className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+                              >
+                                <option value="Leaf">Leaf</option>
+                                <option value="Award">Award</option>
+                                <option value="Heart">Heart</option>
+                                <option value="Globe">Globe</option>
+                                <option value="Target">Target</option>
+                                <option value="Users">Users</option>
+                              </select>
+                            </div>
+                          </div>
+                          <div className="space-y-2">
+                            <Label>Description</Label>
+                            <Textarea
+                              value={value.description}
+                              onChange={(e) => {
+                                const newValues = [...(siteInfo.coreValues || [])]
+                                newValues[index] = { ...value, description: e.target.value }
+                                setSiteInfo({ ...siteInfo, coreValues: newValues })
+                              }}
+                              placeholder="Every product undergoes rigorous testing..."
+                              rows={2}
+                            />
+                          </div>
+                        </div>
+                      ))}
+                      <Button
+                        variant="outline"
+                        onClick={() => {
+                          const newValues = [
+                            ...(siteInfo.coreValues || []),
+                            { title: '', description: '', icon: 'Heart' }
+                          ]
+                          setSiteInfo({ ...siteInfo, coreValues: newValues })
+                        }}
+                        className="w-full"
+                      >
+                        <Plus className="w-4 h-4 mr-2" />
+                        Add Core Value
+                      </Button>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+
+              {/* Stats */}
+              <Card>
+                <CardHeader className="p-4 md:p-6">
+                  <CardTitle className="text-lg md:text-xl">Statistics</CardTitle>
+                  <p className="text-sm text-muted-foreground mt-1">
+                    Manage the statistics displayed on the About page
+                  </p>
+                </CardHeader>
+                <CardContent className="p-4 md:p-6">
+                  {siteInfo && (
+                    <div className="space-y-4">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        {(siteInfo.stats || []).map((stat, index) => (
+                          <div key={index} className="p-4 border rounded-lg space-y-3">
+                            <div className="flex items-center justify-between">
+                              <h4 className="font-semibold">Stat {index + 1}</h4>
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                className="text-red-500 h-8 w-8 p-0"
+                                onClick={() => {
+                                  const newStats = [...(siteInfo.stats || [])]
+                                  newStats.splice(index, 1)
+                                  setSiteInfo({ ...siteInfo, stats: newStats })
+                                }}
+                              >
+                                <Trash2 className="w-4 h-4" />
+                              </Button>
+                            </div>
+                            <div className="space-y-2">
+                              <Label>Number</Label>
+                              <Input
+                                value={stat.number}
+                                onChange={(e) => {
+                                  const newStats = [...(siteInfo.stats || [])]
+                                  newStats[index] = { ...stat, number: e.target.value }
+                                  setSiteInfo({ ...siteInfo, stats: newStats })
+                                }}
+                                placeholder="10+"
+                              />
+                            </div>
+                            <div className="space-y-2">
+                              <Label>Label</Label>
+                              <Input
+                                value={stat.label}
+                                onChange={(e) => {
+                                  const newStats = [...(siteInfo.stats || [])]
+                                  newStats[index] = { ...stat, label: e.target.value }
+                                  setSiteInfo({ ...siteInfo, stats: newStats })
+                                }}
+                                placeholder="Years Experience"
+                              />
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                      <Button
+                        variant="outline"
+                        onClick={() => {
+                          const newStats = [
+                            ...(siteInfo.stats || []),
+                            { number: '', label: '' }
+                          ]
+                          setSiteInfo({ ...siteInfo, stats: newStats })
+                        }}
+                        className="w-full"
+                      >
+                        <Plus className="w-4 h-4 mr-2" />
+                        Add Statistic
+                      </Button>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+
+              {/* Health Banners */}
+              <Card>
+                <CardHeader className="p-4 md:p-6">
+                  <CardTitle className="text-lg md:text-xl">Health Banners</CardTitle>
+                  <p className="text-sm text-muted-foreground mt-1">
+                    Manage the health banners carousel on the home page
+                  </p>
+                </CardHeader>
+                <CardContent className="p-4 md:p-6">
+                  {siteInfo && (
+                    <div className="space-y-4">
+                      {(siteInfo.healthBanners || []).map((banner, index) => (
+                        <div key={banner.id} className="p-4 border rounded-lg space-y-3">
+                          <div className="flex items-center justify-between">
+                            <h4 className="font-semibold">Health Banner {index + 1}</h4>
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              className="text-red-500"
+                              onClick={() => {
+                                const newBanners = [...(siteInfo.healthBanners || [])]
+                                newBanners.splice(index, 1)
+                                setSiteInfo({ ...siteInfo, healthBanners: newBanners })
+                              }}
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </Button>
+                          </div>
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div className="space-y-2">
+                              <Label>Title</Label>
+                              <Input
+                                value={banner.title}
+                                onChange={(e) => {
+                                  const newBanners = [...(siteInfo.healthBanners || [])]
+                                  newBanners[index] = { ...banner, title: e.target.value }
+                                  setSiteInfo({ ...siteInfo, healthBanners: newBanners })
+                                }}
+                                placeholder="Health & Happiness"
+                              />
+                            </div>
+                            <div className="space-y-2">
+                              <Label>Order</Label>
+                              <Input
+                                type="number"
+                                value={banner.order}
+                                onChange={(e) => {
+                                  const newBanners = [...(siteInfo.healthBanners || [])]
+                                  newBanners[index] = { ...banner, order: Number(e.target.value) }
+                                  setSiteInfo({ ...siteInfo, healthBanners: newBanners })
+                                }}
+                                placeholder="1"
+                              />
+                            </div>
+                          </div>
+                          <div className="space-y-2">
+                            <Label>Description</Label>
+                            <Input
+                              value={banner.description}
+                              onChange={(e) => {
+                                const newBanners = [...(siteInfo.healthBanners || [])]
+                                newBanners[index] = { ...banner, description: e.target.value }
+                                setSiteInfo({ ...siteInfo, healthBanners: newBanners })
+                              }}
+                              placeholder="Bringing wellness to every Ghanaian family"
+                            />
+                          </div>
+                          <div className="space-y-2">
+                            <Label>Image URL</Label>
+                            <Input
+                              value={banner.image}
+                              onChange={(e) => {
+                                const newBanners = [...(siteInfo.healthBanners || [])]
+                                newBanners[index] = { ...banner, image: e.target.value }
+                                setSiteInfo({ ...siteInfo, healthBanners: newBanners })
+                              }}
+                              placeholder="https://images.unsplash.com/..."
+                            />
+                          </div>
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div className="space-y-2">
+                              <Label>Button Text</Label>
+                              <Input
+                                value={banner.ctaText}
+                                onChange={(e) => {
+                                  const newBanners = [...(siteInfo.healthBanners || [])]
+                                  newBanners[index] = { ...banner, ctaText: e.target.value }
+                                  setSiteInfo({ ...siteInfo, healthBanners: newBanners })
+                                }}
+                                placeholder="Shop Now"
+                              />
+                            </div>
+                            <div className="space-y-2">
+                              <Label>Button Link</Label>
+                              <Input
+                                value={banner.ctaLink}
+                                onChange={(e) => {
+                                  const newBanners = [...(siteInfo.healthBanners || [])]
+                                  newBanners[index] = { ...banner, ctaLink: e.target.value }
+                                  setSiteInfo({ ...siteInfo, healthBanners: newBanners })
+                                }}
+                                placeholder="/products"
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                      <Button
+                        variant="outline"
+                        onClick={() => {
+                          const newBanners = [
+                            ...(siteInfo.healthBanners || []),
+                            {
+                              id: `hb${Date.now()}`,
+                              title: '',
+                              description: '',
+                              image: '',
+                              ctaText: 'Shop Now',
+                              ctaLink: '/products',
+                              order: (siteInfo.healthBanners?.length || 0) + 1
+                            }
+                          ]
+                          setSiteInfo({ ...siteInfo, healthBanners: newBanners })
+                        }}
+                        className="w-full"
+                      >
+                        <Plus className="w-4 h-4 mr-2" />
+                        Add Health Banner
+                      </Button>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+
               {/* Manager Information */}
               <Card>
                 <CardHeader className="p-4 md:p-6">

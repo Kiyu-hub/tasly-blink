@@ -3,37 +3,64 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { ChevronLeft, ChevronRight, ArrowRight } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Link } from 'react-router-dom'
+import { getSiteInfo } from '@/lib/storage'
 
-const healthBanners = [
+const defaultHealthBanners = [
   {
-    id: 1,
+    id: '1',
     image: 'https://images.unsplash.com/photo-1511632765486-a01980e01a18?w=1600&h=600&fit=crop&q=80',
     title: 'Health & Happiness',
     description: 'Bringing wellness to every Ghanaian family',
     ctaText: 'Shop Now',
-    ctaLink: '/products'
+    ctaLink: '/products',
+    order: 1,
   },
   {
-    id: 2,
+    id: '2',
     image: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=1600&h=600&fit=crop&q=80',
     title: 'Expert Care',
     description: 'Professional health consultations and guidance',
     ctaText: 'Learn More',
-    ctaLink: '/about'
+    ctaLink: '/about',
+    order: 2,
   },
   {
-    id: 3,
+    id: '3',
     image: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=1600&h=600&fit=crop&q=80',
     title: 'Wellness Journey',
     description: 'Natural health solutions for better living',
     ctaText: 'Explore Products',
-    ctaLink: '/products'
+    ctaLink: '/products',
+    order: 3,
   }
 ]
 
 export default function HealthBannerCarousel() {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isAutoPlaying, setIsAutoPlaying] = useState(true)
+  const [healthBanners, setHealthBanners] = useState(defaultHealthBanners)
+
+  useEffect(() => {
+    const loadHealthBanners = () => {
+      const siteInfo = getSiteInfo()
+      if (siteInfo?.healthBanners && siteInfo.healthBanners.length > 0) {
+        setHealthBanners(siteInfo.healthBanners.sort((a, b) => a.order - b.order))
+      }
+    }
+
+    loadHealthBanners()
+
+    // Listen for site info updates
+    const handleSiteInfoUpdate = () => {
+      loadHealthBanners()
+    }
+
+    window.addEventListener('siteInfoUpdated', handleSiteInfoUpdate)
+
+    return () => {
+      window.removeEventListener('siteInfoUpdated', handleSiteInfoUpdate)
+    }
+  }, [])
 
   useEffect(() => {
     if (!isAutoPlaying) return

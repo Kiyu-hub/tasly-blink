@@ -75,6 +75,8 @@ const defaultSiteInfo: SiteInfo = {
   visionStatement: siteInfoData.visionStatement,
   ourStory: siteInfoData.ourStory,
   coreValues: siteInfoData.coreValues,
+  stats: siteInfoData.stats,
+  healthBanners: siteInfoData.healthBanners,
   certifications: siteInfoData.certifications,
   paymentMethods: siteInfoData.paymentMethods,
   deliveryLocations: siteInfoData.deliveryLocations,

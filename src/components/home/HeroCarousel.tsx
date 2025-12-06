@@ -99,7 +99,7 @@ export default function HeroCarousel({
                       initial={{ opacity: 0, x: -20 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: 0.4 }}
-                      className="inline-block px-4 py-1 bg-primary/20 text-primary-foreground rounded-full text-sm font-medium mb-4"
+                      className="inline-block px-3 sm:px-4 py-1 bg-primary/20 text-primary-foreground rounded-full text-xs sm:text-sm font-medium mb-2 sm:mb-4"
                     >
                       {currentBanner.subtitle}
                     </motion.span>
@@ -109,7 +109,7 @@ export default function HeroCarousel({
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.5 }}
-                    className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight"
+                    className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-bold mb-3 sm:mb-4 md:mb-6 leading-tight"
                   >
                     {currentBanner.title}
                   </motion.h1>
@@ -119,7 +119,7 @@ export default function HeroCarousel({
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.6 }}
-                      className="text-lg md:text-xl text-gray-200 mb-8"
+                      className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-200 mb-4 sm:mb-6 md:mb-8 line-clamp-2 sm:line-clamp-none"
                     >
                       {currentBanner.description}
                     </motion.p>
@@ -133,7 +133,7 @@ export default function HeroCarousel({
                     >
                       <Button
                         size="lg"
-                        className="bg-gradient-to-r from-primary to-green-600 text-white rounded-full px-8 shadow-lg hover:shadow-xl transition-shadow"
+                        className="bg-gradient-to-r from-primary to-green-600 text-white rounded-full px-4 sm:px-6 md:px-8 h-10 sm:h-11 md:h-12 text-sm sm:text-base shadow-lg hover:shadow-xl transition-shadow"
                         asChild
                       >
                         <a href={currentBanner.link}>

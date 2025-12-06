@@ -134,6 +134,20 @@ export interface SiteInfo {
   coreValues?: Array<{
     title: string
     description: string
+    icon?: string
+  }>
+  stats?: Array<{
+    number: string
+    label: string
+  }>
+  healthBanners?: Array<{
+    id: string
+    title: string
+    description: string
+    image: string
+    ctaText: string
+    ctaLink: string
+    order: number
   }>
   certifications?: string[]
   paymentMethods?: string[]

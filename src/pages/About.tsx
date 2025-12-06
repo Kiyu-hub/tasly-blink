@@ -5,34 +5,43 @@ import { Card, CardContent } from '@/components/ui/card'
 import { getSiteInfo } from '@/lib/storage'
 import type { SiteInfo } from '@/types'
 
-const values = [
+const iconMap: Record<string, any> = {
+  Leaf,
+  Award,
+  Heart,
+  Globe,
+  Target,
+  Users,
+}
+
+const defaultValues = [
   {
-    icon: Leaf,
+    icon: 'Leaf',
     title: 'Natural Ingredients',
     description:
       'We source the finest natural ingredients to create products that work in harmony with your body.',
   },
   {
-    icon: Award,
+    icon: 'Award',
     title: 'Quality Assured',
     description:
       'Every product undergoes rigorous testing to ensure the highest standards of quality and safety.',
   },
   {
-    icon: Heart,
+    icon: 'Heart',
     title: 'Customer First',
     description:
       'Your health and satisfaction are our top priorities. We\'re here to support your wellness journey.',
   },
   {
-    icon: Globe,
+    icon: 'Globe',
     title: 'Global Standards',
     description:
       'We adhere to international quality standards while bringing the best of traditional medicine to Ghana.',
   },
 ]
 
-const stats = [
+const defaultStats = [
   { number: '10+', label: 'Years Experience' },
   { number: '50K+', label: 'Happy Customers' },
   { number: '100+', label: 'Products' },
@@ -63,6 +72,13 @@ export default function About() {
     image: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&h=400&fit=crop',
     bio: 'Leading Tasly Ghana with years of experience in healthcare and business management.'
   }
+
+  const values = (siteInfo?.coreValues || defaultValues).map(v => ({
+    ...v,
+    icon: iconMap[v.icon || 'Heart'] || Heart
+  }))
+
+  const stats = siteInfo?.stats || defaultStats
 
   return (
     <motion.div

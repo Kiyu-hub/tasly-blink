@@ -51,23 +51,75 @@
   "coreValues": [
     {
       "title": "Authenticity",
-      "description": "We guarantee 100% authentic Tasly products sourced directly from authorized channels."
+      "description": "We guarantee 100% authentic Tasly products sourced directly from authorized channels.",
+      "icon": "Award"
     },
     {
       "title": "Quality",
-      "description": "Every product meets international quality standards and undergoes rigorous testing."
+      "description": "Every product meets international quality standards and undergoes rigorous testing.",
+      "icon": "Target"
     },
     {
       "title": "Customer First",
-      "description": "Your health and satisfaction are our top priorities. We provide expert guidance and support."
+      "description": "Your health and satisfaction are our top priorities. We provide expert guidance and support.",
+      "icon": "Heart"
     },
     {
       "title": "Trust & Transparency",
-      "description": "We operate with complete transparency in our products, pricing, and business practices."
+      "description": "We operate with complete transparency in our products, pricing, and business practices.",
+      "icon": "Globe"
     },
     {
       "title": "Health Education",
-      "description": "We empower our customers with knowledge about natural health and proper product usage."
+      "description": "We empower our customers with knowledge about natural health and proper product usage.",
+      "icon": "Leaf"
+    }
+  ],
+  "stats": [
+    {
+      "number": "10+",
+      "label": "Years Experience"
+    },
+    {
+      "number": "50K+",
+      "label": "Happy Customers"
+    },
+    {
+      "number": "100+",
+      "label": "Products"
+    },
+    {
+      "number": "24/7",
+      "label": "Customer Support"
+    }
+  ],
+  "healthBanners": [
+    {
+      "id": "hb1",
+      "title": "Health & Happiness",
+      "description": "Bringing wellness to every Ghanaian family",
+      "image": "https://images.unsplash.com/photo-1511632765486-a01980e01a18?w=1600&h=600&fit=crop&q=80",
+      "ctaText": "Shop Now",
+      "ctaLink": "/products",
+      "order": 1
+    },
+    {
+      "id": "hb2",
+      "title": "Expert Care",
+      "description": "Professional health consultations and guidance",
+      "image": "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=1600&h=600&fit=crop&q=80",
+      "ctaText": "Learn More",
+      "ctaLink": "/about",
+      "order": 2
+    },
+    {
+      "id": "hb3",
+      "title": "Wellness Journey",
+      "description": "Natural health solutions for better living",
+      "image": "https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=1600&h=600&fit=crop&q=80",
+      "ctaText": "Explore Products",
+      "ctaLink": "/products",
+      "order": 3
     }
   ],
   "deliveryLocations": [

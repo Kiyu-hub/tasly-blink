@@ -8,8 +8,8 @@
   "whatsapp": "233599004548",
   "address": "Accra, Legon - Bawuleshi",
   "businessHours": "Monday - Saturday: 9:00 AM - 6:00 PM, Sunday: Closed",
-  "announcement": "hi",
-  "showAnnouncement": true,
+  "announcement": "",
+  "showAnnouncement": false,
   "currency": "GH₵",
   "freeDeliveryThreshold": 0,
   "deliveryFee": 0,
@@ -26,7 +26,7 @@
     "showInstagram": true,
     "showTwitter": true,
     "showYoutube": true,
-    "showTiktok": false,
+    "showTiktok": true,
     "showWhatsApp": true
   },
   "deliveryInfo": "We deliver across all regions of Ghana. Delivery within Accra: 1-2 business days. Delivery outside Accra: 3-5 business days. Same-day delivery available for orders placed before 12:00 PM in selected areas of Accra.",
@@ -36,7 +36,7 @@
   "ourStory": {
     "title": "Our Story",
     "content": "Tasly Ghana was founded with a simple mission: to make premium health supplements accessible to everyone in Ghana and beyond. We believe that everyone deserves access to products that can truly make a difference in their health and quality of life.\n\nOur journey began over a decade ago when our founders discovered the incredible potential of combining traditional Chinese medicine with modern scientific research. This unique approach allows us to create products that are both effective and gentle on the body.\n\nToday, we serve thousands of satisfied customers across Ghana, offering a wide range of supplements for brain health, immune support, heart health, and more. Our commitment to quality and customer satisfaction remains at the core of everything we do.",
-    "image": "https://images.unsplash.com/photo-1576091160399-112ba8d25d1f?w=800&h=600&fit=crop"
+    "image": "https://i.imgur.com/teplKde.jpeg"
   },
   "coreValues": [
     {
@@ -111,9 +111,9 @@
     }
   ],
   "manager": {
-    "name": "Dr. Kofi Mensah",
+    "name": "Mr Yakubu Suallah",
     "role": "General Manager",
-    "image": "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&h=400&fit=crop",
+    "image": "https://imgur.com/a/eCeL2WB",
     "bio": "Leading Tasly Ghana with years of experience in healthcare and business management, committed to bringing the best health solutions to our customers."
   }
 }

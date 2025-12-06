@@ -70,7 +70,7 @@ export default function CategorySection() {
 
         {/* Mobile: Horizontal Scroll */}
         <div className="md:hidden">
-          <div className="flex gap-3 overflow-x-auto pb-4 no-scrollbar snap-x snap-mandatory -mx-3 px-3">
+          <div className="flex gap-2 overflow-x-auto pb-3 no-scrollbar snap-x snap-mandatory -mx-2 px-2">
             {categories.map((category, index) => {
               const color = category.color || 'from-gray-500 to-slate-600'
               

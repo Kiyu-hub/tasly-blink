@@ -108,7 +108,7 @@ export default function MobileMenu() {
               </div>
 
               {/* Navigation */}
-              <nav className="flex-1 overflow-auto p-4 bg-white dark:bg-gray-900">
+              <nav className="flex-1 overflow-auto p-3 bg-white dark:bg-gray-900">
                 <div className="space-y-1">
                   {menuItems.map((item) => (
                     <Link
@@ -163,7 +163,7 @@ export default function MobileMenu() {
               </nav>
 
               {/* Footer */}
-              <div className="p-4 border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">
+              <div className="p-3 border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">
                 <p className="text-xs text-center text-gray-500 dark:text-gray-400">
                   © {new Date().getFullYear()} {siteInfo.name}
                 </p>

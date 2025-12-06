@@ -88,8 +88,8 @@ export default function About() {
       className="min-h-screen"
     >
       {/* Hero */}
-      <section className="relative py-20 bg-gradient-to-br from-primary/10 via-background to-primary/5">
-        <div className="container mx-auto px-4">
+      <section className="relative py-12 md:py-20 bg-gradient-to-br from-primary/10 via-background to-primary/5">
+        <div className="container mx-auto px-2 md:px-4">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -164,8 +164,8 @@ export default function About() {
       </section>
 
       {/* Mission & Vision */}
-      <section className="py-16 bg-muted/30">
-        <div className="container mx-auto px-4">
+      <section className="py-8 md:py-16 bg-muted/30">
+        <div className="container mx-auto px-2 md:px-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -208,8 +208,8 @@ export default function About() {
       </section>
 
       {/* Values */}
-      <section className="py-16 md:py-24">
-        <div className="container mx-auto px-4">
+      <section className="py-8 md:py-16 lg:py-24">
+        <div className="container mx-auto px-2 md:px-4">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -249,8 +249,8 @@ export default function About() {
       </section>
 
       {/* Stats */}
-      <section className="py-16 bg-gradient-to-r from-primary to-green-600">
-        <div className="container mx-auto px-4">
+      <section className="py-8 md:py-16 bg-gradient-to-r from-primary to-green-600">
+        <div className="container mx-auto px-2 md:px-4">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {stats.map((stat, index) => (
               <motion.div
@@ -272,8 +272,8 @@ export default function About() {
       </section>
 
       {/* Team */}
-      <section className="py-16 md:py-24">
-        <div className="container mx-auto px-4">
+      <section className="py-8 md:py-16 lg:py-24">
+        <div className="container mx-auto px-2 md:px-4">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}

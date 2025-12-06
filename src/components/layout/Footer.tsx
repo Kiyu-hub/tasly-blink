@@ -33,7 +33,7 @@ export default function Footer() {
 
   return (
     <footer className="hidden md:block bg-muted/50 border-t">
-      <div className="container mx-auto px-4 py-12">
+      <div className="container mx-auto px-3 md:px-4 py-8 md:py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Brand */}
           <div className="space-y-4">

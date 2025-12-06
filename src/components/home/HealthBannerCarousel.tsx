@@ -90,8 +90,8 @@ export default function HealthBannerCarousel() {
   }
 
   return (
-    <section className="py-4 md:py-12 lg:py-16 bg-muted/30">
-      <div className="container mx-auto px-4">
+    <section className="py-3 md:py-12 lg:py-16 bg-muted/30">
+      <div className="container mx-auto px-2 md:px-4">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}

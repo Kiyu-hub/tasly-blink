@@ -34,8 +34,8 @@ export default function WhatsAppCommunityBanner() {
   }
 
   return (
-    <section className="py-12 md:py-20 bg-gradient-to-r from-green-50 via-emerald-50 to-green-50 dark:from-green-950/10 dark:via-emerald-950/10 dark:to-green-950/10">
-      <div className="container mx-auto px-4">
+    <section className="py-6 md:py-20 bg-gradient-to-r from-green-50 via-emerald-50 to-green-50 dark:from-green-950/10 dark:via-emerald-950/10 dark:to-green-950/10">
+      <div className="container mx-auto px-2 md:px-4">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -54,7 +54,7 @@ export default function WhatsAppCommunityBanner() {
                 </div>
 
                 {/* Content Section */}
-                <div className="flex-1 p-6 md:p-10">
+                <div className="flex-1 p-4 md:p-10">
                   <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-3 bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">
                     Join Our WhatsApp Community
                   </h2>

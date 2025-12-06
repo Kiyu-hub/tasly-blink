@@ -32,7 +32,7 @@ export default function WhatsAppButton() {
             initial={{ opacity: 0, y: 20, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
-            className="fixed bottom-24 right-4 z-50 w-80 bg-background rounded-2xl shadow-xl border overflow-hidden"
+            className="fixed bottom-24 right-2 md:right-4 z-50 w-[calc(100vw-1rem)] md:w-80 max-w-sm bg-background rounded-2xl shadow-xl border overflow-hidden"
           >
             <div className="bg-gradient-to-r from-green-500 to-green-600 p-4 text-white">
               <div className="flex items-center justify-between">
@@ -80,7 +80,7 @@ export default function WhatsAppButton() {
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.95 }}
         onClick={() => setIsOpen(!isOpen)}
-        className="fixed bottom-6 right-6 z-50 h-14 w-14 rounded-full bg-green-500 text-white shadow-lg hover:bg-green-600 transition-colors flex items-center justify-center"
+        className="fixed bottom-20 md:bottom-6 right-4 md:right-6 z-50 h-12 md:h-14 w-12 md:w-14 rounded-full bg-green-500 text-white shadow-lg hover:bg-green-600 transition-colors flex items-center justify-center"
       >
         <AnimatePresence mode="wait">
           {isOpen ? (

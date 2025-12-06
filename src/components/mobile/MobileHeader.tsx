@@ -49,7 +49,7 @@ export default function MobileHeader() {
 
   return (
     <header className="md:hidden sticky top-0 z-50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80 border-b">
-      <div className="flex items-center gap-2 px-2.5 py-1.5">
+      <div className="flex items-center gap-2 px-2 py-1.5">
         {/* Logo - Compact (Dynamic from Admin) */}
         <Link to="/" className="flex-shrink-0">
           <img 

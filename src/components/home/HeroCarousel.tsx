@@ -88,7 +88,7 @@ export default function HeroCarousel({
               <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/50 to-transparent" />
 
               {/* Content */}
-              <div className="relative h-full container mx-auto px-4 flex items-center">
+              <div className="relative h-full container mx-auto px-2 md:px-4 flex items-center">
                 <motion.div
                   initial={{ opacity: 0, y: 40 }}
                   animate={{ opacity: 1, y: 0 }}

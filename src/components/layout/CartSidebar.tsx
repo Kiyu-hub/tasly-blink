@@ -71,7 +71,7 @@ export default function CartSidebar() {
               </div>
 
               {/* Cart Items */}
-              <div className="flex-1 overflow-auto p-4">
+              <div className="flex-1 overflow-auto p-3 md:p-4">
                 {items.length === 0 ? (
                   <div className="flex flex-col items-center justify-center h-full text-center">
                     <ShoppingBag className="h-16 w-16 text-muted-foreground mb-4" />
@@ -161,7 +161,7 @@ export default function CartSidebar() {
 
               {/* Footer */}
               {items.length > 0 && (
-                <div className="border-t p-4 space-y-4">
+                <div className="border-t p-3 md:p-4 space-y-4">
                   <div className="flex items-center justify-between">
                     <span className="text-muted-foreground">Subtotal</span>
                     <span className="font-bold text-lg">

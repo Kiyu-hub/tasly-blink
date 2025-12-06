@@ -105,8 +105,8 @@ export default function Contact() {
       className="min-h-screen"
     >
       {/* Hero */}
-      <section className="relative py-20 bg-gradient-to-br from-primary/10 via-background to-primary/5">
-        <div className="container mx-auto px-4">
+      <section className="relative py-12 md:py-20 bg-gradient-to-br from-primary/10 via-background to-primary/5">
+        <div className="container mx-auto px-2 md:px-4">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -122,8 +122,8 @@ export default function Contact() {
       </section>
 
       {/* Contact Info Cards */}
-      <section className="py-16">
-        <div className="container mx-auto px-4">
+      <section className="py-8 md:py-16">
+        <div className="container mx-auto px-2 md:px-4">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {contactInfo.map((info, index) => (
               <motion.div

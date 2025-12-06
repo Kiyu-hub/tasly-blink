@@ -29,7 +29,7 @@ export default function MobileStickyActions({
 
   return (
     <div className="md:hidden fixed bottom-14 left-0 right-0 z-30 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/90 border-t shadow-lg">
-      <div className="container mx-auto px-3 py-2.5">
+      <div className="container mx-auto px-2 py-2">
         <div className="flex items-center gap-2">
           {/* Price Display */}
           <div className="flex flex-col flex-1">

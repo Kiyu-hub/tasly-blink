@@ -21,13 +21,13 @@ export default function FeaturedProducts({
   const featuredProducts = products.slice(0, 8)
 
   return (
-    <section className="py-4 md:py-12 lg:py-20">
-      <div className="container mx-auto px-4">
+    <section className="py-3 md:py-12 lg:py-20">
+      <div className="container mx-auto px-2 md:px-4">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="flex flex-col md:flex-row md:items-end justify-between mb-12"
+          className="flex flex-col md:flex-row md:items-end justify-between mb-6 md:mb-12"
         >
           <div>
             <h2 className="text-3xl md:text-4xl font-bold mb-2">{title}</h2>

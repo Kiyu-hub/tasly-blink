@@ -3,25 +3,81 @@
  * 
  * This module handles automatic syncing of admin panel changes to the GitHub repository.
  * When admin saves changes, they are committed to the repository so all users see updates.
+ * 
+ * CROSS-DEVICE TOKEN STORAGE:
+ * - Token is encrypted and stored in GitHub repository (adminConfig.json)
+ * - Accessible across all devices after secondary password verification
+ * - Secondary password required to enable sync (star button)
  */
 
 import type { Product, SiteInfo } from '@/types'
+import { encryptToken, decryptToken, isSyncEnabled } from './encryption'
 
 const GITHUB_OWNER = 'Kiyu-hub'
 const GITHUB_REPO = 'tasly-blink'
 const GITHUB_BRANCH = 'main'
+const ADMIN_CONFIG_URL = `https://raw.githubusercontent.com/${GITHUB_OWNER}/${GITHUB_REPO}/${GITHUB_BRANCH}/src/data/adminConfig.json`
 
-// GitHub Personal Access Token should be stored in environment or admin settings
-// For now, we'll use a placeholder that needs to be configured
+// GitHub Personal Access Token
 let GITHUB_TOKEN: string | null = null
+
+/**
+ * Load token from GitHub repository (cross-device)
+ */
+export async function loadTokenFromGitHub(): Promise<string | null> {
+  try {
+    const response = await fetch(ADMIN_CONFIG_URL)
+    if (!response.ok) return null
+    
+    const config = await response.json()
+    if (config.encryptedToken) {
+      const decrypted = decryptToken(config.encryptedToken)
+      if (decrypted) {
+        GITHUB_TOKEN = decrypted
+        localStorage.setItem('github_token', decrypted)
+        return decrypted
+      }
+    }
+  } catch (error) {
+    console.warn('Failed to load token from GitHub:', error)
+  }
+  return null
+}
+
+/**
+ * Save encrypted token to GitHub repository (cross-device)
+ */
+async function saveTokenToGitHub(token: string): Promise<boolean> {
+  if (!token) return false
+  
+  try {
+    const encrypted = encryptToken(token)
+    const config = {
+      encryptedToken: encrypted,
+      syncEnabled: true,
+      lastUpdated: new Date().toISOString()
+    }
+    
+    const content = JSON.stringify(config, null, 2)
+    return await commitFile('src/data/adminConfig.json', content, 'Update admin configuration')
+  } catch (error) {
+    console.error('Failed to save token to GitHub:', error)
+    return false
+  }
+}
 
 /**
  * Set the GitHub Personal Access Token
  * This should be called when the admin configures their token
  */
-export function setGitHubToken(token: string): void {
+export async function setGitHubToken(token: string): Promise<void> {
   GITHUB_TOKEN = token
   localStorage.setItem('github_token', token)
+  
+  // If sync is enabled, save to GitHub for cross-device access
+  if (isSyncEnabled()) {
+    await saveTokenToGitHub(token)
+  }
 }
 
 /**
@@ -37,7 +93,7 @@ export function getGitHubToken(): string | null {
  * Check if GitHub sync is configured
  */
 export function isGitHubSyncEnabled(): boolean {
-  return getGitHubToken() !== null
+  return getGitHubToken() !== null && isSyncEnabled()
 }
 
 /**

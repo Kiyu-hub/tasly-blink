@@ -14,6 +14,8 @@ import {
   TrendingUp,
   Users,
   DollarSign,
+  Star,
+  Lock,
 } from 'lucide-react'
 import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
@@ -48,8 +50,10 @@ import {
   getGitHubToken, 
   setGitHubToken, 
   isGitHubSyncEnabled,
-  testGitHubConnection 
+  testGitHubConnection,
+  loadTokenFromGitHub
 } from '@/lib/githubSync'
+import { verifySecondaryPassword, enableSync, disableSync, isSyncEnabled } from '@/lib/encryption'
 import { formatCurrency, generateId, slugify } from '@/lib/utils'
 import type { Product, Banner, SiteInfo, CategoryData, Ad } from '@/types'
 
@@ -90,6 +94,11 @@ export default function Admin() {
   const [githubToken, setGithubTokenState] = useState(getGitHubToken() || '')
   const [githubSyncEnabled, setGithubSyncEnabled] = useState(isGitHubSyncEnabled())
   const [testingConnection, setTestingConnection] = useState(false)
+  const [syncActivated, setSyncActivated] = useState(isSyncEnabled())
+  const [showSecondaryPasswordDialog, setShowSecondaryPasswordDialog] = useState(false)
+  const [secondaryPassword, setSecondaryPassword] = useState('')
+  const [showDeleteTokenDialog, setShowDeleteTokenDialog] = useState(false)
+  const [deleteSecondaryPassword, setDeleteSecondaryPassword] = useState('')
 
   const [editingProduct, setEditingProduct] = useState<Partial<Product> | null>(
     null
@@ -122,6 +131,15 @@ export default function Admin() {
       setCategories(getCategoriesData())
       setAds(getAds())
       updateCategoryProductCounts()
+      
+      // Try to load token from GitHub (cross-device)
+      loadTokenFromGitHub().then(token => {
+        if (token) {
+          setGithubTokenState(token)
+          setGithubSyncEnabled(true)
+          toast.success('GitHub token loaded from repository')
+        }
+      })
     }
   }, [isAuthenticated])
 
@@ -431,15 +449,66 @@ export default function Admin() {
   }
 
   // GitHub Sync Handlers
-  const handleSaveGitHubToken = () => {
+  const handleSaveGitHubToken = async () => {
     if (!githubToken || githubToken.trim().length === 0) {
       toast.error('Please enter a valid GitHub token')
       return
     }
     
-    setGitHubToken(githubToken.trim())
+    await setGitHubToken(githubToken.trim())
     setGithubSyncEnabled(true)
-    toast.success('GitHub token saved! Changes will now automatically sync to your repository.')
+    
+    if (syncActivated) {
+      toast.success('GitHub token saved and synced across devices!')
+    } else {
+      toast.success('GitHub token saved locally. Click the ⭐ to enable cross-device sync.')
+    }
+  }
+
+  const handleActivateSync = () => {
+    if (!githubToken || githubToken.trim().length === 0) {
+      toast.error('Please save your GitHub token first')
+      return
+    }
+    setShowSecondaryPasswordDialog(true)
+  }
+
+  const handleVerifySecondaryPassword = async () => {
+    if (!verifySecondaryPassword(secondaryPassword)) {
+      toast.error('Incorrect secondary password')
+      setSecondaryPassword('')
+      return
+    }
+    
+    enableSync()
+    setSyncActivated(true)
+    setShowSecondaryPasswordDialog(false)
+    setSecondaryPassword('')
+    
+    // Save token to GitHub
+    await setGitHubToken(githubToken)
+    toast.success('✅ Cross-device sync activated! Your token is now available on all devices.')
+  }
+
+  const handleDeleteToken = () => {
+    setShowDeleteTokenDialog(true)
+  }
+
+  const handleConfirmDeleteToken = () => {
+    if (!verifySecondaryPassword(deleteSecondaryPassword)) {
+      toast.error('Incorrect secondary password')
+      setDeleteSecondaryPassword('')
+      return
+    }
+    
+    localStorage.removeItem('github_token')
+    disableSync()
+    setGithubTokenState('')
+    setGithubSyncEnabled(false)
+    setSyncActivated(false)
+    setShowDeleteTokenDialog(false)
+    setDeleteSecondaryPassword('')
+    toast.success('GitHub token deleted from all devices')
   }
 
   const handleTestGitHubConnection = async () => {
@@ -461,13 +530,6 @@ export default function Admin() {
     } finally {
       setTestingConnection(false)
     }
-  }
-
-  const handleDeleteGitHubToken = () => {
-    localStorage.removeItem('github_token')
-    setGithubTokenState('')
-    setGithubSyncEnabled(false)
-    toast.success('GitHub sync disabled')
   }
 
   return (
@@ -1561,6 +1623,15 @@ export default function Admin() {
                         Save Token
                       </Button>
                       <Button
+                        onClick={handleActivateSync}
+                        disabled={!githubToken || githubToken.trim().length === 0 || syncActivated}
+                        variant={syncActivated ? "default" : "outline"}
+                        className="flex-1"
+                      >
+                        <Star className={`w-4 h-4 mr-2 ${syncActivated ? 'fill-yellow-400 text-yellow-400' : ''}`} />
+                        {syncActivated ? 'Sync Active' : 'Activate Cross-Device Sync'}
+                      </Button>
+                      <Button
                         onClick={handleTestGitHubConnection}
                         disabled={!githubSyncEnabled || testingConnection}
                         variant="outline"
@@ -1577,22 +1648,45 @@ export default function Admin() {
                       </Button>
                       {githubSyncEnabled && (
                         <Button
-                          onClick={handleDeleteGitHubToken}
+                          onClick={handleDeleteToken}
                           variant="destructive"
                           size="icon"
+                          title="Delete Token (Requires Password)"
                         >
-                          <Trash2 className="w-4 h-4" />
+                          <Lock className="w-4 h-4" />
                         </Button>
                       )}
                     </div>
 
-                    {githubSyncEnabled && (
+                    {syncActivated && githubSyncEnabled && (
                       <div className="mt-4 p-3 bg-green-50 dark:bg-green-950/20 border border-green-200 dark:border-green-900 rounded-lg">
                         <p className="text-sm text-green-800 dark:text-green-300 font-medium">
-                          ✓ GitHub sync is enabled
+                          ✓ Cross-device sync is active
                         </p>
                         <p className="text-xs text-green-700 dark:text-green-400 mt-1">
-                          All changes you make will be automatically committed to your repository. Users will see updates after the site rebuilds.
+                          Your GitHub token is securely stored in the repository and will be available on all devices.
+                        </p>
+                      </div>
+                    )}
+
+                    {!syncActivated && githubSyncEnabled && (
+                      <div className="mt-4 p-3 bg-yellow-50 dark:bg-yellow-950/20 border border-yellow-200 dark:border-yellow-900 rounded-lg">
+                        <p className="text-sm text-yellow-800 dark:text-yellow-300 font-medium">
+                          ⭐ Click "Activate Cross-Device Sync" to enable token persistence
+                        </p>
+                        <p className="text-xs text-yellow-700 dark:text-yellow-400 mt-1">
+                          This will allow you to access your GitHub token from any device after entering the secondary password.
+                        </p>
+                      </div>
+                    )}
+
+                    {githubSyncEnabled && !syncActivated && (
+                      <div className="mt-4 p-3 bg-green-50 dark:bg-green-950/20 border border-green-200 dark:border-green-900 rounded-lg">
+                        <p className="text-sm text-green-800 dark:text-green-300 font-medium">
+                          ✓ GitHub sync is enabled (local device only)
+                        </p>
+                        <p className="text-xs text-green-700 dark:text-green-400 mt-1">
+                          All changes will be committed to your repository. Activate cross-device sync to access from other devices.
                         </p>
                       </div>
                     )}
@@ -2597,6 +2691,98 @@ export default function Admin() {
           </TabsContent>
         </Tabs>
       </div>
+
+      {/* Secondary Password Dialog for Sync Activation */}
+      <Dialog open={showSecondaryPasswordDialog} onOpenChange={setShowSecondaryPasswordDialog}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Activate Cross-Device Sync</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4 py-4">
+            <p className="text-sm text-muted-foreground">
+              Enter the secondary password to enable cross-device GitHub token synchronization.
+              This will securely store your token in the repository for access from any device.
+            </p>
+            <div className="space-y-2">
+              <Label htmlFor="secondary-password">Secondary Password</Label>
+              <Input
+                id="secondary-password"
+                type="password"
+                value={secondaryPassword}
+                onChange={(e) => setSecondaryPassword(e.target.value)}
+                placeholder="Enter secondary password"
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    handleVerifySecondaryPassword()
+                  }
+                }}
+              />
+            </div>
+            <div className="flex justify-end gap-2">
+              <Button
+                variant="outline"
+                onClick={() => {
+                  setShowSecondaryPasswordDialog(false)
+                  setSecondaryPassword('')
+                }}
+              >
+                Cancel
+              </Button>
+              <Button onClick={handleVerifySecondaryPassword}>
+                <Star className="w-4 h-4 mr-2" />
+                Activate Sync
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Delete Token Confirmation Dialog */}
+      <Dialog open={showDeleteTokenDialog} onOpenChange={setShowDeleteTokenDialog}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Delete GitHub Token</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4 py-4">
+            <div className="p-4 bg-destructive/10 border border-destructive/20 rounded-lg">
+              <p className="text-sm text-destructive font-medium">⚠️ Warning</p>
+              <p className="text-sm text-destructive/90 mt-1">
+                This will delete your GitHub token from all devices. You'll need to enter a new token to continue using GitHub sync.
+              </p>
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="delete-password">Secondary Password</Label>
+              <Input
+                id="delete-password"
+                type="password"
+                value={deleteSecondaryPassword}
+                onChange={(e) => setDeleteSecondaryPassword(e.target.value)}
+                placeholder="Enter secondary password to confirm"
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    handleConfirmDeleteToken()
+                  }
+                }}
+              />
+            </div>
+            <div className="flex justify-end gap-2">
+              <Button
+                variant="outline"
+                onClick={() => {
+                  setShowDeleteTokenDialog(false)
+                  setDeleteSecondaryPassword('')
+                }}
+              >
+                Cancel
+              </Button>
+              <Button variant="destructive" onClick={handleConfirmDeleteToken}>
+                <Lock className="w-4 h-4 mr-2" />
+                Delete Token
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
     </motion.div>
   )
 }

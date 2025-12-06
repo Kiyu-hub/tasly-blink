@@ -3,6 +3,13 @@ import { generateId, slugify } from './utils'
 import productsData from '@/data/products.json'
 import siteInfoData from '@/data/siteInfo.json'
 
+// GitHub configuration for production deployments
+const GITHUB_OWNER = 'Kiyu-hub'
+const GITHUB_REPO = 'tasly-blink'
+const GITHUB_BRANCH = 'main'
+const GITHUB_BASE_URL = `https://raw.githubusercontent.com/${GITHUB_OWNER}/${GITHUB_REPO}/${GITHUB_BRANCH}/src/data`
+const USE_GITHUB = import.meta.env.PROD // Use GitHub in production, local files in development
+
 const PRODUCTS_KEY = 'tasly_products'
 const SITE_INFO_KEY = 'tasly_site_info'
 const ORDERS_KEY = 'tasly_orders'
@@ -11,6 +18,36 @@ const BANNERS_KEY = 'tasly_banners'
 const CATEGORIES_KEY = 'tasly_categories'
 const ADS_KEY = 'tasly_ads'
 const VISITOR_STATS_KEY = 'tasly_visitor_stats'
+
+// Cache for GitHub data (5 minutes)
+const githubCache = new Map<string, { data: any; timestamp: number }>()
+const CACHE_DURATION = 5 * 60 * 1000
+
+async function fetchFromGitHub<T>(filename: string): Promise<T | null> {
+  try {
+    // Check cache
+    const cached = githubCache.get(filename)
+    if (cached && Date.now() - cached.timestamp < CACHE_DURATION) {
+      return cached.data as T
+    }
+
+    const url = `${GITHUB_BASE_URL}/${filename}`
+    const response = await fetch(url)
+    
+    if (!response.ok) {
+      console.warn(`Failed to fetch ${filename} from GitHub, using fallback`)
+      return null
+    }
+
+    const data = await response.json()
+    githubCache.set(filename, { data, timestamp: Date.now() })
+    
+    return data as T
+  } catch (error) {
+    console.warn(`Error fetching ${filename} from GitHub:`, error)
+    return null
+  }
+}
 
 const defaultProducts: Product[] = productsData as Product[]
 
@@ -122,6 +159,7 @@ function initializeProductReviews(): Review[] {
   return allReviews
 }
 
+// Initialize data from localStorage or GitHub
 export function initializeData(): void {
   if (!localStorage.getItem(PRODUCTS_KEY)) {
     localStorage.setItem(PRODUCTS_KEY, JSON.stringify(defaultProducts))
@@ -132,6 +170,63 @@ export function initializeData(): void {
   if (!localStorage.getItem(REVIEWS_KEY)) {
     const initialReviews = initializeProductReviews()
     localStorage.setItem(REVIEWS_KEY, JSON.stringify(initialReviews))
+  }
+  
+  // In production, fetch fresh data from GitHub
+  if (USE_GITHUB) {
+    loadFromGitHub()
+  }
+}
+
+// Load data from GitHub (production only)
+async function loadFromGitHub(): Promise<void> {
+  try {
+    // Fetch products
+    const products = await fetchFromGitHub<Product[]>('products.json')
+    if (products) {
+      localStorage.setItem(PRODUCTS_KEY, JSON.stringify(products))
+      window.dispatchEvent(new CustomEvent('productsUpdated', { detail: products }))
+    }
+
+    // Fetch site info
+    const siteInfoRaw = await fetchFromGitHub<any>('siteInfo.json')
+    if (siteInfoRaw) {
+      const siteInfo: SiteInfo = {
+        name: siteInfoRaw.name,
+        tagline: siteInfoRaw.tagline,
+        description: siteInfoRaw.description,
+        aboutUs: siteInfoRaw.aboutUs,
+        email: siteInfoRaw.contactEmail,
+        phone: siteInfoRaw.contactPhone,
+        whatsapp: siteInfoRaw.whatsapp,
+        address: siteInfoRaw.address,
+        businessHours: siteInfoRaw.businessHours,
+        announcement: siteInfoRaw.announcement,
+        showAnnouncement: siteInfoRaw.showAnnouncement,
+        currency: siteInfoRaw.currency,
+        freeShippingThreshold: siteInfoRaw.freeShippingThreshold,
+        deliveryFee: siteInfoRaw.deliveryFee,
+        socialMedia: siteInfoRaw.socialMedia,
+        socialMediaDisplay: siteInfoRaw.socialMediaDisplay,
+        shippingInfo: siteInfoRaw.shippingInfo,
+        returnPolicy: siteInfoRaw.returnPolicy,
+        missionStatement: siteInfoRaw.missionStatement,
+        visionStatement: siteInfoRaw.visionStatement,
+        ourStory: siteInfoRaw.ourStory,
+        coreValues: siteInfoRaw.coreValues,
+        certifications: siteInfoRaw.certifications,
+        paymentMethods: siteInfoRaw.paymentMethods,
+        deliveryLocations: siteInfoRaw.deliveryLocations,
+        faqs: siteInfoRaw.faqs,
+        manager: siteInfoRaw.manager,
+      }
+      localStorage.setItem(SITE_INFO_KEY, JSON.stringify(siteInfo))
+      window.dispatchEvent(new CustomEvent('siteInfoUpdated', { detail: siteInfo }))
+    }
+
+    console.log('✅ Data loaded from GitHub repository')
+  } catch (error) {
+    console.warn('Failed to load from GitHub, using local data:', error)
   }
 }
 

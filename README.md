@@ -1,21 +1,21 @@
 # Tasly Ghana 346 - E-Commerce Platform v3.0 🚀
 
 ## Overview
-Tasly Ghana 346 is a **frontend-only** e-commerce platform for authentic Tasly herbal and food supplement products. This React + TypeScript application uses **localStorage as the database** to deliver a complete shopping experience without any backend infrastructure.
+Tasly Ghana 346 is a **static e-commerce platform** for authentic Tasly herbal and food supplement products. This React + TypeScript application fetches data directly from GitHub, making it easy to update content visible to all users without a backend database.
 
-## 🎯 Core Architecture: Frontend-Only Design
+## 🎯 Core Architecture: GitHub-Powered Static Site
 
-### The "Database" is localStorage
-- **No Backend**: All data management happens in the browser
-- **No External APIs**: Complete offline-first functionality
-- **LocalStorage Persistence**: Products, site info, banners all stored locally
-- **Admin Panel**: UI for editing localStorage data directly
-- **Browser-Specific**: Data is unique to each user's browser (can be cleared)
+### Data Source: GitHub Repository
+- **No Backend Database**: Data stored in JSON files on GitHub
+- **Automatic Updates**: Edit JSON files → Push to GitHub → All users see updates
+- **Cached Locally**: localStorage caches data for fast loading & offline access
+- **Admin Panel**: Optional UI for editing (exports to JSON files)
+- **Production Ready**: Fetches from GitHub in production, local files in development
 
 ### Data Flow
-1. **First Load**: Initial data loaded from JSON files → Saved to localStorage
-2. **Subsequent Loads**: Data read from localStorage
-3. **Admin Changes**: Direct localStorage manipulation through admin UI
+1. **Production Mode**: App fetches `products.json` and `siteInfo.json` from GitHub → Cached in localStorage
+2. **Development Mode**: Uses local JSON files for instant updates
+3. **User Updates**: Edit JSON files in GitHub → Push → Website auto-updates (5min cache)
 4. **WhatsApp Integration**: Checkout and pre-orders redirect to WhatsApp
 
 ## 🔐 Secure Admin Panel
@@ -271,49 +271,47 @@ export function saveSiteInfo(siteInfo: SiteInfo): void {
 
 ## 🎯 Admin Panel Usage
 
-### Access
-1. Navigate to: `http://localhost:5174/admin-tasly-ghana-346`
-2. Enter password: `health2024`
-3. Click "Access Dashboard"
+### Updating Site Content (Simple Method - Recommended)
 
-### Managing Products
-1. Go to "Products" tab
-2. Click "Add Product" to create new
-3. Click edit icon to modify existing
-4. Update stock levels in real-time
-5. Changes save to localStorage immediately
+**All users see your changes by editing JSON files directly on GitHub:**
 
-### Managing Site Content
-1. Go to "Settings" tab
-2. Edit Basic Information, Contact Details, Social Media
-3. Update Policies, Mission/Vision statements, Our Story
-4. Click "Save All Settings"
+1. **Go to GitHub Repository**
+   - Navigate to: `https://github.com/Kiyu-hub/tasly-blink`
+   - Click on `src/data/`
 
-### Managing Banners
-1. Go to "Banners" tab
-2. Add hero carousel banners
-3. Toggle active/inactive status
-4. Reorder with order field
+2. **Edit Products**
+   - Click `products.json` → Click pencil icon (Edit)
+   - Make your changes (add/edit products, update prices, change stock levels)
+   - Scroll down → Add commit message → Click "Commit changes"
+   - ✅ **Done!** All users will see updates within 5 minutes
 
-### Syncing Across Browsers (Export/Import)
-Since localStorage is browser-specific, use the Export/Import feature to sync your changes:
+3. **Edit Site Information**
+   - Click `siteInfo.json` → Click pencil icon
+   - Update contact info, mission statement, Our Story, etc.
+   - Commit changes
+   - ✅ **Done!** Changes live for everyone
 
-1. **Export Configuration**
+### Using the Admin Panel (Alternative Method)
+
+If you prefer a visual interface:
+
+1. **Access**
+   - Navigate to: `/admin-tasly-ghana-346`
+   - Enter password: `health2024`
+
+2. **Make Changes**
+   - Edit products, banners, site content
+   - Changes save to localStorage
+
+3. **Export Configuration**
    - Go to "Export/Import" tab
    - Click "Export All Data"
-   - Save the JSON file to a safe location (Google Drive, Dropbox, etc.)
+   - Download JSON file
 
-2. **Import Configuration** (on another browser/device)
-   - Open admin panel on the target browser
-   - Go to "Export/Import" tab
-   - Upload the JSON file
-   - Page will refresh with all your data synced
-
-3. **Best Practices**
-   - Export your configuration regularly as backup
-   - Keep the JSON file secure (contains all your data)
-   - Import before making changes on a new browser
-   - Use cloud storage to access your config file anywhere
+4. **Update GitHub**
+   - Replace `src/data/products.json` and `src/data/siteInfo.json` in GitHub
+   - Commit changes
+   - ✅ **Everyone sees your updates!**
 
 ## 📱 Contact Information
 
@@ -325,14 +323,14 @@ Since localStorage is browser-specific, use the Export/Import feature to sync yo
 
 ## 🌟 Key Highlights
 
-1. **100% Frontend**: No backend required, runs entirely in browser
-2. **localStorage Database**: Complete data persistence without servers
-3. **WhatsApp Integration**: No payment gateway needed
-4. **Secure Admin**: Password-protected with unlisted route
-5. **Complete CMS**: Edit every aspect of the site from admin panel
-6. **Stock Management**: Real-time inventory with pre-order support
+1. **GitHub-Powered**: Data fetched from GitHub repository - edit once, visible to all
+2. **No Backend Required**: Runs entirely as static site, can be hosted anywhere
+3. **WhatsApp Integration**: No payment gateway needed - orders via WhatsApp
+4. **Simple Updates**: Edit JSON files on GitHub → All users see changes
+5. **Fast & Cached**: 5-minute cache for performance, localStorage for offline access
+6. **Admin Panel**: Optional visual editor for non-technical users
 7. **Responsive Design**: Perfect on all devices
-8. **Production Ready**: Optimized build with Vite
+8. **Production Ready**: Optimized build with Vite, CDN-friendly
 
 ## 📄 License
 MIT License - Feel free to use for your projects!

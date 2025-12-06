@@ -1,26 +1,33 @@
 import { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { ChevronLeft, ChevronRight } from 'lucide-react'
+import { ChevronLeft, ChevronRight, ArrowRight } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { Link } from 'react-router-dom'
 
 const healthBanners = [
   {
     id: 1,
     image: 'https://images.unsplash.com/photo-1511632765486-a01980e01a18?w=1600&h=600&fit=crop&q=80',
     title: 'Health & Happiness',
-    description: 'Bringing wellness to every Ghanaian family'
+    description: 'Bringing wellness to every Ghanaian family',
+    ctaText: 'Shop Now',
+    ctaLink: '/products'
   },
   {
     id: 2,
     image: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=1600&h=600&fit=crop&q=80',
     title: 'Expert Care',
-    description: 'Professional health consultations and guidance'
+    description: 'Professional health consultations and guidance',
+    ctaText: 'Learn More',
+    ctaLink: '/about'
   },
   {
     id: 3,
     image: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=1600&h=600&fit=crop&q=80',
     title: 'Wellness Journey',
-    description: 'Natural health solutions for better living'
+    description: 'Natural health solutions for better living',
+    ctaText: 'Explore Products',
+    ctaLink: '/products'
   }
 ]
 
@@ -93,12 +100,12 @@ export default function HealthBannerCarousel() {
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
                 
                 {/* Content */}
-                <div className="absolute bottom-0 left-0 right-0 p-8 md:p-12 text-white">
+                <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-6 md:p-12 text-white">
                   <motion.h3
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.2 }}
-                    className="text-3xl md:text-5xl font-bold mb-3"
+                    className="text-xl sm:text-2xl md:text-5xl font-bold mb-2 md:mb-3"
                   >
                     {healthBanners[currentIndex].title}
                   </motion.h3>
@@ -106,10 +113,26 @@ export default function HealthBannerCarousel() {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.3 }}
-                    className="text-lg md:text-xl text-white/90"
+                    className="text-sm sm:text-base md:text-xl text-white/90 mb-3 md:mb-4"
                   >
                     {healthBanners[currentIndex].description}
                   </motion.p>
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.4 }}
+                  >
+                    <Button
+                      asChild
+                      size="sm"
+                      className="bg-white text-black hover:bg-white/90 text-xs sm:text-sm md:text-base h-8 sm:h-9 md:h-11 px-3 sm:px-4 md:px-6 rounded-full font-semibold"
+                    >
+                      <Link to={healthBanners[currentIndex].ctaLink}>
+                        {healthBanners[currentIndex].ctaText}
+                        <ArrowRight className="ml-1.5 h-3 w-3 sm:h-4 sm:w-4" />
+                      </Link>
+                    </Button>
+                  </motion.div>
                 </div>
               </motion.div>
             </AnimatePresence>
@@ -119,17 +142,17 @@ export default function HealthBannerCarousel() {
               variant="ghost"
               size="icon"
               onClick={goToPrevious}
-              className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/90 hover:bg-white text-black shadow-lg"
+              className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 rounded-full bg-white/90 hover:bg-white text-black shadow-lg"
             >
-              <ChevronLeft className="h-6 w-6" />
+              <ChevronLeft className="h-4 w-4 sm:h-5 sm:w-5 md:h-6 md:w-6" />
             </Button>
             <Button
               variant="ghost"
               size="icon"
               onClick={goToNext}
-              className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/90 hover:bg-white text-black shadow-lg"
+              className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 rounded-full bg-white/90 hover:bg-white text-black shadow-lg"
             >
-              <ChevronRight className="h-6 w-6" />
+              <ChevronRight className="h-4 w-4 sm:h-5 sm:w-5 md:h-6 md:w-6" />
             </Button>
           </div>
 

@@ -1,11 +1,14 @@
-import { Home, Grid3x3, ShoppingCart, Heart } from 'lucide-react'
+import { Home, Grid3x3, ShoppingCart, Heart, Menu, X } from 'lucide-react'
 import { Link, useLocation } from 'react-router-dom'
+import { useState } from 'react'
 import { useCartStore } from '@/store'
 import { cn } from '@/lib/utils'
+import { motion, AnimatePresence } from 'framer-motion'
 
 export default function MobileBottomNav() {
   const location = useLocation()
   const { items } = useCartStore()
+  const [menuOpen, setMenuOpen] = useState(false)
   
   const cartItemCount = items.reduce((total, item) => total + item.quantity, 0)
 
@@ -16,37 +19,106 @@ export default function MobileBottomNav() {
     { icon: Heart, label: 'Wishlist', path: '/wishlist' },
   ]
 
+  const menuItems = [
+    { label: 'About Us', path: '/about' },
+    { label: 'Contact Us', path: '/contact' },
+    { label: 'Become a Distributor', path: '/distributor' },
+    { label: 'Products', path: '/products' },
+  ]
+
   return (
-    <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-gray-200 shadow-lg">
-      <div className="flex justify-around items-center h-14 px-2">
-        {navItems.map((item) => {
-          const Icon = item.icon
-          const isActive = location.pathname === item.path
-          
-          return (
-            <Link
-              key={item.path}
-              to={item.path}
-              className={cn(
-                'flex flex-col items-center justify-center flex-1 h-full relative transition-colors',
-                isActive
-                  ? 'text-primary'
-                  : 'text-gray-500 active:text-primary'
-              )}
+    <>
+      {/* Mobile Menu Overlay */}
+      <AnimatePresence>
+        {menuOpen && (
+          <>
+            {/* Backdrop */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setMenuOpen(false)}
+              className="md:hidden fixed inset-0 bg-black/50 z-40"
+            />
+            
+            {/* Menu Panel */}
+            <motion.div
+              initial={{ y: '100%' }}
+              animate={{ y: 0 }}
+              exit={{ y: '100%' }}
+              transition={{ type: 'spring', damping: 30, stiffness: 300 }}
+              className="md:hidden fixed bottom-0 left-0 right-0 bg-white rounded-t-3xl shadow-2xl z-50 pb-20"
             >
-              <div className="relative">
-                <Icon className="w-5 h-5" />
-                {item.badge !== undefined && item.badge > 0 && (
-                  <span className="absolute -top-1.5 -right-1.5 bg-primary text-white text-[10px] rounded-full w-4 h-4 flex items-center justify-center font-semibold">
-                    {item.badge > 9 ? '9+' : item.badge}
-                  </span>
-                )}
+              <div className="p-6">
+                <div className="flex items-center justify-between mb-6">
+                  <h2 className="text-xl font-bold">Menu</h2>
+                  <button
+                    onClick={() => setMenuOpen(false)}
+                    className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center"
+                  >
+                    <X className="w-5 h-5" />
+                  </button>
+                </div>
+                
+                <div className="space-y-2">
+                  {menuItems.map((item) => (
+                    <Link
+                      key={item.path}
+                      to={item.path}
+                      onClick={() => setMenuOpen(false)}
+                      className="block px-4 py-3 rounded-lg hover:bg-gray-100 transition-colors text-base font-medium"
+                    >
+                      {item.label}
+                    </Link>
+                  ))}
+                </div>
               </div>
-              <span className="text-[10px] mt-0.5 font-medium">{item.label}</span>
-            </Link>
-          )
-        })}
-      </div>
-    </nav>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
+
+      {/* Bottom Navigation */}
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-gray-200 shadow-lg">
+        <div className="flex justify-around items-center h-14 px-2">
+          {navItems.map((item) => {
+            const Icon = item.icon
+            const isActive = location.pathname === item.path
+            
+            return (
+              <Link
+                key={item.path}
+                to={item.path}
+                className={cn(
+                  'flex flex-col items-center justify-center flex-1 h-full relative transition-colors',
+                  isActive
+                    ? 'text-primary'
+                    : 'text-gray-500 active:text-primary'
+                )}
+              >
+                <div className="relative">
+                  <Icon className="w-5 h-5" />
+                  {item.badge !== undefined && item.badge > 0 && (
+                    <span className="absolute -top-1.5 -right-1.5 bg-primary text-white text-[10px] rounded-full w-4 h-4 flex items-center justify-center font-semibold">
+                      {item.badge > 9 ? '9+' : item.badge}
+                    </span>
+                  )}
+                </div>
+                <span className="text-[10px] mt-0.5 font-medium">{item.label}</span>
+              </Link>
+            )
+          })}
+
+          {/* Menu Button */}
+          <button
+            onClick={() => setMenuOpen(true)}
+            className="flex flex-col items-center justify-center flex-1 h-full text-gray-500 active:text-primary transition-colors"
+          >
+            <Menu className="w-5 h-5" />
+            <span className="text-[10px] mt-0.5 font-medium">Menu</span>
+          </button>
+        </div>
+      </nav>
+    </>
   )
 }

@@ -529,6 +529,7 @@ export function getAds(): Ad[] {
 
 export function saveAds(ads: Ad[]): void {
   localStorage.setItem(ADS_KEY, JSON.stringify(ads))
+  window.dispatchEvent(new CustomEvent('adsUpdated', { detail: ads }))
 }
 
 export function addAd(ad: Omit<Ad, 'id'>): Ad {

@@ -29,7 +29,6 @@ export default function CategorySection() {
         }))
         .filter(cat => cat.productCount > 0)
         .sort((a, b) => (b.productCount || 0) - (a.productCount || 0))
-        .slice(0, 6)
       
       setCategories(visibleCategories)
     }
@@ -71,7 +70,7 @@ export default function CategorySection() {
 
         {/* Mobile: Horizontal Scroll */}
         <div className="md:hidden">
-          <div className="flex gap-3 overflow-x-auto pb-4 scrollbar-hide snap-x snap-mandatory">
+          <div className="flex gap-3 overflow-x-auto pb-4 no-scrollbar snap-x snap-mandatory -mx-3 px-3">
             {categories.map((category, index) => {
               const color = category.color || 'from-gray-500 to-slate-600'
               
@@ -82,7 +81,7 @@ export default function CategorySection() {
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: index * 0.05 }}
-                  className="flex-shrink-0 w-24 snap-start"
+                  className="flex-shrink-0 w-32 snap-start"
                 >
                   <Link
                     to={`/products?category=${encodeURIComponent(category.name)}`}
@@ -113,7 +112,7 @@ export default function CategorySection() {
 
         {/* Desktop: Grid */}
         <div className="hidden md:grid grid-cols-3 lg:grid-cols-6 gap-4">
-          {categories.map((category, index) => {
+          {categories.slice(0, 6).map((category, index) => {
             const color = category.color || 'from-gray-500 to-slate-600'
             
             return (

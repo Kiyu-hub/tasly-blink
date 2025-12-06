@@ -2,9 +2,7 @@ import type { Product, SiteInfo, Order, Review, Banner, CategoryData, Ad, Analyt
 import { generateId, slugify } from './utils'
 import { syncProductsToGitHub, syncSiteInfoToGitHub } from './githubSync'
 import productsData from '@/data/products.json'
-import rawSiteInfoData from '@/data/siteInfo.json'
-
-const siteInfoData = rawSiteInfoData as any
+import siteInfoData from '@/data/siteInfo.json'
 
 // GitHub configuration for production deployments
 const GITHUB_OWNER = 'Kiyu-hub'

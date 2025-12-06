@@ -81,7 +81,7 @@ export default function HealthBannerCarousel() {
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -100 }}
                 transition={{ duration: 0.5 }}
-                className="relative h-[250px] md:h-[300px] lg:h-[350px]"
+                className="relative h-[180px] sm:h-[220px] md:h-[280px] lg:h-[350px]"
               >
                 <img
                   src={healthBanners[currentIndex].image}

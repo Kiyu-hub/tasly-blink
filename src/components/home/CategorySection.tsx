@@ -51,25 +51,68 @@ export default function CategorySection() {
   }, [])
 
   if (categories.length === 0) return null
+
   return (
-    <section className="py-16 md:py-24 bg-muted/30">
+    <section className="py-8 md:py-16 bg-muted/30">
       <div className="container mx-auto px-4">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center mb-12"
+          className="mb-6 md:text-center"
         >
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">
+          <h2 className="text-2xl md:text-4xl font-bold mb-2">
             Shop by Category
           </h2>
-          <p className="text-muted-foreground max-w-2xl mx-auto">
-            Discover our wide range of premium health supplements, carefully
-            curated for your wellness journey
+          <p className="text-sm md:text-base text-muted-foreground max-w-2xl md:mx-auto">
+            Discover our wide range of premium health supplements
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+        {/* Mobile: Horizontal Scroll */}
+        <div className="md:hidden">
+          <div className="flex gap-3 overflow-x-auto pb-4 scrollbar-hide snap-x snap-mandatory">
+            {categories.map((category, index) => {
+              const color = category.color || 'from-gray-500 to-slate-600'
+              
+              return (
+                <motion.div
+                  key={category.id}
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.05 }}
+                  className="flex-shrink-0 w-24 snap-start"
+                >
+                  <Link
+                    to={`/products?category=${encodeURIComponent(category.name)}`}
+                    className="group block"
+                  >
+                    <div className="relative overflow-hidden rounded-xl aspect-square mb-2">
+                      <img
+                        src={category.image}
+                        alt={category.name}
+                        className="w-full h-full object-cover"
+                      />
+                      <div
+                        className={`absolute inset-0 bg-gradient-to-t ${color} opacity-50`}
+                      />
+                    </div>
+                    <h3 className="font-semibold text-xs text-center line-clamp-2">
+                      {category.name}
+                    </h3>
+                    <p className="text-[10px] text-muted-foreground text-center">
+                      {category.productCount}
+                    </p>
+                  </Link>
+                </motion.div>
+              )
+            })}
+          </div>
+        </div>
+
+        {/* Desktop: Grid */}
+        <div className="hidden md:grid grid-cols-3 lg:grid-cols-6 gap-4">
           {categories.map((category, index) => {
             const color = category.color || 'from-gray-500 to-slate-600'
             

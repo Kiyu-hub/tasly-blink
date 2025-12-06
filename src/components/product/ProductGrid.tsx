@@ -8,10 +8,11 @@ interface ProductGridProps {
 }
 
 export default function ProductGrid({ products, columns = 4 }: ProductGridProps) {
+  // Mobile-first: Force 2 columns on mobile for dense layout
   const gridCols = {
-    2: 'grid-cols-1 sm:grid-cols-2',
-    3: 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3',
-    4: 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4',
+    2: 'grid-cols-2 sm:grid-cols-2',
+    3: 'grid-cols-2 sm:grid-cols-2 lg:grid-cols-3',
+    4: 'grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4',
   }
 
   if (products.length === 0) {
@@ -45,9 +46,14 @@ export default function ProductGrid({ products, columns = 4 }: ProductGridProps)
   }
 
   return (
-    <div className={`grid gap-6 ${gridCols[columns]}`}>
+    <div className={`grid gap-3 md:gap-6 ${gridCols[columns]}`}>
       {products.map((product, index) => (
-        <ProductCard key={product.id} product={product} index={index} />
+        <ProductCard 
+          key={product.id} 
+          product={product} 
+          index={index}
+          compact={true} // Mobile-optimized compact cards
+        />
       ))}
     </div>
   )

@@ -23,6 +23,7 @@ import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Label } from '@/components/ui/label'
 import FeaturedProducts from '@/components/home/FeaturedProducts'
+import MobileStickyActions from '@/components/mobile/MobileStickyActions'
 import { useCartStore, useWishlistStore } from '@/store'
 import { getProducts, getProductReviews, addReview, getSiteInfo } from '@/lib/storage'
 import { formatCurrency, getDiscountedPrice, cn } from '@/lib/utils'
@@ -693,6 +694,15 @@ export default function ProductDetail() {
           />
         )}
       </div>
+
+      {/* Mobile Sticky Action Bar */}
+      <MobileStickyActions
+        onAddToCart={handleAddToCart}
+        onAddToWishlist={handleWishlist}
+        inWishlist={inWishlist}
+        disabled={product.stock <= 0}
+        price={formatCurrency(finalPrice)}
+      />
     </motion.div>
   )
 }

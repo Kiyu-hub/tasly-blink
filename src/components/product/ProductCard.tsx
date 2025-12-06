@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { ShoppingCart, Heart, Eye, Star } from 'lucide-react'
+import { ShoppingCart, Heart, Star } from 'lucide-react'
 import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -12,9 +12,10 @@ import { cn } from '@/lib/utils'
 interface ProductCardProps {
   product: Product
   index?: number
+  compact?: boolean // New prop for mobile-optimized compact view
 }
 
-export default function ProductCard({ product, index = 0 }: ProductCardProps) {
+export default function ProductCard({ product, index = 0, compact = false }: ProductCardProps) {
   const addItem = useCartStore((state) => state.addItem)
   const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlistStore()
   const inWishlist = isInWishlist(product.id)
@@ -46,6 +47,106 @@ export default function ProductCard({ product, index = 0 }: ProductCardProps) {
     ? getDiscountedPrice(product.price, product.discount)
     : product.price
 
+  // Compact mobile view
+  if (compact) {
+    return (
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: index * 0.05 }}
+        className="group"
+      >
+        <Link to={`/products/${product.slug}`}>
+          <div className="relative bg-card rounded-lg border overflow-hidden hover:shadow-lg transition-shadow">
+            {/* Compact Image Container */}
+            <div className="relative aspect-square overflow-hidden bg-muted">
+              <img
+                src={product.imageURL}
+                alt={product.name}
+                className="w-full h-full object-cover"
+                loading="lazy"
+              />
+
+              {/* Compact Badges - Top Left */}
+              <div className="absolute top-1.5 left-1.5">
+                {product.discount && (
+                  <Badge variant="sale" className="text-[10px] h-5 px-1.5">-{product.discount}%</Badge>
+                )}
+              </div>
+
+              {/* Wishlist - Top Right */}
+              <button
+                className="absolute top-1.5 right-1.5 w-7 h-7 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center shadow-sm"
+                onClick={handleWishlist}
+              >
+                <Heart
+                  className={cn(
+                    'h-3.5 w-3.5',
+                    inWishlist ? 'fill-red-500 text-red-500' : 'text-gray-600'
+                  )}
+                />
+              </button>
+
+              {/* Stock Badge - Bottom */}
+              {product.stock <= 0 && (
+                <div className="absolute bottom-0 left-0 right-0 bg-red-500 text-white text-[10px] text-center py-0.5 font-medium">
+                  Out of Stock
+                </div>
+              )}
+            </div>
+
+            {/* Compact Content */}
+            <div className="p-2">
+              {/* Product Name - Smaller */}
+              <h3 className="text-xs font-semibold line-clamp-2 mb-1 min-h-[32px]">
+                {product.name}
+              </h3>
+
+              {/* Rating - Smaller */}
+              {product.rating && (
+                <div className="flex items-center gap-0.5 mb-1">
+                  <Star className="h-2.5 w-2.5 fill-yellow-400 text-yellow-400" />
+                  <span className="text-[10px] text-muted-foreground">
+                    {product.rating} ({product.reviewCount || 0})
+                  </span>
+                </div>
+              )}
+
+              {/* Price Row */}
+              <div className="flex items-center justify-between">
+                <div className="flex flex-col">
+                  <span className="text-sm font-bold text-primary">
+                    {formatCurrency(finalPrice)}
+                  </span>
+                  {product.discount && (
+                    <span className="text-[10px] text-muted-foreground line-through">
+                      {formatCurrency(product.price)}
+                    </span>
+                  )}
+                </div>
+                
+                {/* Mini Add to Cart Icon */}
+                <button
+                  className={cn(
+                    "w-7 h-7 rounded-full flex items-center justify-center transition-colors",
+                    product.stock <= 0
+                      ? "bg-gray-200 text-gray-400 cursor-not-allowed"
+                      : "bg-primary text-white hover:bg-primary/90"
+                  )}
+                  onClick={handleAddToCart}
+                  disabled={product.stock <= 0}
+                >
+                  <ShoppingCart className="h-3.5 w-3.5" />
+                </button>
+              </div>
+            </div>
+          </div>
+        </Link>
+      </motion.div>
+    )
+  }
+
+  // Desktop full view (unchanged)
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -92,16 +193,6 @@ export default function ProductCard({ product, index = 0 }: ProductCardProps) {
                     inWishlist && 'fill-red-500 text-red-500'
                   )}
                 />
-              </Button>
-              <Button
-                size="icon"
-                variant="secondary"
-                className="h-9 w-9 rounded-full shadow-md"
-                asChild
-              >
-                <Link to={`/products/${product.slug}`}>
-                  <Eye className="h-4 w-4" />
-                </Link>
               </Button>
             </div>
 

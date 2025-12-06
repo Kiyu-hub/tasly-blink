@@ -70,11 +70,11 @@ export default function MobileMenu() {
             animate={{ x: 0 }}
             exit={{ x: '-100%' }}
             transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-            className="fixed left-0 top-0 z-50 h-full w-[280px] bg-background shadow-xl lg:hidden"
+            className="fixed left-0 top-0 z-50 h-full w-[280px] bg-white dark:bg-gray-900 shadow-xl lg:hidden"
           >
-            <div className="flex h-full flex-col">
+            <div className="flex h-full flex-col bg-white dark:bg-gray-900">
               {/* Header */}
-              <div className="flex items-center justify-between p-4 border-b border-border">
+              <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">
                 <Link
                   to="/"
                   onClick={() => setMobileMenuOpen(false)}
@@ -93,7 +93,7 @@ export default function MobileMenu() {
                       </span>
                     </div>
                   )}
-                  <span className="font-display text-lg font-bold text-foreground">
+                  <span className="font-display text-lg font-bold text-gray-900 dark:text-white">
                     {siteInfo.name}
                   </span>
                 </Link>
@@ -101,26 +101,26 @@ export default function MobileMenu() {
                   variant="ghost"
                   size="icon"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="text-foreground hover:bg-accent"
+                  className="text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800"
                 >
                   <X className="h-5 w-5" />
                 </Button>
               </div>
 
               {/* Navigation */}
-              <nav className="flex-1 overflow-auto p-4">
+              <nav className="flex-1 overflow-auto p-4 bg-white dark:bg-gray-900">
                 <div className="space-y-1">
                   {menuItems.map((item) => (
                     <Link
                       key={item.href}
                       to={item.href}
                       onClick={() => setMobileMenuOpen(false)}
-                      className={`flex items-center gap-3 rounded-lg px-3 py-3 text-sm font-medium hover:bg-accent transition-colors ${
+                      className={`flex items-center gap-3 rounded-lg px-3 py-3 text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors ${
                         item.highlight ? 'bg-primary/10' : ''
                       }`}
                     >
-                      <item.icon className={`h-5 w-5 flex-shrink-0 ${item.highlight ? 'text-primary' : 'text-foreground dark:text-foreground'}`} />
-                      <span className={`${item.highlight ? 'text-primary' : 'text-foreground dark:text-foreground'} font-medium`}>
+                      <item.icon className={`h-5 w-5 flex-shrink-0 ${item.highlight ? 'text-primary' : 'text-gray-900 dark:text-white'}`} />
+                      <span className={`${item.highlight ? 'text-primary' : 'text-gray-900 dark:text-white'} font-medium`}>
                         {item.label}
                       </span>
                     </Link>
@@ -144,7 +144,7 @@ export default function MobileMenu() {
                 <Separator className="my-4" />
 
                 <div>
-                  <h3 className="px-3 text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">
+                  <h3 className="px-3 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">
                     Categories
                   </h3>
                   <div className="space-y-1">
@@ -153,7 +153,7 @@ export default function MobileMenu() {
                         key={category}
                         to={`/products?category=${encodeURIComponent(category)}`}
                         onClick={() => setMobileMenuOpen(false)}
-                        className="block rounded-lg px-3 py-2 text-sm text-foreground dark:text-foreground hover:bg-accent transition-colors font-medium"
+                        className="block rounded-lg px-3 py-2 text-sm text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors font-medium"
                       >
                         {category}
                       </Link>
@@ -163,8 +163,8 @@ export default function MobileMenu() {
               </nav>
 
               {/* Footer */}
-              <div className="p-4 border-t">
-                <p className="text-xs text-center text-muted-foreground">
+              <div className="p-4 border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">
+                <p className="text-xs text-center text-gray-500 dark:text-gray-400">
                   © {new Date().getFullYear()} {siteInfo.name}
                 </p>
               </div>

@@ -47,14 +47,14 @@ export default function MobileBottomNav() {
               animate={{ y: 0 }}
               exit={{ y: '100%' }}
               transition={{ type: 'spring', damping: 30, stiffness: 300 }}
-              className="md:hidden fixed bottom-0 left-0 right-0 bg-white rounded-t-3xl shadow-2xl z-50 pb-20"
+              className="md:hidden fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-900 rounded-t-3xl shadow-2xl z-50 pb-20"
             >
               <div className="p-6">
                 <div className="flex items-center justify-between mb-6">
-                  <h2 className="text-xl font-bold">Menu</h2>
+                  <h2 className="text-xl font-bold text-gray-900 dark:text-white">Menu</h2>
                   <button
                     onClick={() => setMenuOpen(false)}
-                    className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center"
+                    className="w-10 h-10 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white flex items-center justify-center"
                   >
                     <X className="w-5 h-5" />
                   </button>
@@ -66,7 +66,7 @@ export default function MobileBottomNav() {
                       key={item.path}
                       to={item.path}
                       onClick={() => setMenuOpen(false)}
-                      className="block px-4 py-3 rounded-lg hover:bg-gray-100 transition-colors text-base font-medium"
+                      className="block px-4 py-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors text-base font-medium text-gray-900 dark:text-white"
                     >
                       {item.label}
                     </Link>
@@ -79,7 +79,7 @@ export default function MobileBottomNav() {
       </AnimatePresence>
 
       {/* Bottom Navigation */}
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-gray-200 shadow-lg">
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700 shadow-lg">
         <div className="flex justify-around items-center h-14 px-2">
           {navItems.map((item) => {
             const Icon = item.icon

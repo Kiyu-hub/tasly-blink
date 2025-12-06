@@ -167,6 +167,7 @@ Positioned below hero section on homepage for maximum visibility
 - ✅ Policy management
 - ✅ Real-time preview
 - ✅ Session-based authentication
+- ✅ **Export/Import configuration** (sync across browsers)
 
 ## 🚀 Getting Started
 
@@ -285,7 +286,7 @@ export function saveSiteInfo(siteInfo: SiteInfo): void {
 ### Managing Site Content
 1. Go to "Settings" tab
 2. Edit Basic Information, Contact Details, Social Media
-3. Update Policies, Mission/Vision statements
+3. Update Policies, Mission/Vision statements, Our Story
 4. Click "Save All Settings"
 
 ### Managing Banners
@@ -293,6 +294,26 @@ export function saveSiteInfo(siteInfo: SiteInfo): void {
 2. Add hero carousel banners
 3. Toggle active/inactive status
 4. Reorder with order field
+
+### Syncing Across Browsers (Export/Import)
+Since localStorage is browser-specific, use the Export/Import feature to sync your changes:
+
+1. **Export Configuration**
+   - Go to "Export/Import" tab
+   - Click "Export All Data"
+   - Save the JSON file to a safe location (Google Drive, Dropbox, etc.)
+
+2. **Import Configuration** (on another browser/device)
+   - Open admin panel on the target browser
+   - Go to "Export/Import" tab
+   - Upload the JSON file
+   - Page will refresh with all your data synced
+
+3. **Best Practices**
+   - Export your configuration regularly as backup
+   - Keep the JSON file secure (contains all your data)
+   - Import before making changes on a new browser
+   - Use cloud storage to access your config file anywhere
 
 ## 📱 Contact Information
 

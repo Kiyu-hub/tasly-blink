@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { X, Home, ShoppingBag, Info, Phone, Heart, UserPlus, MessageCircle } from 'lucide-react'
@@ -8,8 +9,26 @@ import { getCategories, getSiteInfo } from '@/lib/storage'
 
 export default function MobileMenu() {
   const { isMobileMenuOpen, setMobileMenuOpen } = useUIStore()
-  const categories = getCategories()
-  const siteInfo = getSiteInfo()
+  const [categories, setCategories] = useState(getCategories())
+  const [siteInfo, setSiteInfo] = useState(getSiteInfo())
+
+  useEffect(() => {
+    const handleSiteInfoUpdate = () => {
+      setSiteInfo(getSiteInfo())
+    }
+    
+    const handleCategoriesUpdate = () => {
+      setCategories(getCategories())
+    }
+    
+    window.addEventListener('siteInfoUpdated', handleSiteInfoUpdate)
+    window.addEventListener('categoriesUpdated', handleCategoriesUpdate)
+    
+    return () => {
+      window.removeEventListener('siteInfoUpdated', handleSiteInfoUpdate)
+      window.removeEventListener('categoriesUpdated', handleCategoriesUpdate)
+    }
+  }, [])
 
   const handleJoinCommunity = () => {
     if (siteInfo.whatsappCommunityLink) {
@@ -55,17 +74,25 @@ export default function MobileMenu() {
           >
             <div className="flex h-full flex-col">
               {/* Header */}
-              <div className="flex items-center justify-between p-4 border-b">
+              <div className="flex items-center justify-between p-4 border-b border-border">
                 <Link
                   to="/"
                   onClick={() => setMobileMenuOpen(false)}
                   className="flex items-center space-x-2"
                 >
-                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-r from-primary to-green-600">
-                    <span className="text-sm font-bold text-white">
-                      {siteInfo.name.charAt(0).toUpperCase()}
-                    </span>
-                  </div>
+                  {siteInfo.logo ? (
+                    <img 
+                      src={siteInfo.logo} 
+                      alt={siteInfo.name} 
+                      className="h-10 w-10 object-contain"
+                    />
+                  ) : (
+                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-r from-primary to-green-600">
+                      <span className="text-sm font-bold text-white">
+                        {siteInfo.name.charAt(0).toUpperCase()}
+                      </span>
+                    </div>
+                  )}
                   <span className="font-display text-lg font-bold text-foreground">
                     {siteInfo.name}
                   </span>
@@ -74,7 +101,7 @@ export default function MobileMenu() {
                   variant="ghost"
                   size="icon"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="text-foreground"
+                  className="text-foreground hover:bg-accent"
                 >
                   <X className="h-5 w-5" />
                 </Button>

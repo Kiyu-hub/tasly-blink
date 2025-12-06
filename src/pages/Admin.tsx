@@ -44,6 +44,12 @@ import {
   saveAds,
   getAnalytics,
 } from '@/lib/storage'
+import { 
+  getGitHubToken, 
+  setGitHubToken, 
+  isGitHubSyncEnabled,
+  testGitHubConnection 
+} from '@/lib/githubSync'
 import { formatCurrency, generateId, slugify } from '@/lib/utils'
 import type { Product, Banner, SiteInfo, CategoryData, Ad } from '@/types'
 
@@ -80,6 +86,10 @@ export default function Admin() {
   const [categories, setCategories] = useState<CategoryData[]>([])
   const [ads, setAds] = useState<Ad[]>([])
   const [analyticsPeriod, setAnalyticsPeriod] = useState<'daily' | 'weekly' | 'monthly'>('weekly')
+  
+  const [githubToken, setGithubTokenState] = useState(getGitHubToken() || '')
+  const [githubSyncEnabled, setGithubSyncEnabled] = useState(isGitHubSyncEnabled())
+  const [testingConnection, setTestingConnection] = useState(false)
 
   const [editingProduct, setEditingProduct] = useState<Partial<Product> | null>(
     null
@@ -418,6 +428,46 @@ export default function Admin() {
     )
     setAds(updatedAds)
     saveAds(updatedAds)
+  }
+
+  // GitHub Sync Handlers
+  const handleSaveGitHubToken = () => {
+    if (!githubToken || githubToken.trim().length === 0) {
+      toast.error('Please enter a valid GitHub token')
+      return
+    }
+    
+    setGitHubToken(githubToken.trim())
+    setGithubSyncEnabled(true)
+    toast.success('GitHub token saved! Changes will now automatically sync to your repository.')
+  }
+
+  const handleTestGitHubConnection = async () => {
+    if (!githubToken || githubToken.trim().length === 0) {
+      toast.error('Please enter a GitHub token first')
+      return
+    }
+    
+    setTestingConnection(true)
+    try {
+      const result = await testGitHubConnection()
+      if (result.success) {
+        toast.success(result.message)
+      } else {
+        toast.error(result.message)
+      }
+    } catch (error) {
+      toast.error('Failed to test connection. Please check your token.')
+    } finally {
+      setTestingConnection(false)
+    }
+  }
+
+  const handleDeleteGitHubToken = () => {
+    localStorage.removeItem('github_token')
+    setGithubTokenState('')
+    setGithubSyncEnabled(false)
+    toast.success('GitHub sync disabled')
   }
 
   return (
@@ -1459,6 +1509,97 @@ export default function Admin() {
           {/* Settings Tab */}
           <TabsContent value="settings">
             <div className="space-y-4 md:space-y-6">
+              {/* GitHub Sync Configuration */}
+              <Card className="border-2 border-primary/20">
+                <CardHeader className="p-4 md:p-6 bg-primary/5">
+                  <CardTitle className="text-lg md:text-xl flex items-center gap-2">
+                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
+                    </svg>
+                    GitHub Auto-Sync
+                    {githubSyncEnabled && (
+                      <Badge variant="default" className="ml-2">Active</Badge>
+                    )}
+                  </CardTitle>
+                  <p className="text-sm text-muted-foreground mt-2">
+                    Enable automatic syncing of your changes to GitHub repository. All admin panel updates will be committed automatically.
+                  </p>
+                </CardHeader>
+                <CardContent className="p-4 md:p-6">
+                  <div className="space-y-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="github-token">GitHub Personal Access Token</Label>
+                      <Input
+                        id="github-token"
+                        type="password"
+                        value={githubToken}
+                        onChange={(e) => setGithubTokenState(e.target.value)}
+                        placeholder="ghp_xxxxxxxxxxxxxxxxxxxx"
+                        className="font-mono text-sm"
+                      />
+                      <p className="text-xs text-muted-foreground">
+                        Create a token at{' '}
+                        <a
+                          href="https://github.com/settings/tokens/new?scopes=repo&description=Tasly%20Admin%20Panel"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-primary hover:underline"
+                        >
+                          github.com/settings/tokens
+                        </a>
+                        {' '}with <code className="bg-muted px-1 py-0.5 rounded">repo</code> permissions.
+                      </p>
+                    </div>
+
+                    <div className="flex flex-col sm:flex-row gap-2">
+                      <Button
+                        onClick={handleSaveGitHubToken}
+                        disabled={!githubToken || githubToken.trim().length === 0}
+                        className="flex-1"
+                      >
+                        <Save className="w-4 h-4 mr-2" />
+                        Save Token
+                      </Button>
+                      <Button
+                        onClick={handleTestGitHubConnection}
+                        disabled={!githubSyncEnabled || testingConnection}
+                        variant="outline"
+                        className="flex-1"
+                      >
+                        {testingConnection ? (
+                          <>
+                            <div className="w-4 h-4 mr-2 border-2 border-current border-t-transparent rounded-full animate-spin" />
+                            Testing...
+                          </>
+                        ) : (
+                          <>Test Connection</>
+                        )}
+                      </Button>
+                      {githubSyncEnabled && (
+                        <Button
+                          onClick={handleDeleteGitHubToken}
+                          variant="destructive"
+                          size="icon"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </Button>
+                      )}
+                    </div>
+
+                    {githubSyncEnabled && (
+                      <div className="mt-4 p-3 bg-green-50 dark:bg-green-950/20 border border-green-200 dark:border-green-900 rounded-lg">
+                        <p className="text-sm text-green-800 dark:text-green-300 font-medium">
+                          ✓ GitHub sync is enabled
+                        </p>
+                        <p className="text-xs text-green-700 dark:text-green-400 mt-1">
+                          All changes you make will be automatically committed to your repository. Users will see updates after the site rebuilds.
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                </CardContent>
+              </Card>
+
               {/* Basic Information */}
               <Card>
                 <CardHeader className="p-4 md:p-6">

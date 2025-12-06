@@ -168,7 +168,7 @@ export default function CartSidebar() {
                     </span>
                   </div>
                   <p className="text-xs text-muted-foreground text-center">
-                    Shipping calculated at checkout
+                    Delivery calculated at checkout
                   </p>
                   <div className="grid grid-cols-2 gap-2">
                     <Button

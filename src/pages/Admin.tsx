@@ -1926,7 +1926,7 @@ export default function Admin() {
                               announcement: e.target.value,
                             })
                           }
-                          placeholder="Free shipping on orders over GH₵500!"
+                          placeholder="Free delivery on orders over GH₵500!"
                         />
                       </div>
 
@@ -1959,7 +1959,7 @@ export default function Admin() {
                           />
                         </div>
                         <div className="space-y-2">
-                          <Label>Free Shipping Threshold</Label>
+                          <Label>Free Delivery Threshold</Label>
                           <Input
                             type="number"
                             value={siteInfo.freeShippingThreshold}
@@ -1987,7 +1987,7 @@ export default function Admin() {
                       </div>
 
                       <div className="space-y-2">
-                        <Label>Shipping Information</Label>
+                        <Label>Delivery Information</Label>
                         <Textarea
                           value={siteInfo.shippingInfo || ''}
                           onChange={(e) =>

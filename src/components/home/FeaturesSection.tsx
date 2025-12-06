@@ -14,7 +14,7 @@ const features = [
   },
   {
     icon: Clock,
-    title: 'Fast Shipping',
+    title: 'Fast Delivery',
     description: '2-3 days delivery in Accra',
   },
   {

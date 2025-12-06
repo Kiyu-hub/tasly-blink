@@ -44,7 +44,7 @@ Tasly Ghana 346 is a **frontend-only** e-commerce platform for authentic Tasly h
    - Basic Information (name, tagline, description, about us)
    - Contact Details (email, phone, WhatsApp, address, business hours)
    - Social Media Links (Facebook, Instagram, Twitter, YouTube, TikTok)
-   - Policies (shipping info, return policy, announcements)
+   - Policies (delivery info, return policy, announcements)
    - Mission & Vision statements
    - All header and footer content editable
 
@@ -353,7 +353,7 @@ Configured in `/src/data/siteInfo.json` with:
 - Business details
 - Contact information
 - Social media links
-- Shipping & return policies
+- Delivery & return policies
 - FAQs
 - Core values & certifications
 

@@ -315,7 +315,7 @@ export default function Contact() {
             </h2>
             <p className="text-muted-foreground mb-6">
               Find answers to commonly asked questions about our products,
-              shipping, returns, and more.
+              delivery, returns, and more.
             </p>
             <Button variant="outline" className="rounded-full">
               View FAQ

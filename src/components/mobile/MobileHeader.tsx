@@ -26,13 +26,16 @@ export default function MobileHeader() {
       <div className="flex items-center gap-2 px-3 py-2">
         {/* Logo - Compact */}
         <Link to="/" className="flex-shrink-0">
-          <div className="flex items-center gap-1">
+          <div className="flex items-center gap-1.5">
             <img 
-              src="/logo.png" 
-              alt="Tasly" 
-              className="h-8 w-8 object-contain"
+              src="/tasly-logo.svg" 
+              alt="Tasly Ghana 346" 
+              className="h-9 w-9 object-contain"
             />
-            <span className="text-sm font-bold text-primary">Tasly</span>
+            <div className="flex flex-col leading-tight">
+              <span className="text-xs font-bold text-primary">Tasly Ghana</span>
+              <span className="text-[10px] font-semibold text-muted-foreground">346</span>
+            </div>
           </div>
         </Link>
 

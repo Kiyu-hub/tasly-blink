@@ -36,7 +36,10 @@ export default function Layout() {
       <main className="flex-1 pb-16 md:pb-0">
         <Outlet />
       </main>
-      <Footer />
+      {/* Footer - Hidden on mobile, visible on desktop */}
+      <div className="hidden md:block">
+        <Footer />
+      </div>
       <CartSidebar />
       <MobileMenu />
       <SearchDialog />

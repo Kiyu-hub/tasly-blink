@@ -39,24 +39,24 @@ const testimonials = [
 
 export default function TestimonialsSection() {
   return (
-    <section className="py-10 md:py-16 lg:py-24 bg-gradient-to-br from-primary/5 via-background to-primary/5">
+    <section className="py-6 md:py-12 lg:py-20 bg-gradient-to-br from-primary/5 via-background to-primary/5">
       <div className="container mx-auto px-4">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center mb-12"
+          className="text-center mb-6 md:mb-12"
         >
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">
+          <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-2 md:mb-4">
             What Our Customers Say
           </h2>
-          <p className="text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-sm md:text-base text-muted-foreground max-w-2xl mx-auto">
             Join thousands of satisfied customers who have transformed their
             health with Tasly products
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6">
           {testimonials.map((testimonial, index) => (
             <motion.div
               key={testimonial.id}
@@ -66,18 +66,18 @@ export default function TestimonialsSection() {
               transition={{ delay: index * 0.1 }}
             >
               <Card className="h-full hover:shadow-lg transition-shadow">
-                <CardContent className="p-6">
-                  <Quote className="w-8 h-8 text-primary/20 mb-4" />
+                <CardContent className="p-4 md:p-6">
+                  <Quote className="w-6 h-6 md:w-8 md:h-8 text-primary/20 mb-3 md:mb-4" />
 
-                  <p className="text-muted-foreground mb-6 line-clamp-4">
+                  <p className="text-sm md:text-base text-muted-foreground mb-4 md:mb-6 line-clamp-3 md:line-clamp-4">
                     "{testimonial.content}"
                   </p>
 
-                  <div className="flex items-center gap-1 mb-4">
+                  <div className="flex items-center gap-1 mb-3 md:mb-4">
                     {[...Array(5)].map((_, i) => (
                       <Star
                         key={i}
-                        className={`w-4 h-4 ${
+                        className={`w-3 h-3 md:w-4 md:h-4 ${
                           i < testimonial.rating
                             ? 'fill-yellow-400 text-yellow-400'
                             : 'fill-muted text-muted'
@@ -87,8 +87,8 @@ export default function TestimonialsSection() {
                   </div>
 
                   <div>
-                    <p className="font-semibold">{testimonial.name}</p>
-                    <p className="text-sm text-muted-foreground">
+                    <p className="text-sm md:text-base font-semibold">{testimonial.name}</p>
+                    <p className="text-xs md:text-sm text-muted-foreground">
                       {testimonial.role}
                     </p>
                   </div>

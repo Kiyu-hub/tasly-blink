@@ -2,12 +2,14 @@ import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { ShoppingCart, Heart, Star } from 'lucide-react'
 import { toast } from 'sonner'
+import { useState, useRef, useCallback } from 'react'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { useCartStore, useWishlistStore } from '@/store'
 import { formatCurrency, getDiscountedPrice } from '@/lib/utils'
 import type { Product } from '@/types'
 import { cn } from '@/lib/utils'
+import QuantityDialog from './QuantityDialog'
 
 interface ProductCardProps {
   product: Product
@@ -19,16 +21,50 @@ export default function ProductCard({ product, index = 0, compact = false }: Pro
   const addItem = useCartStore((state) => state.addItem)
   const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlistStore()
   const inWishlist = isInWishlist(product.id)
+  
+  const [showQuantityDialog, setShowQuantityDialog] = useState(false)
+  const clickCountRef = useRef(0)
+  const clickTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
-  const handleAddToCart = (e: React.MouseEvent) => {
+  const handleAddToCart = useCallback((e: React.MouseEvent) => {
     e.preventDefault()
     e.stopPropagation()
+    
     if (product.stock <= 0) {
       toast.error('This product is out of stock')
       return
     }
-    addItem(product, 1)
-    toast.success(`${product.name} added to cart`)
+
+    // Clear existing timer
+    if (clickTimerRef.current) {
+      clearTimeout(clickTimerRef.current)
+    }
+
+    // Increment click count
+    clickCountRef.current += 1
+
+    if (clickCountRef.current === 1) {
+      // First click - add 1 item normally
+      addItem(product, 1)
+      toast.success(`${product.name} added to cart`)
+      
+      // Reset counter after 1 second
+      clickTimerRef.current = setTimeout(() => {
+        clickCountRef.current = 0
+      }, 1000)
+    } else {
+      // Multiple clicks - show quantity dialog
+      setShowQuantityDialog(true)
+      clickCountRef.current = 0
+      if (clickTimerRef.current) {
+        clearTimeout(clickTimerRef.current)
+      }
+    }
+  }, [product, addItem])
+
+  const handleQuantityConfirm = (quantity: number) => {
+    addItem(product, quantity)
+    toast.success(`${quantity} × ${product.name} added to cart`)
   }
 
   const handleWishlist = (e: React.MouseEvent) => {
@@ -69,7 +105,7 @@ export default function ProductCard({ product, index = 0, compact = false }: Pro
 
               {/* Compact Badges - Top Left */}
               <div className="absolute top-1.5 left-1.5">
-                {product.discount && (
+                {(product.discount ?? 0) > 0 && (
                   <Badge variant="sale" className="text-[10px] h-5 px-1.5">-{product.discount}%</Badge>
                 )}
               </div>
@@ -118,7 +154,7 @@ export default function ProductCard({ product, index = 0, compact = false }: Pro
                   <span className="text-sm font-bold text-primary">
                     {formatCurrency(finalPrice)}
                   </span>
-                  {product.discount && (
+                  {(product.discount ?? 0) > 0 && (
                     <span className="text-[10px] text-muted-foreground line-through">
                       {formatCurrency(product.price)}
                     </span>
@@ -167,7 +203,7 @@ export default function ProductCard({ product, index = 0, compact = false }: Pro
 
             {/* Badges */}
             <div className="absolute top-3 left-3 flex flex-col gap-2">
-              {product.discount && (
+              {(product.discount ?? 0) > 0 && (
                 <Badge variant="sale">-{product.discount}%</Badge>
               )}
               {product.new && <Badge variant="new">New</Badge>}
@@ -243,7 +279,7 @@ export default function ProductCard({ product, index = 0, compact = false }: Pro
               <span className="text-lg font-bold text-primary">
                 {formatCurrency(finalPrice)}
               </span>
-              {product.discount && (
+              {(product.discount ?? 0) > 0 && (
                 <span className="text-sm text-muted-foreground line-through">
                   {formatCurrency(product.price)}
                 </span>
@@ -252,6 +288,14 @@ export default function ProductCard({ product, index = 0, compact = false }: Pro
           </div>
         </div>
       </Link>
+
+      {/* Quantity Dialog */}
+      <QuantityDialog
+        isOpen={showQuantityDialog}
+        onClose={() => setShowQuantityDialog(false)}
+        onConfirm={handleQuantityConfirm}
+        product={product}
+      />
     </motion.div>
   )
 }

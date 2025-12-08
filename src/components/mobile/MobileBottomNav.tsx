@@ -1,7 +1,8 @@
-import { Home, Grid3x3, ShoppingCart, Heart, Menu, X } from 'lucide-react'
+import { Home, Grid3x3, ShoppingCart, Heart, Menu, X, UserPlus } from 'lucide-react'
 import { Link, useLocation } from 'react-router-dom'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useCartStore } from '@/store'
+import { getCategories } from '@/lib/storage'
 import { cn } from '@/lib/utils'
 import { motion, AnimatePresence } from 'framer-motion'
 
@@ -9,12 +10,32 @@ export default function MobileBottomNav() {
   const location = useLocation()
   const { items } = useCartStore()
   const [menuOpen, setMenuOpen] = useState(false)
+  const [categories, setCategories] = useState<string[]>([])
   
   const cartItemCount = items.reduce((total, item) => total + item.quantity, 0)
 
+  useEffect(() => {
+    const loadCategories = () => {
+      setCategories(getCategories())
+    }
+    
+    loadCategories()
+    
+    window.addEventListener('categoriesUpdated', loadCategories)
+    window.addEventListener('productsUpdated', loadCategories)
+    
+    return () => {
+      window.removeEventListener('categoriesUpdated', loadCategories)
+      window.removeEventListener('productsUpdated', loadCategories)
+    }
+  }, [])
+
+  // If no categories, show Distributor icon instead of Categories
   const navItems = [
     { icon: Home, label: 'Home', path: '/' },
-    { icon: Grid3x3, label: 'Categories', path: '/categories' },
+    categories.length > 0 
+      ? { icon: Grid3x3, label: 'Categories', path: '/categories' }
+      : { icon: UserPlus, label: 'Distributor', path: '/distributor' },
     { icon: ShoppingCart, label: 'Cart', path: '/cart', badge: cartItemCount },
     { icon: Heart, label: 'Wishlist', path: '/wishlist' },
   ]

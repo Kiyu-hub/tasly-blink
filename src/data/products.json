@@ -135,12 +135,37 @@
     "id": "imys0ayulwgwh2qcfig6h9",
     "name": "Cardiotonic Pill (ICP)",
     "slug": "cardiotonic-pill-icp",
-    "description": "🌿 Ingredients:\nDanshen (Radix Salviae Miltiorrhizae)\n\nSanqi (Radix Notoginseng)\n\nBorneol\n\n📦 Package Info:\n250mg x 30 Capsules per Box\n\n🧴 Dosage:\n1–2 capsules, once or twice daily (PO qd–bid)\n\nTake before meals (ac)\n\n💡 Functions / Key Benefits:\n🩸 Improves Vascular Elasticity\n\n🚫 Reduces Lipid Sediment & Thrombosis Formation\n\n🧹 Clears Arterial Plaque and Body \"Garbage\"\n\n🔄 Enhances Circulation & Blood Flow\n\n🎯 Target Group:\nIndividuals with poor blood circulation\n\nPeople at risk of arteriosclerosis, plaque buildup, or vascular aging\n\nAdults seeking heart and vessel health support\n\nThose recovering from mild cardiac issues\n\n⚠️ Notes:\nTraditional Chinese Medicine (TCM) formulation\n\nIdeal for long-term cardiovascular maintenance\n\nStore in a cool, dry place\n",
+    "description": "🌿 Ingredients:\nDanshen (Radix Salviae Miltiorrhizae)",
     "price": 312,
     "imageURL": "https://i.imgur.com/teplKde.jpeg",
     "category": "General",
-    "stock": 0,
+    "stock": 100,
     "discount": 0,
-    "new": true
+    "new": true,
+    "ingredients": [
+      "Danshen (Radix Salviae Miltiorrhizae)",
+      "Sanqi (Radix Notoginseng)",
+      "Borneol"
+    ],
+    "benefits": [
+      "\ude78 Improves Vascular Elasticity",
+      "\udeab Reduces Lipid Sediment & Thrombosis Formation",
+      "\uddf9 Clears Arterial Plaque and Body \"Garbage\"",
+      "\udd04 Enhances Circulation & Blood Flow"
+    ],
+    "longDescription": "🌿 Ingredients:\nDanshen (Radix Salviae Miltiorrhizae)\n\nSanqi (Radix Notoginseng)\n\nBorneol\n\n📦 Package Info:\n250mg x 30 Capsules per Box\n\n🧴 Dosage:\n1–2 capsules, once or twice daily (PO qd–bid)\n\nTake before meals (ac)\n\n💡 Functions / Key Benefits:\n🩸 Improves Vascular Elasticity\n\n🚫 Reduces Lipid Sediment & Thrombosis Formation\n\n🧹 Clears Arterial Plaque and Body \"Garbage\"\n\n🔄 Enhances Circulation & Blood Flow\n\n🎯 Target Group:\nIndividuals with poor blood circulation\n\nPeople at risk of arteriosclerosis, plaque buildup, or vascular aging\n\nAdults seeking heart and vessel health support\n\nThose recovering from mild cardiac issues\n\n⚠️ Notes:\nTraditional Chinese Medicine (TCM) formulation\n\nIdeal for long-term cardiovascular maintenance\n\nStore in a cool, dry place\n"
+  },
+  {
+    "id": "uno0dvwma2jvhx91y7grkj",
+    "name": "Milk Calcium Tablets",
+    "slug": "milk-calcium-tablets",
+    "description": "🧪 Ingredients:\nMilk Calcium\nVitamin D\n📦 Package:\n21000mg × 100 tablets\n📅 Dosage:\n2 tablets daily (PO bid – by mouth, twice a day)\n🩺 Functions / Health Benefits:\n💪 Strengthens bones and teeth\n🦴 Supports bone formation and growth in children\n🛡️ Prevents and treats calcium deficiency-related issues like:\nOsteoporosis\nPoor development\nMuscle cramps\nExcessive sweating\nInsomnia\n🧬 Improves calcium absorption with Vitamin D and optimal Ca/P ratio (2:1)\n✅ No side effects, no heavy metals, easy to absorb, pleasant taste\n👨‍👩‍👧‍👦 Recommended For:\nInfants and children with growing bones\nPregnant women to support fetal development\nElderly with risk of osteoporosis or bone fractures\nPeople with poor calcium intake or absorption",
+    "price": 294,
+    "imageURL": "https://i.imgur.com/yj74tAc.jpeg",
+    "category": "General",
+    "stock": 100,
+    "discount": 0,
+    "new": true,
+    "longDescription": "🧪 Ingredients:\nMilk Calcium\n\nVitamin D\n\n📦 Package:\n21000mg × 100 tablets\n\n📅 Dosage:\n2 tablets daily (PO bid – by mouth, twice a day)\n\n🩺 Functions / Health Benefits:\n💪 Strengthens bones and teeth\n\n🦴 Supports bone formation and growth in children\n\n🛡️ Prevents and treats calcium deficiency-related issues like:\n\nOsteoporosis\n\nPoor development\n\nMuscle cramps\n\nExcessive sweating\n\nInsomnia\n\n🧬 Improves calcium absorption with Vitamin D and optimal Ca/P ratio (2:1)\n\n✅ No side effects, no heavy metals, easy to absorb, pleasant taste\n\n👨‍👩‍👧‍👦 Recommended For:\nInfants and children with growing bones\n\nPregnant women to support fetal development\n\nElderly with risk of osteoporosis or bone fractures\n\nPeople with poor calcium intake or absorption"
   }
 ]

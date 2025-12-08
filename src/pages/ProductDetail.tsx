@@ -38,6 +38,7 @@ export default function ProductDetail() {
   const [loading, setLoading] = useState(true)
   const [reviews, setReviews] = useState<any[]>([])
   const [isReviewDialogOpen, setIsReviewDialogOpen] = useState(false)
+  const [isAddingToCart, setIsAddingToCart] = useState(false)
   const [reviewForm, setReviewForm] = useState({
     userName: '',
     rating: 5,
@@ -112,12 +113,21 @@ export default function ProductDetail() {
   const images = product.images || [product.imageURL]
 
   const handleAddToCart = () => {
-    if (product.stock <= 0) {
-      toast.error('This product is out of stock')
+    if (product.stock <= 0 || isAddingToCart) {
+      if (product.stock <= 0) {
+        toast.error('This product is out of stock')
+      }
       return
     }
+    
+    setIsAddingToCart(true)
     addItem(product, quantity)
     toast.success(`${quantity} × ${product.name} added to cart`)
+    
+    // Reset after 800ms to prevent rapid clicks
+    setTimeout(() => {
+      setIsAddingToCart(false)
+    }, 800)
   }
 
   const handleWishlist = () => {
@@ -389,9 +399,10 @@ export default function ProductDetail() {
                     size="lg"
                     className="flex-1 h-14 rounded-full bg-gradient-to-r from-primary to-green-600 shadow-lg hover:shadow-xl hover:scale-105 transition-all text-base font-semibold"
                     onClick={handleAddToCart}
+                    disabled={isAddingToCart}
                   >
                     <ShoppingCart className="mr-2 h-6 w-6" />
-                    Add to Cart
+                    {isAddingToCart ? 'Adding...' : 'Add to Cart'}
                   </Button>
                 ) : (
                   <Button

@@ -14,6 +14,7 @@ export default function Wishlist() {
   const { items: wishlistItems, removeFromWishlist, clearWishlist } = useWishlistStore()
   const addToCart = useCartStore((state) => state.addItem)
   const [products, setProducts] = useState<Product[]>([])
+  const [isAddingToCart, setIsAddingToCart] = useState<Set<string>>(new Set())
 
   useEffect(() => {
     const allProducts = getProducts()
@@ -24,12 +25,25 @@ export default function Wishlist() {
   }, [wishlistItems])
 
   const handleAddToCart = (product: Product) => {
-    if (product.stock <= 0) {
-      toast.error('This product is out of stock')
+    if (product.stock <= 0 || isAddingToCart.has(product.id)) {
+      if (product.stock <= 0) {
+        toast.error('This product is out of stock')
+      }
       return
     }
+    
+    setIsAddingToCart(prev => new Set(prev).add(product.id))
     addToCart(product, 1)
     toast.success(`${product.name} added to cart`)
+    
+    // Reset after 800ms
+    setTimeout(() => {
+      setIsAddingToCart(prev => {
+        const next = new Set(prev)
+        next.delete(product.id)
+        return next
+      })
+    }, 800)
   }
 
   const handleRemove = (productId: string, productName: string) => {
@@ -146,10 +160,10 @@ export default function Wishlist() {
                         size="sm"
                         className="flex-1 rounded-full"
                         onClick={() => handleAddToCart(product)}
-                        disabled={product.stock <= 0}
+                        disabled={product.stock <= 0 || isAddingToCart.has(product.id)}
                       >
                         <ShoppingCart className="h-4 w-4 mr-1" />
-                        {product.stock <= 0 ? 'Out of Stock' : 'Add to Cart'}
+                        {isAddingToCart.has(product.id) ? 'Adding...' : product.stock <= 0 ? 'Out of Stock' : 'Add to Cart'}
                       </Button>
                       <Button
                         size="sm"

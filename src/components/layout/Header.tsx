@@ -222,15 +222,12 @@ export default function Header() {
               )}
             </Button>
 
-            {/* Cart - Hide on mobile when no categories (shown in bottom nav instead) */}
+            {/* Cart - Always hidden on mobile (shown in bottom nav), visible on desktop */}
             <Button
               variant="ghost"
               size="icon"
               onClick={() => setCartOpen(true)}
-              className={cn(
-                "relative",
-                !hasVisibleCategories ? "hidden lg:flex" : "flex"
-              )}
+              className="relative hidden md:flex"
             >
               <ShoppingCart className="h-5 w-5" />
               {cartItems > 0 && (

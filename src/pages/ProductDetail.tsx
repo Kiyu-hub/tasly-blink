@@ -223,7 +223,7 @@ export default function ProductDetail() {
 
               {/* Badges */}
               <div className="absolute top-4 left-4 flex flex-col gap-2">
-                {product.discount && product.discount > 0 && (
+                {product.discount && Number(product.discount) > 0 && (
                   <Badge variant="sale">-{product.discount}%</Badge>
                 )}
                 {product.new && <Badge variant="new">New</Badge>}
@@ -316,7 +316,7 @@ export default function ProductDetail() {
                 <span className="text-3xl font-bold text-primary">
                   {formatCurrency(finalPrice)}
                 </span>
-                {product.discount && product.discount > 0 && (
+                {product.discount && Number(product.discount) > 0 && (
                   <>
                     <span className="text-xl text-muted-foreground line-through">
                       {formatCurrency(product.price)}

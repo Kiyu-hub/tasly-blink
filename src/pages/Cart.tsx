@@ -14,15 +14,7 @@ export default function Cart() {
     useCartStore()
 
   const siteInfo = getSiteInfo()
-  const subtotal = getTotalPrice()
-  
-  // Calculate delivery fee based on admin settings
-  const deliveryFee = siteInfo?.freeDeliveryThreshold && subtotal >= siteInfo.freeDeliveryThreshold
-    ? 0
-    : (siteInfo?.deliveryFee || 0)
-  
-  const total = subtotal + deliveryFee
-  const isFreeDelivery = deliveryFee === 0 && siteInfo?.freeDeliveryThreshold && subtotal >= siteInfo.freeDeliveryThreshold
+  const total = getTotalPrice()
 
   const handleCheckout = () => {
     const whatsappNumber = (siteInfo?.whatsapp || '233599004548').replace(/[^0-9]/g, '')
@@ -35,7 +27,17 @@ export default function Cart() {
       })
       .join('\n')
 
-    const message = `🛒 NEW ORDER REQUEST\n📋 From: ${siteInfo?.name || 'Tasly Ghana 346'} Website\n\n━━━━━━━━━━━━━━━━━━━━━\n📦 Order Details:\n${orderDetails}\n\n💰 Summary:\nSubtotal: ${formatCurrency(subtotal)}\nDelivery Fee: ${isFreeDelivery ? 'FREE' : formatCurrency(deliveryFee)}\n━━━━━━━━━━━━━━━━━━━━━\nTotal: ${formatCurrency(total)}\n\n🌐 Sent from: ${siteInfo?.name || 'Tasly Ghana 346'} Website\n📅 Date: ${new Date().toLocaleString('en-GB', { timeZone: 'Africa/Accra' })}`
+    const message = `🛒 NEW ORDER REQUEST
+📋 From: ${siteInfo?.name || 'Tasly Ghana 346'} Website
+
+━━━━━━━━━━━━━━━━━━━━━
+📦 Order Details:
+${orderDetails}
+
+💰 Total: ${formatCurrency(total)}
+
+🌐 Sent from: ${siteInfo?.name || 'Tasly Ghana 346'} Website
+📅 Date: ${new Date().toLocaleString('en-GB', { timeZone: 'Africa/Accra' })}`
 
     const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`
     window.open(whatsappUrl, '_blank')
@@ -219,23 +221,8 @@ export default function Cart() {
                 <div className="space-y-3">
                   <div className="flex justify-between">
                     <span className="text-muted-foreground">Subtotal</span>
-                    <span>{formatCurrency(subtotal)}</span>
+                    <span>{formatCurrency(total)}</span>
                   </div>
-                  
-                  <div className="flex justify-between">
-                    <span className="text-muted-foreground">Delivery Fee</span>
-                    {isFreeDelivery ? (
-                      <span className="text-green-600 font-medium">FREE</span>
-                    ) : (
-                      <span>{formatCurrency(deliveryFee)}</span>
-                    )}
-                  </div>
-                  
-                  {siteInfo?.freeDeliveryThreshold && !isFreeDelivery && siteInfo.freeDeliveryThreshold > 0 && (
-                    <p className="text-xs text-muted-foreground">
-                      Add {formatCurrency(siteInfo.freeDeliveryThreshold - subtotal)} more for free delivery!
-                    </p>
-                  )}
 
                   <Separator />
 
@@ -243,6 +230,10 @@ export default function Cart() {
                     <span>Total</span>
                     <span>{formatCurrency(total)}</span>
                   </div>
+                  
+                  <p className="text-xs text-muted-foreground mt-2">
+                    ✓ Free delivery across Ghana and globally
+                  </p>
                 </div>
 
                 <Button

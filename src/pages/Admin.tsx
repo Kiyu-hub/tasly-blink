@@ -2232,32 +2232,6 @@ export default function Admin() {
                             }
                           />
                         </div>
-                        <div className="space-y-2">
-                          <Label>Free Delivery Threshold</Label>
-                          <Input
-                            type="number"
-                            value={siteInfo.freeDeliveryThreshold}
-                            onChange={(e) =>
-                              setSiteInfo({
-                                ...siteInfo,
-                                freeDeliveryThreshold: Number(e.target.value),
-                              })
-                            }
-                          />
-                        </div>
-                        <div className="space-y-2">
-                          <Label>Delivery Fee</Label>
-                          <Input
-                            type="number"
-                            value={siteInfo.deliveryFee || 0}
-                            onChange={(e) =>
-                              setSiteInfo({
-                                ...siteInfo,
-                                deliveryFee: Number(e.target.value),
-                              })
-                            }
-                          />
-                        </div>
                       </div>
 
                       <div className="space-y-2">

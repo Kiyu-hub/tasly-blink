@@ -493,6 +493,12 @@ export default function ProductDetail() {
               How to Use
             </TabsTrigger>
             <TabsTrigger
+              value="benefits"
+              className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary"
+            >
+              Benefits
+            </TabsTrigger>
+            <TabsTrigger
               value="reviews"
               className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary"
             >
@@ -534,6 +540,20 @@ export default function ProductDetail() {
                   Please follow the usage instructions on the product packaging or
                   consult with a healthcare professional.
                 </p>
+              )}
+            </div>
+          </TabsContent>
+
+          <TabsContent value="benefits" className="pt-6">
+            <div className="prose dark:prose-invert max-w-none">
+              {product.benefits && product.benefits.length > 0 ? (
+                <ul>
+                  {product.benefits.map((benefit, index) => (
+                    <li key={index}>{benefit}</li>
+                  ))}
+                </ul>
+              ) : (
+                <p>Benefit information will be displayed here once available.</p>
               )}
             </div>
           </TabsContent>

@@ -2,7 +2,7 @@ import { Home, Grid3x3, ShoppingCart, Heart, Menu, X, UserPlus } from 'lucide-re
 import { Link, useLocation } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import { useCartStore } from '@/store'
-import { getCategories } from '@/lib/storage'
+import { getCategoriesData, getProducts } from '@/lib/storage'
 import { cn } from '@/lib/utils'
 import { motion, AnimatePresence } from 'framer-motion'
 
@@ -10,33 +10,48 @@ export default function MobileBottomNav() {
   const location = useLocation()
   const { items } = useCartStore()
   const [menuOpen, setMenuOpen] = useState(false)
-  const [categories, setCategories] = useState<string[]>([])
+  const [hasVisibleCategories, setHasVisibleCategories] = useState(false)
   
   const cartItemCount = items.reduce((total, item) => total + item.quantity, 0)
 
   useEffect(() => {
-    const loadCategories = () => {
-      setCategories(getCategories())
+    const checkCategories = () => {
+      const allCategories = getCategoriesData()
+      const products = getProducts()
+      
+      // Count products per category
+      const categoryMap = new Map<string, number>()
+      products.forEach(product => {
+        const count = categoryMap.get(product.category) || 0
+        categoryMap.set(product.category, count + 1)
+      })
+      
+      // Check if there are any visible categories with products
+      const visibleWithProducts = allCategories.some(cat => 
+        cat.visible && (categoryMap.get(cat.name) || 0) > 0
+      )
+      
+      setHasVisibleCategories(visibleWithProducts)
     }
     
-    loadCategories()
+    checkCategories()
     
-    window.addEventListener('categoriesUpdated', loadCategories)
-    window.addEventListener('productsUpdated', loadCategories)
+    window.addEventListener('categoriesUpdated', checkCategories)
+    window.addEventListener('productsUpdated', checkCategories)
     
     return () => {
-      window.removeEventListener('categoriesUpdated', loadCategories)
-      window.removeEventListener('productsUpdated', loadCategories)
+      window.removeEventListener('categoriesUpdated', checkCategories)
+      window.removeEventListener('productsUpdated', checkCategories)
     }
   }, [])
 
-  // Show both categories and distributor buttons, hide categories when no categories exist
+  // Show both categories and distributor buttons, hide categories when no visible categories exist
   const navItems = [
     { icon: Home, label: 'Home', path: '/' },
-    { icon: Grid3x3, label: 'Categories', path: '/categories', hidden: categories.length === 0 },
+    { icon: Grid3x3, label: 'Categories', path: '/categories', hidden: !hasVisibleCategories },
     { icon: ShoppingCart, label: 'Cart', path: '/cart', badge: cartItemCount },
     { icon: Heart, label: 'Wishlist', path: '/wishlist' },
-    { icon: UserPlus, label: 'Distributor', path: '/distributor', hidden: categories.length > 0 },
+    { icon: UserPlus, label: 'Distributor', path: '/distributor', hidden: hasVisibleCategories },
   ].filter(item => !item.hidden)
 
   const menuItems = [

@@ -353,27 +353,27 @@ export default function ProductDetail() {
             <div className="space-y-4">
               {product.stock > 0 && (
                 <div className="flex items-center gap-4">
-                  <div className="flex items-center border rounded-full">
+                  <div className="flex items-center border rounded-full shadow-sm">
                     <Button
                       variant="ghost"
                       size="icon"
-                      className="rounded-full"
+                      className="h-10 w-10 rounded-full hover:bg-primary/10 transition-colors"
                       onClick={() => setQuantity((q) => Math.max(1, q - 1))}
                       disabled={quantity <= 1}
                     >
-                      <Minus className="h-4 w-4" />
+                      <Minus className="h-5 w-5" />
                     </Button>
-                    <span className="w-12 text-center font-medium">{quantity}</span>
+                    <span className="w-14 text-center font-semibold">{quantity}</span>
                     <Button
                       variant="ghost"
                       size="icon"
-                      className="rounded-full"
+                      className="h-10 w-10 rounded-full hover:bg-primary/10 transition-colors"
                       onClick={() =>
                         setQuantity((q) => Math.min(product.stock, q + 1))
                       }
                       disabled={quantity >= product.stock}
                     >
-                      <Plus className="h-4 w-4" />
+                      <Plus className="h-5 w-5" />
                     </Button>
                   </div>
 
@@ -387,19 +387,19 @@ export default function ProductDetail() {
                 {product.stock > 0 ? (
                   <Button
                     size="lg"
-                    className="flex-1 rounded-full bg-gradient-to-r from-primary to-green-600"
+                    className="flex-1 h-14 rounded-full bg-gradient-to-r from-primary to-green-600 shadow-lg hover:shadow-xl hover:scale-105 transition-all text-base font-semibold"
                     onClick={handleAddToCart}
                   >
-                    <ShoppingCart className="mr-2 h-5 w-5" />
+                    <ShoppingCart className="mr-2 h-6 w-6" />
                     Add to Cart
                   </Button>
                 ) : (
                   <Button
                     size="lg"
-                    className="flex-1 rounded-full bg-gradient-to-r from-orange-500 to-red-500"
+                    className="flex-1 h-14 rounded-full bg-gradient-to-r from-orange-500 to-red-500 shadow-lg hover:shadow-xl hover:scale-105 transition-all text-base font-semibold"
                     onClick={handlePreOrder}
                   >
-                    <ShoppingCart className="mr-2 h-5 w-5" />
+                    <ShoppingCart className="mr-2 h-6 w-6" />
                     PRE-ORDER via WhatsApp
                   </Button>
                 )}
@@ -407,12 +407,12 @@ export default function ProductDetail() {
                 <Button
                   size="lg"
                   variant="outline"
-                  className="rounded-full"
+                  className="h-14 rounded-full border-2 hover:bg-primary/5 hover:border-primary transition-all"
                   onClick={handleWishlist}
                 >
                   <Heart
                     className={cn(
-                      'mr-2 h-5 w-5',
+                      'mr-2 h-6 w-6',
                       inWishlist && 'fill-red-500 text-red-500'
                     )}
                   />

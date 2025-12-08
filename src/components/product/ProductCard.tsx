@@ -164,15 +164,15 @@ export default function ProductCard({ product, index = 0, compact = false }: Pro
                 {/* Mini Add to Cart Icon */}
                 <button
                   className={cn(
-                    "w-7 h-7 rounded-full flex items-center justify-center transition-colors",
+                    "w-10 h-10 rounded-full flex items-center justify-center transition-all shadow-md hover:shadow-lg",
                     product.stock <= 0
                       ? "bg-gray-200 text-gray-400 cursor-not-allowed"
-                      : "bg-primary text-white hover:bg-primary/90"
+                      : "bg-gradient-to-r from-primary to-green-600 text-white hover:scale-110"
                   )}
                   onClick={handleAddToCart}
                   disabled={product.stock <= 0}
                 >
-                  <ShoppingCart className="h-3.5 w-3.5" />
+                  <ShoppingCart className="h-5 w-5" />
                 </button>
               </div>
             </div>
@@ -233,13 +233,14 @@ export default function ProductCard({ product, index = 0, compact = false }: Pro
             </div>
 
             {/* Add to Cart Button */}
-            <div className="absolute bottom-0 left-0 right-0 p-3 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+            <div className="absolute bottom-0 left-0 right-0 p-4 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
               <Button
-                className="w-full rounded-full bg-gradient-to-r from-primary to-green-600 shadow-lg"
+                size="lg"
+                className="w-full h-12 rounded-full bg-gradient-to-r from-primary to-green-600 shadow-xl hover:shadow-2xl hover:scale-105 transition-all"
                 onClick={handleAddToCart}
                 disabled={product.stock <= 0}
               >
-                <ShoppingCart className="mr-2 h-4 w-4" />
+                <ShoppingCart className="mr-2 h-5 w-5" />
                 {product.stock <= 0 ? 'Out of Stock' : 'Add to Cart'}
               </Button>
             </div>

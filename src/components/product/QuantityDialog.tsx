@@ -79,9 +79,9 @@ export default function QuantityDialog({ isOpen, onClose, onConfirm, product }: 
                   <button
                     onClick={handleDecrement}
                     disabled={quantity <= 1}
-                    className="w-12 h-12 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white flex items-center justify-center hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="w-14 h-14 rounded-full bg-gradient-to-r from-primary/10 to-green-600/10 text-primary flex items-center justify-center hover:from-primary/20 hover:to-green-600/20 transition-all shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    <Minus className="w-5 h-5" />
+                    <Minus className="w-6 h-6" />
                   </button>
                   
                   <div className="flex flex-col items-center">
@@ -94,7 +94,7 @@ export default function QuantityDialog({ isOpen, onClose, onConfirm, product }: 
                         const val = parseInt(e.target.value) || 1
                         setQuantity(Math.min(Math.max(val, 1), product.stock))
                       }}
-                      className="w-20 h-12 text-center text-2xl font-bold bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white rounded-lg border-2 border-transparent focus:border-primary focus:outline-none"
+                      className="w-24 h-16 text-center text-3xl font-bold bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white rounded-xl border-2 border-transparent focus:border-primary focus:outline-none shadow-sm"
                     />
                     <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
                       {product.stock} available
@@ -104,9 +104,9 @@ export default function QuantityDialog({ isOpen, onClose, onConfirm, product }: 
                   <button
                     onClick={handleIncrement}
                     disabled={quantity >= product.stock}
-                    className="w-12 h-12 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white flex items-center justify-center hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="w-14 h-14 rounded-full bg-gradient-to-r from-primary/10 to-green-600/10 text-primary flex items-center justify-center hover:from-primary/20 hover:to-green-600/20 transition-all shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    <Plus className="w-5 h-5" />
+                    <Plus className="w-6 h-6" />
                   </button>
                 </div>
               </div>
@@ -116,13 +116,13 @@ export default function QuantityDialog({ isOpen, onClose, onConfirm, product }: 
                 <Button
                   variant="outline"
                   onClick={onClose}
-                  className="flex-1"
+                  className="flex-1 h-12 rounded-full border-2"
                 >
                   Cancel
                 </Button>
                 <Button
                   onClick={handleConfirm}
-                  className="flex-1 bg-gradient-to-r from-primary to-green-600"
+                  className="flex-1 h-12 rounded-full bg-gradient-to-r from-primary to-green-600 shadow-lg hover:shadow-xl hover:scale-105 transition-all font-semibold"
                 >
                   Add {quantity} to Cart
                 </Button>

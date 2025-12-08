@@ -149,11 +149,11 @@ ${orderDetails}
 
                         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mt-3 sm:mt-4">
                           {/* Quantity */}
-                          <div className="flex items-center border rounded-full">
+                          <div className="flex items-center border rounded-full shadow-sm">
                             <Button
                               variant="ghost"
                               size="icon"
-                              className="h-7 w-7 sm:h-8 sm:w-8 rounded-full"
+                              className="h-10 w-10 rounded-full hover:bg-primary/10 transition-colors"
                               onClick={() =>
                                 updateQuantity(
                                   product.id,
@@ -161,20 +161,20 @@ ${orderDetails}
                                 )
                               }
                             >
-                              <Minus className="h-3 w-3" />
+                              <Minus className="h-4 w-4" />
                             </Button>
-                            <span className="w-7 sm:w-8 text-center text-xs sm:text-sm font-medium">
+                            <span className="w-10 text-center text-sm font-semibold">
                               {quantity}
                             </span>
                             <Button
                               variant="ghost"
                               size="icon"
-                              className="h-7 w-7 sm:h-8 sm:w-8 rounded-full"
+                              className="h-10 w-10 rounded-full hover:bg-primary/10 transition-colors"
                               onClick={() =>
                                 updateQuantity(product.id, quantity + 1)
                               }
                             >
-                              <Plus className="h-3 w-3" />
+                              <Plus className="h-4 w-4" />
                             </Button>
                           </div>
 
@@ -186,13 +186,13 @@ ${orderDetails}
                             <Button
                               variant="ghost"
                               size="icon"
-                              className="h-7 w-7 sm:h-8 sm:w-8 text-red-500 hover:text-red-600"
+                              className="h-10 w-10 text-red-500 hover:text-red-600 hover:bg-red-50 rounded-full transition-colors"
                               onClick={() => {
                                 removeItem(product.id)
                                 toast.success('Item removed from cart')
                               }}
                             >
-                              <Trash2 className="h-4 w-4" />
+                              <Trash2 className="h-5 w-5" />
                             </Button>
                           </div>
                         </div>
@@ -238,13 +238,13 @@ ${orderDetails}
 
                 <Button
                   size="lg"
-                  className="w-full mt-6 rounded-full bg-gradient-to-r from-primary to-green-600"
+                  className="w-full h-14 mt-6 rounded-full bg-gradient-to-r from-primary to-green-600 shadow-lg hover:shadow-xl hover:scale-105 transition-all text-base font-semibold"
                   onClick={handleCheckout}
                 >
                   <img
                     src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg"
                     alt="WhatsApp"
-                    className="w-5 h-5 mr-2"
+                    className="w-6 h-6 mr-2"
                   />
                   Checkout via WhatsApp
                 </Button>

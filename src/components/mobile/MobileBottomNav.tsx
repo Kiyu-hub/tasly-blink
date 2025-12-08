@@ -45,13 +45,12 @@ export default function MobileBottomNav() {
     }
   }, [])
 
-  // Show cart always in bottom nav when no categories exist
-  // Hide wishlist from bottom nav (shown in header instead)
+  // Always show cart in mobile bottom nav
   // Hide distributor when categories exist
   const navItems = [
     { icon: Home, label: 'Home', path: '/' },
     { icon: Grid3x3, label: 'Categories', path: '/categories', hidden: !hasVisibleCategories },
-    { icon: ShoppingCart, label: 'Cart', path: '/cart', badge: cartItemCount, hidden: hasVisibleCategories },
+    { icon: ShoppingCart, label: 'Cart', path: '/cart', badge: cartItemCount },
     { icon: UserPlus, label: 'Distributor', path: '/distributor', hidden: hasVisibleCategories },
   ].filter(item => !item.hidden)
 

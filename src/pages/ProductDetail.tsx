@@ -393,51 +393,57 @@ export default function ProductDetail() {
                 </div>
               )}
 
-              <div className="flex flex-col sm:flex-row gap-3">
+              <div className="flex flex-col gap-3">
+                {/* Main Add to Cart / Pre-order Button */}
                 {product.stock > 0 ? (
                   <Button
                     size="lg"
-                    className="flex-1 h-14 rounded-full bg-gradient-to-r from-primary to-green-600 shadow-lg hover:shadow-xl hover:scale-105 transition-all text-base font-semibold"
+                    className="w-full h-12 sm:h-14 rounded-full bg-gradient-to-r from-primary to-green-600 shadow-lg hover:shadow-xl hover:scale-105 transition-all text-sm sm:text-base font-semibold"
                     onClick={handleAddToCart}
                     disabled={isAddingToCart}
                   >
-                    <ShoppingCart className="mr-2 h-6 w-6" />
+                    <ShoppingCart className="mr-2 h-5 w-5 sm:h-6 sm:w-6" />
                     {isAddingToCart ? 'Adding...' : 'Add to Cart'}
                   </Button>
                 ) : (
                   <Button
                     size="lg"
-                    className="flex-1 h-14 rounded-full bg-gradient-to-r from-orange-500 to-red-500 shadow-lg hover:shadow-xl hover:scale-105 transition-all text-base font-semibold"
+                    className="w-full h-12 sm:h-14 rounded-full bg-gradient-to-r from-orange-500 to-red-500 shadow-lg hover:shadow-xl hover:scale-105 transition-all text-sm sm:text-base font-semibold"
                     onClick={handlePreOrder}
                   >
-                    <ShoppingCart className="mr-2 h-6 w-6" />
+                    <ShoppingCart className="mr-2 h-5 w-5 sm:h-6 sm:w-6" />
                     PRE-ORDER via WhatsApp
                   </Button>
                 )}
 
-                <Button
-                  size="lg"
-                  variant="outline"
-                  className="h-14 rounded-full border-2 hover:bg-primary/5 hover:border-primary transition-all"
-                  onClick={handleWishlist}
-                >
-                  <Heart
-                    className={cn(
-                      'mr-2 h-6 w-6',
-                      inWishlist && 'fill-red-500 text-red-500'
-                    )}
-                  />
-                  {inWishlist ? 'In Wishlist' : 'Add to Wishlist'}
-                </Button>
+                {/* Wishlist and Share buttons in a row */}
+                <div className="flex gap-2">
+                  <Button
+                    size="lg"
+                    variant="outline"
+                    className="flex-1 h-12 sm:h-14 rounded-full border-2 hover:bg-primary/5 hover:border-primary transition-all text-sm sm:text-base"
+                    onClick={handleWishlist}
+                  >
+                    <Heart
+                      className={cn(
+                        'mr-1.5 sm:mr-2 h-5 w-5 sm:h-6 sm:w-6',
+                        inWishlist && 'fill-red-500 text-red-500'
+                      )}
+                    />
+                    <span className="hidden sm:inline">{inWishlist ? 'In Wishlist' : 'Add to Wishlist'}</span>
+                    <span className="sm:hidden">Wishlist</span>
+                  </Button>
 
-                <Button
-                  size="lg"
-                  variant="outline"
-                  className="rounded-full"
-                  onClick={handleShare}
-                >
-                  <Share2 className="h-5 w-5" />
-                </Button>
+                  <Button
+                    size="lg"
+                    variant="outline"
+                    className="h-12 sm:h-14 px-4 sm:px-6 rounded-full border-2 hover:bg-primary/5 hover:border-primary transition-all"
+                    onClick={handleShare}
+                  >
+                    <Share2 className="h-5 w-5 sm:h-6 sm:w-6" />
+                    <span className="ml-1.5 sm:ml-2 text-sm sm:text-base">Share</span>
+                  </Button>
+                </div>
               </div>
             </div>
 
@@ -519,11 +525,8 @@ export default function ProductDetail() {
 
           <TabsContent value="description" className="pt-6">
             <div className="prose dark:prose-invert max-w-none">
-              <p>{product.description}</p>
-              {product.longDescription && (
-                <div
-                  dangerouslySetInnerHTML={{ __html: product.longDescription }}
-                />
+              {product.description && (
+                <div className="whitespace-pre-line">{product.description}</div>
               )}
             </div>
           </TabsContent>

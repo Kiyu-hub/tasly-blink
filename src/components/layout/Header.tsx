@@ -22,7 +22,6 @@ export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false)
   const [showCategories, setShowCategories] = useState(false)
   const [, setUpdateTrigger] = useState(0)
-  const [hasVisibleCategories, setHasVisibleCategories] = useState(false)
   const navigate = useNavigate()
   const { theme, setTheme } = useTheme()
   
@@ -41,20 +40,6 @@ export default function Header() {
     
     const handleDataUpdate = () => {
       setUpdateTrigger(prev => prev + 1)
-      // Check if there are visible categories with products
-      import('@/lib/storage').then(({ getCategoriesData, getProducts }) => {
-        const allCategories = getCategoriesData()
-        const products = getProducts()
-        const categoryMap = new Map<string, number>()
-        products.forEach(product => {
-          const count = categoryMap.get(product.category) || 0
-          categoryMap.set(product.category, count + 1)
-        })
-        const visibleWithProducts = allCategories.some(cat => 
-          cat.visible && (categoryMap.get(cat.name) || 0) > 0
-        )
-        setHasVisibleCategories(visibleWithProducts)
-      })
     }
     
     // Initial check
@@ -201,15 +186,12 @@ export default function Header() {
               )}
             </Button>
 
-            {/* Wishlist - Show on desktop OR mobile when no categories */}
+            {/* Wishlist - Always show on mobile and desktop */}
             <Button
               variant="ghost"
               size="icon"
               onClick={() => navigate('/wishlist')}
-              className={cn(
-                "relative",
-                !hasVisibleCategories ? "flex" : "hidden lg:flex"
-              )}
+              className="relative"
             >
               <Heart className="h-5 w-5" />
               {wishlistItems > 0 && (

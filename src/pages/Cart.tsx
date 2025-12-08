@@ -232,7 +232,7 @@ ${orderDetails}
                   </div>
                   
                   <p className="text-xs text-muted-foreground mt-2">
-                    ✓ Free delivery across Ghana and globally
+                    ✓ Delivery available across Ghana and globally
                   </p>
                 </div>
 

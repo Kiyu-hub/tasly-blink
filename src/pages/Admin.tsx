@@ -55,6 +55,7 @@ import {
 } from '@/lib/githubSync'
 import { verifySecondaryPassword, enableSync, disableSync, isSyncEnabled } from '@/lib/encryption'
 import { formatCurrency, generateId, slugify } from '@/lib/utils'
+import { autoParseProduct } from '@/lib/productParser'
 import type { Product, Banner, SiteInfo, CategoryData, Ad } from '@/types'
 
 const defaultProduct: Partial<Product> = {
@@ -218,7 +219,9 @@ export default function Admin() {
     }
 
     const isNew = !editingProduct.id
-    const product: Product = {
+    
+    // Auto-parse description to extract ingredients, usage, benefits, etc.
+    const parsedProduct = autoParseProduct({
       id: editingProduct.id || generateId(),
       name: editingProduct.name,
       slug: editingProduct.slug || slugify(editingProduct.name),
@@ -231,15 +234,20 @@ export default function Admin() {
       stock: editingProduct.stock || 0,
       discount: editingProduct.discount || 0,
       new: editingProduct.new || false,
-    }
+      ingredients: editingProduct.ingredients,
+      usage: editingProduct.usage,
+      benefits: editingProduct.benefits,
+    })
 
     let updatedProducts: Product[]
     if (isNew) {
-      updatedProducts = [...products, product]
+      updatedProducts = [...products, parsedProduct]
+      toast.success('Product created with auto-parsed details!')
     } else {
       updatedProducts = products.map((p) =>
-        p.id === product.id ? product : p
+        p.id === parsedProduct.id ? parsedProduct : p
       )
+      toast.success('Product updated with auto-parsed details!')
     }
 
     setProducts(updatedProducts)
@@ -248,7 +256,6 @@ export default function Admin() {
     setCategories(getCategoriesData())
     setEditingProduct(null)
     setIsProductDialogOpen(false)
-    toast.success(isNew ? 'Product created' : 'Product updated')
   }
 
   const handleDeleteProduct = (id: string) => {

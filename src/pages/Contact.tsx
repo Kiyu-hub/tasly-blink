@@ -80,6 +80,32 @@ export default function Contact() {
     e.preventDefault()
     setLoading(true)
 
+    // Format message for WhatsApp with Tasly Ghana 346 branding
+    const whatsappNumber = (siteInfo?.whatsapp || '233599004548').replace(/[^0-9]/g, '')
+    
+    const message = `📩 NEW CONTACT MESSAGE
+📋 From: ${siteInfo?.name || 'Tasly Ghana 346'} Website
+
+━━━━━━━━━━━━━━━━━━━━━
+👤 Contact Information:
+Name: ${formData.name}
+Email: ${formData.email}
+Phone: ${formData.phone || 'Not provided'}
+
+📌 Subject: ${formData.subject}
+
+💬 Message:
+${formData.message}
+
+━━━━━━━━━━━━━━━━━━━━━
+🌐 Sent from: ${siteInfo?.name || 'Tasly Ghana 346'} Website
+📅 Date: ${new Date().toLocaleString('en-GB', { timeZone: 'Africa/Accra' })}`
+
+    const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`
+    
+    // Open WhatsApp
+    window.open(whatsappUrl, '_blank')
+
     // Simulate form submission
     await new Promise((resolve) => setTimeout(resolve, 1500))
 

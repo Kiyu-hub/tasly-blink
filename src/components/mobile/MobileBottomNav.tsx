@@ -30,15 +30,14 @@ export default function MobileBottomNav() {
     }
   }, [])
 
-  // If no categories, show Distributor icon instead of Categories
+  // Show both categories and distributor buttons, hide categories when no categories exist
   const navItems = [
     { icon: Home, label: 'Home', path: '/' },
-    categories.length > 0 
-      ? { icon: Grid3x3, label: 'Categories', path: '/categories' }
-      : { icon: UserPlus, label: 'Distributor', path: '/distributor' },
+    { icon: Grid3x3, label: 'Categories', path: '/categories', hidden: categories.length === 0 },
     { icon: ShoppingCart, label: 'Cart', path: '/cart', badge: cartItemCount },
     { icon: Heart, label: 'Wishlist', path: '/wishlist' },
-  ]
+    { icon: UserPlus, label: 'Distributor', path: '/distributor', hidden: categories.length > 0 },
+  ].filter(item => !item.hidden)
 
   const menuItems = [
     { label: 'About Us', path: '/about' },

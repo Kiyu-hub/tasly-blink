@@ -68,7 +68,20 @@
       "icon": "Leaf"
     }
   ],
-  "stats": [],
+  "stats": [
+    {
+      "number": "40+",
+      "label": "Countries reached"
+    },
+    {
+      "number": "50K",
+      "label": "Users satisfied"
+    },
+    {
+      "number": "25+",
+      "label": "Years of Experience"
+    }
+  ],
   "healthBanners": [],
   "certifications": [
     "FDA Ghana Approved",

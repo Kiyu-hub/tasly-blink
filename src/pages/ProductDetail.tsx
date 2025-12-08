@@ -353,9 +353,6 @@ export default function ProductDetail() {
                   </div>
                 )}
               </div>
-
-              {/* Description */}
-              <p className="text-muted-foreground mb-8">{product.description}</p>
             </div>
 
             <Separator className="my-6" />

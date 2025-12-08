@@ -70,5 +70,17 @@
     "stock": 100,
     "discount": 0,
     "new": true
+  },
+  {
+    "id": "nrqwqnqiepxh80kffb9wb",
+    "name": " Tongbi Capsule",
+    "slug": "-tongbi-capsule",
+    "description": "🌿 Product Overview\n\nTongbi Capsule is a traditional Chinese herbal remedy crafted to support joint health and alleviate symptoms associated with rheumatoid arthritis, osteoarthritis, joint stiffness, and peripheral neuropathy. With its natural anti-inflammatory and cartilage-regenerating properties, it offers a safe, long-term solution for chronic joint discomfort.\n\n\n💪 Key Benefits\n✅ Fast relief from joint pain and stiffness\n\n✅ Reduces inflammation and swelling in joints\n\n✅ Improves joint mobility and flexibility\n\n✅ Promotes cartilage regeneration for sustained joint health\n\n✅ Helps treat peripheral neuropathy (numbness, tingling, and nerve pain)\n\n✅ Safe for long-term use – made from natural, time-tested ingredients\n\n✅ Convenient – easy-to-swallow capsules for everyday use\n\n\n\n💊 How to Use\nDosage: Follow the dosage instructions as recommended by your healthcare provider.\n\nForm: Capsules – suitable for adults.\n\nStorage: Store in a cool, dry place at room temperature.\n\n\n\nSafety Note:\n\nDo not exceed the recommended dosage.\n\nKeep out of reach of children.\n\nNo known side effects.\n\n\n\n🏷️ Ideal For\nIndividuals with rheumatoid arthritis\n\nThose experiencing osteoarthritis and joint degeneration\n\nPatients dealing with nerve-related joint pain\n\nPeople seeking a natural alternative to synthetic painkillers",
+    "price": 456,
+    "imageURL": "https://i.imgur.com/WX8IUsU.jpeg",
+    "category": "General",
+    "stock": 100,
+    "discount": 0,
+    "new": true
   }
 ]

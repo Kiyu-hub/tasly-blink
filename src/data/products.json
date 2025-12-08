@@ -15,8 +15,18 @@
     "stock": 45,
     "rating": 4.8,
     "reviewCount": 0,
-    "tags": ["heart", "circulation", "blood pressure", "danshen"],
-    "benefits": ["Supports cardiovascular health", "Promotes blood circulation", "Maintains healthy blood pressure", "Protects heart function"],
+    "tags": [
+      "heart",
+      "circulation",
+      "blood pressure",
+      "danshen"
+    ],
+    "benefits": [
+      "Supports cardiovascular health",
+      "Promotes blood circulation",
+      "Maintains healthy blood pressure",
+      "Protects heart function"
+    ],
     "featured": true,
     "new": false,
     "createdAt": "2024-01-10"
@@ -36,8 +46,18 @@
     "stock": 38,
     "rating": 4.9,
     "reviewCount": 0,
-    "tags": ["cordyceps", "energy", "immunity", "respiratory"],
-    "benefits": ["Boosts energy and stamina", "Enhances immune system", "Supports respiratory health", "Improves vitality"],
+    "tags": [
+      "cordyceps",
+      "energy",
+      "immunity",
+      "respiratory"
+    ],
+    "benefits": [
+      "Boosts energy and stamina",
+      "Enhances immune system",
+      "Supports respiratory health",
+      "Improves vitality"
+    ],
     "featured": true,
     "new": false,
     "createdAt": "2024-01-15"
@@ -59,8 +79,18 @@
     "stock": 25,
     "rating": 4.9,
     "reviewCount": 0,
-    "tags": ["ginseng", "immunity", "energy", "rh2"],
-    "benefits": ["Superior immune support", "Enhances energy", "Mental clarity", "Supports healthy aging"],
+    "tags": [
+      "ginseng",
+      "immunity",
+      "energy",
+      "rh2"
+    ],
+    "benefits": [
+      "Superior immune support",
+      "Enhances energy",
+      "Mental clarity",
+      "Supports healthy aging"
+    ],
     "featured": true,
     "new": true,
     "createdAt": "2024-06-01"
@@ -80,8 +110,18 @@
     "stock": 52,
     "rating": 4.7,
     "reviewCount": 0,
-    "tags": ["propolis", "immunity", "antioxidant", "antibacterial"],
-    "benefits": ["Boosts immune system", "Antioxidant protection", "Supports throat health", "Natural antibacterial"],
+    "tags": [
+      "propolis",
+      "immunity",
+      "antioxidant",
+      "antibacterial"
+    ],
+    "benefits": [
+      "Boosts immune system",
+      "Antioxidant protection",
+      "Supports throat health",
+      "Natural antibacterial"
+    ],
     "featured": false,
     "new": false,
     "createdAt": "2024-02-05"
@@ -101,8 +141,18 @@
     "stock": 41,
     "rating": 4.8,
     "reviewCount": 0,
-    "tags": ["ganoderma", "reishi", "immunity", "stress"],
-    "benefits": ["Immune support", "Stress management", "Promotes restful sleep", "Liver health"],
+    "tags": [
+      "ganoderma",
+      "reishi",
+      "immunity",
+      "stress"
+    ],
+    "benefits": [
+      "Immune support",
+      "Stress management",
+      "Promotes restful sleep",
+      "Liver health"
+    ],
     "featured": false,
     "new": false,
     "createdAt": "2024-02-20"
@@ -122,8 +172,18 @@
     "stock": 35,
     "rating": 4.6,
     "reviewCount": 0,
-    "tags": ["ginkgo", "brain", "memory", "circulation"],
-    "benefits": ["Supports brain health", "Enhances memory", "Improves circulation", "Antioxidant protection"],
+    "tags": [
+      "ginkgo",
+      "brain",
+      "memory",
+      "circulation"
+    ],
+    "benefits": [
+      "Supports brain health",
+      "Enhances memory",
+      "Improves circulation",
+      "Antioxidant protection"
+    ],
     "featured": false,
     "new": false,
     "createdAt": "2024-03-01"
@@ -143,8 +203,18 @@
     "stock": 32,
     "rating": 4.7,
     "reviewCount": 0,
-    "tags": ["liver", "detox", "hepatone", "herbs"],
-    "benefits": ["Supports liver function", "Natural detoxification", "Cell regeneration", "Antioxidant protection"],
+    "tags": [
+      "liver",
+      "detox",
+      "hepatone",
+      "herbs"
+    ],
+    "benefits": [
+      "Supports liver function",
+      "Natural detoxification",
+      "Cell regeneration",
+      "Antioxidant protection"
+    ],
     "featured": false,
     "new": false,
     "createdAt": "2024-03-10"
@@ -164,8 +234,18 @@
     "stock": 48,
     "rating": 4.5,
     "reviewCount": 0,
-    "tags": ["digestion", "enzymes", "gut health", "herbs"],
-    "benefits": ["Supports digestion", "Relieves bloating", "Promotes regularity", "Gut wellness"],
+    "tags": [
+      "digestion",
+      "enzymes",
+      "gut health",
+      "herbs"
+    ],
+    "benefits": [
+      "Supports digestion",
+      "Relieves bloating",
+      "Promotes regularity",
+      "Gut wellness"
+    ],
     "featured": false,
     "new": false,
     "createdAt": "2024-03-15"
@@ -185,8 +265,18 @@
     "stock": 44,
     "rating": 4.4,
     "reviewCount": 0,
-    "tags": ["chitosan", "weight", "fiber", "cholesterol"],
-    "benefits": ["Weight management", "Binds dietary fats", "Cholesterol support", "Digestive health"],
+    "tags": [
+      "chitosan",
+      "weight",
+      "fiber",
+      "cholesterol"
+    ],
+    "benefits": [
+      "Weight management",
+      "Binds dietary fats",
+      "Cholesterol support",
+      "Digestive health"
+    ],
     "featured": false,
     "new": false,
     "createdAt": "2024-04-01"
@@ -206,8 +296,18 @@
     "stock": 65,
     "rating": 4.6,
     "reviewCount": 0,
-    "tags": ["tea", "detox", "cleanse", "herbs"],
-    "benefits": ["Natural detoxification", "Supports liver & kidneys", "Aids cleansing", "Antioxidant benefits"],
+    "tags": [
+      "tea",
+      "detox",
+      "cleanse",
+      "herbs"
+    ],
+    "benefits": [
+      "Natural detoxification",
+      "Supports liver & kidneys",
+      "Aids cleansing",
+      "Antioxidant benefits"
+    ],
     "featured": false,
     "new": false,
     "createdAt": "2024-04-10"
@@ -227,31 +327,20 @@
     "stock": 55,
     "rating": 4.8,
     "reviewCount": 0,
-    "tags": ["juice", "berries", "antioxidant", "beauty"],
-    "benefits": ["Powerful antioxidants", "Supports skin health", "Natural energy boost", "Rich in vitamins"],
+    "tags": [
+      "juice",
+      "berries",
+      "antioxidant",
+      "beauty"
+    ],
+    "benefits": [
+      "Powerful antioxidants",
+      "Supports skin health",
+      "Natural energy boost",
+      "Rich in vitamins"
+    ],
     "featured": false,
     "new": false,
     "createdAt": "2024-04-15"
-  },
-  {
-    "id": "12",
-    "slug": "tasly-calcium-tablets",
-    "name": "Tasly Calcium Tablets",
-    "description": "High-absorption calcium with vitamin D for bone and teeth health.",
-    "longDescription": "Tasly Calcium Tablets provide highly bioavailable calcium combined with vitamin D3 for optimal absorption. This essential supplement supports strong bones and teeth, promotes muscle function, aids cardiovascular health, and is particularly beneficial for women, seniors, and growing children.",
-    "price": 160,
-    "imageURL": "https://images.unsplash.com/photo-1550572017-edd951aa8f72?w=800&q=80",
-    "images": [
-      "https://images.unsplash.com/photo-1550572017-edd951aa8f72?w=800&q=80"
-    ],
-    "category": "Bone Health",
-    "stock": 70,
-    "rating": 4.7,
-    "reviewCount": 0,
-    "tags": ["calcium", "bones", "vitamin d", "teeth"],
-    "benefits": ["Strong bones & teeth", "High absorption", "Muscle support", "With vitamin D3"],
-    "featured": false,
-    "new": false,
-    "createdAt": "2024-03-20"
   }
 ]

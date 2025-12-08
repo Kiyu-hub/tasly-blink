@@ -118,5 +118,17 @@
     "stock": 100,
     "discount": 0,
     "new": true
+  },
+  {
+    "id": "jbs4s2rcwqi8knex13hv5q",
+    "name": "Bitter Melon Capsule",
+    "slug": "bitter-melon-capsule",
+    "description": "🧪 Ingredients:\nBitter Melon Powder (Momordica Charantia)\n\n💊 Dosage:\nTake 2 capsules orally, three times daily (PO tid)\n\nTake 30 minutes before meals (ac)\n\n📦 Package:\n500mg × 30 capsules\n\n⚠️ Important Notes:\n❌ Do not use during pregnancy\n\n✅ No known side effects (natural formula)\n\n💡 Key Functions / Benefits:\n🔽 Lowers Blood Sugar Levels\n\n💉 Relieves Insulin Resistance\n\n🔄 Improves Metabolic Syndrome\n\n🩸 Reduces Blood Lipids\n\n🛡️ Boosts Immunity\n\n🤝 Assists in Managing Type I & II Diabetes\n\n🧍‍♂️ Target Group:\nIndividuals with Type 2 Diabetes\n\nPeople with insulin resistance or metabolic syndrome\n\nAnyone seeking natural blood sugar support\n\n🧬 How It Works (Mechanism):\nP-Insulin: Mimics insulin to help restore pancreatic function\n\nCharantin: Boosts insulin secretion & improves insulin receptor sensitivity\n\nChromium: Aids insulin transport & enhances glucose metabolism\n",
+    "price": 288,
+    "imageURL": "https://i.imgur.com/v3JDakU.jpeg",
+    "category": "General",
+    "stock": 100,
+    "discount": 0,
+    "new": true
   }
 ]

@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { Users, Award, Heart, Leaf, Globe, Target } from 'lucide-react'
+import type { LucideIcon } from 'lucide-react'
 import { Card, CardContent } from '@/components/ui/card'
 import { getSiteInfo } from '@/lib/storage'
 import type { SiteInfo } from '@/types'
 
-const iconMap: Record<string, any> = {
+const iconMap: Record<string, LucideIcon> = {
   Leaf,
   Award,
   Heart,

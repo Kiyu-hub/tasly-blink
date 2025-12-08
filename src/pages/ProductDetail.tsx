@@ -28,6 +28,7 @@ import { useCartStore, useWishlistStore } from '@/store'
 import { getProducts, getProductReviews, addReview, getSiteInfo } from '@/lib/storage'
 import { formatCurrency, getDiscountedPrice, cn } from '@/lib/utils'
 import type { Product } from '@/types'
+import type { Review } from '@/types'
 
 export default function ProductDetail() {
   const { slug } = useParams<{ slug: string }>()
@@ -36,7 +37,7 @@ export default function ProductDetail() {
   const [quantity, setQuantity] = useState(1)
   const [selectedImage, setSelectedImage] = useState(0)
   const [loading, setLoading] = useState(true)
-  const [reviews, setReviews] = useState<any[]>([])
+  const [reviews, setReviews] = useState<Review[]>([])
   const [isReviewDialogOpen, setIsReviewDialogOpen] = useState(false)
   const [isAddingToCart, setIsAddingToCart] = useState(false)
   const [reviewForm, setReviewForm] = useState({

@@ -4,6 +4,8 @@
  * from a combined product description text
  */
 
+import type { Product } from '@/types'
+
 interface ParsedProductData {
   description: string
   ingredients: string[]
@@ -51,12 +53,7 @@ export function parseProductDescription(rawDescription: string): ParsedProductDa
   // Helper to remove all emojis from text
   const removeEmojis = (text: string): string => {
     return text
-      .replace(/[🌿💡💊🧴📦🎯⚠️💪🩸🛡️💓❤️🧠✅🌟⭐🔥💯👍✨🎉🌈]/g, '')
-      .replace(/[\u{1F600}-\u{1F64F}]/gu, '') // Emoticons
-      .replace(/[\u{1F300}-\u{1F5FF}]/gu, '') // Misc Symbols
-      .replace(/[\u{1F680}-\u{1F6FF}]/gu, '') // Transport
-      .replace(/[\u{2600}-\u{26FF}]/gu, '')   // Misc symbols
-      .replace(/[\u{2700}-\u{27BF}]/gu, '')   // Dingbats
+      .replace(/[\u{1F300}-\u{1F9FF}\u{2600}-\u{27BF}]/gu, '') // All emoji ranges
       .trim()
   }
 
@@ -65,7 +62,7 @@ export function parseProductDescription(rawDescription: string): ParsedProductDa
     if (!text) return
 
     switch (section) {
-      case 'ingredients':
+      case 'ingredients': {
         // Extract ingredient list items
         const ingredientItems = content
           .filter(line => {
@@ -74,13 +71,14 @@ export function parseProductDescription(rawDescription: string): ParsedProductDa
           })
           .map(line => {
             // Remove emojis and list markers
-            let cleaned = removeEmojis(line.replace(/^[•\-\*]\s*/, '').trim())
+            const cleaned = removeEmojis(line.replace(/^[•\-*]\s*/, '').trim())
             return cleaned
           })
           .filter(Boolean)
         
         result.ingredients = ingredientItems
         break
+      }
 
       case 'usage':
       case 'dosage':
@@ -91,7 +89,7 @@ export function parseProductDescription(rawDescription: string): ParsedProductDa
         break
 
       case 'benefits':
-      case 'functions':
+      case 'functions': {
         // Extract benefit list items
         const benefitItems = content
           .filter(line => {
@@ -100,13 +98,14 @@ export function parseProductDescription(rawDescription: string): ParsedProductDa
           })
           .map(line => {
             // Remove emoji prefixes and list markers
-            let cleaned = removeEmojis(line.replace(/^[\-\*•]\s*/, '').trim())
+            const cleaned = removeEmojis(line.replace(/^[\-*•]\s*/, '').trim())
             return cleaned
           })
           .filter(Boolean)
         
         result.benefits = [...result.benefits, ...benefitItems]
         break
+      }
 
       case 'package':
         result.packageInfo = removeEmojis(text)
@@ -121,7 +120,7 @@ export function parseProductDescription(rawDescription: string): ParsedProductDa
         break
 
       case 'description':
-      default:
+      default: {
         // Only add to description if it's not a section header
         const nonHeaderContent = content.filter(line => {
           const trimmed = line.trim()
@@ -132,6 +131,7 @@ export function parseProductDescription(rawDescription: string): ParsedProductDa
           result.description += (result.description ? '\n' : '') + cleanedContent
         }
         break
+      }
     }
   }
 
@@ -194,7 +194,15 @@ export function formatParsedProduct(parsed: ParsedProductData): {
   usage?: string
   benefits?: string
 } {
-  const formatted: any = {
+  const formatted: {
+    description: string
+    ingredients?: string
+    usage?: string
+    benefits?: string
+    packageInfo?: string
+    targetGroup?: string
+    warnings?: string
+  } = {
     description: parsed.description || 'No description available.'
   }
 
@@ -230,7 +238,7 @@ export function formatParsedProduct(parsed: ParsedProductData): {
 /**
  * Auto-parse and update product object with intelligent field extraction
  */
-export function autoParseProduct(product: any): any {
+export function autoParseProduct(product: Product): Product {
   if (!product.description) {
     return product
   }

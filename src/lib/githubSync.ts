@@ -213,7 +213,7 @@ export async function syncProductsToGitHub(products: Product[]): Promise<boolean
 /**
  * Transform SiteInfo back to the raw format used in GitHub
  */
-function transformSiteInfoToRaw(siteInfo: SiteInfo): any {
+function transformSiteInfoToRaw(siteInfo: SiteInfo): Record<string, unknown> {
   return {
     name: siteInfo.name,
     tagline: siteInfo.tagline,

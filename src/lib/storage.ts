@@ -4,7 +4,7 @@ import { syncProductsToGitHub, syncSiteInfoToGitHub } from './githubSync'
 import productsData from '@/data/products.json'
 import rawSiteInfoData from '@/data/siteInfo.json'
 
-const siteInfoData = rawSiteInfoData as any
+const siteInfoData = rawSiteInfoData as unknown as SiteInfo
 
 // GitHub configuration for production deployments
 const GITHUB_OWNER = 'Kiyu-hub'
@@ -24,7 +24,7 @@ const VISITOR_STATS_KEY = 'tasly_visitor_stats'
 const ADMIN_MODIFIED_KEY = 'tasly_admin_modified' // Track if admin has made changes
 
 // Cache for GitHub data (5 minutes)
-const githubCache = new Map<string, { data: any; timestamp: number }>()
+const githubCache = new Map<string, { data: unknown; timestamp: number }>()
 const CACHE_DURATION = 5 * 60 * 1000
 
 async function fetchFromGitHub<T>(filename: string): Promise<T | null> {
@@ -62,8 +62,8 @@ const defaultSiteInfo: SiteInfo = {
   aboutUs: siteInfoData.aboutUs,
   logo: siteInfoData.logo || '',
   favicon: siteInfoData.favicon || '',
-  email: siteInfoData.contactEmail,
-  phone: siteInfoData.contactPhone,
+  email: (siteInfoData as unknown as Record<string, string>).email || (siteInfoData as unknown as Record<string, string>).contactEmail || '',
+  phone: (siteInfoData as unknown as Record<string, string>).phone || (siteInfoData as unknown as Record<string, string>).contactPhone || '',
   whatsapp: siteInfoData.whatsapp,
   whatsappCommunityLink: siteInfoData.whatsappCommunityLink || '',
   address: siteInfoData.address,
@@ -136,7 +136,7 @@ function generateProductReviews(productId: string, count: number = 3): Review[] 
     usedComments.add(`${template.names[nameIndex]}-${commentIndex}`)
     
     const weeks = 2 + Math.floor(Math.random() * 10) // 2-11 weeks
-    let comment = template.comments[commentIndex]
+    const comment = template.comments[commentIndex]
       .replace(/{weeks}/g, weeks.toString())
       .replace(/{productName}/g, productName)
       .replace(/{category}/g, category)
@@ -215,7 +215,7 @@ async function loadFromGitHub(): Promise<void> {
     }
 
     // Fetch site info
-    const siteInfoRaw = await fetchFromGitHub<any>('siteInfo.json')
+    const siteInfoRaw = await fetchFromGitHub<SiteInfo>('siteInfo.json')
     if (siteInfoRaw) {
       const siteInfo: SiteInfo = {
         name: siteInfoRaw.name,
@@ -224,8 +224,8 @@ async function loadFromGitHub(): Promise<void> {
         aboutUs: siteInfoRaw.aboutUs,
         logo: siteInfoRaw.logo || '',
         favicon: siteInfoRaw.favicon || '',
-        email: siteInfoRaw.contactEmail,
-        phone: siteInfoRaw.contactPhone,
+        email: (siteInfoRaw as unknown as Record<string, string>).email || (siteInfoRaw as unknown as Record<string, string>).contactEmail || '',
+        phone: (siteInfoRaw as unknown as Record<string, string>).phone || (siteInfoRaw as unknown as Record<string, string>).contactPhone || '',
         whatsapp: siteInfoRaw.whatsapp,
         whatsappCommunityLink: siteInfoRaw.whatsappCommunityLink || '',
         address: siteInfoRaw.address,

@@ -13,10 +13,18 @@ export default function Cart() {
   const { items, updateQuantity, removeItem, clearCart, getTotalPrice, getTotalItems } =
     useCartStore()
 
+  const siteInfo = getSiteInfo()
   const subtotal = getTotalPrice()
+  
+  // Calculate delivery fee based on admin settings
+  const deliveryFee = siteInfo?.freeDeliveryThreshold && subtotal >= siteInfo.freeDeliveryThreshold
+    ? 0
+    : (siteInfo?.deliveryFee || 0)
+  
+  const total = subtotal + deliveryFee
+  const isFreeDelivery = deliveryFee === 0 && siteInfo?.freeDeliveryThreshold && subtotal >= siteInfo.freeDeliveryThreshold
 
   const handleCheckout = () => {
-    const siteInfo = getSiteInfo()
     const whatsappNumber = (siteInfo?.whatsapp || '233599004548').replace(/[^0-9]/g, '')
     const orderDetails = items
       .map((item) => {
@@ -27,7 +35,7 @@ export default function Cart() {
       })
       .join('\n')
 
-    const message = `Hello! I'd like to place an order:\n\n${orderDetails}\n\nTotal: ${formatCurrency(subtotal)}`
+    const message = `🛒 NEW ORDER REQUEST\n📋 From: ${siteInfo?.name || 'Tasly Ghana 346'} Website\n\n━━━━━━━━━━━━━━━━━━━━━\n📦 Order Details:\n${orderDetails}\n\n💰 Summary:\nSubtotal: ${formatCurrency(subtotal)}\nDelivery Fee: ${isFreeDelivery ? 'FREE' : formatCurrency(deliveryFee)}\n━━━━━━━━━━━━━━━━━━━━━\nTotal: ${formatCurrency(total)}\n\n🌐 Sent from: ${siteInfo?.name || 'Tasly Ghana 346'} Website\n📅 Date: ${new Date().toLocaleString('en-GB', { timeZone: 'Africa/Accra' })}`
 
     const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`
     window.open(whatsappUrl, '_blank')
@@ -213,12 +221,27 @@ export default function Cart() {
                     <span className="text-muted-foreground">Subtotal</span>
                     <span>{formatCurrency(subtotal)}</span>
                   </div>
+                  
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">Delivery Fee</span>
+                    {isFreeDelivery ? (
+                      <span className="text-green-600 font-medium">FREE</span>
+                    ) : (
+                      <span>{formatCurrency(deliveryFee)}</span>
+                    )}
+                  </div>
+                  
+                  {siteInfo?.freeDeliveryThreshold && !isFreeDelivery && siteInfo.freeDeliveryThreshold > 0 && (
+                    <p className="text-xs text-muted-foreground">
+                      Add {formatCurrency(siteInfo.freeDeliveryThreshold - subtotal)} more for free delivery!
+                    </p>
+                  )}
 
                   <Separator />
 
                   <div className="flex justify-between text-lg font-bold">
                     <span>Total</span>
-                    <span>{formatCurrency(subtotal)}</span>
+                    <span>{formatCurrency(total)}</span>
                   </div>
                 </div>
 

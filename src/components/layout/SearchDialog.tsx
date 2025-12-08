@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button'
 import { useUIStore } from '@/store'
 import { getProducts } from '@/lib/storage'
 import { formatCurrency, debounce } from '@/lib/utils'
+import { searchProducts } from '@/lib/searchUtils'
 import type { Product } from '@/types'
 
 export default function SearchDialog() {
@@ -27,12 +28,7 @@ export default function SearchDialog() {
     setIsSearching(true)
     const search = debounce(() => {
       const products = getProducts()
-      const filtered = products.filter(
-        (p) =>
-          p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          p.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          p.category.toLowerCase().includes(searchQuery.toLowerCase())
-      )
+      const filtered = searchProducts(products, searchQuery)
       setResults(filtered.slice(0, 6))
       setIsSearching(false)
     }, 300)

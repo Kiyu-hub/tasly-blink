@@ -13,6 +13,7 @@ import {
 } from '@/components/ui/accordion'
 import { Badge } from '@/components/ui/badge'
 import { getProducts, getCategories } from '@/lib/storage'
+import { searchProducts } from '@/lib/searchUtils'
 import type { Product } from '@/types'
 
 const sortOptions = [
@@ -92,15 +93,9 @@ export default function Products() {
   const filteredProducts = useMemo(() => {
     let result = [...products]
 
-    // Search filter
+    // Search filter with fuzzy matching
     if (search) {
-      const searchLower = search.toLowerCase()
-      result = result.filter(
-        (p) =>
-          p.name.toLowerCase().includes(searchLower) ||
-          p.description.toLowerCase().includes(searchLower) ||
-          p.category.toLowerCase().includes(searchLower)
-      )
+      result = searchProducts(result, search)
     }
 
     // Category filter

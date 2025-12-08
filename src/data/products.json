@@ -130,5 +130,17 @@
     "stock": 100,
     "discount": 0,
     "new": true
+  },
+  {
+    "id": "imys0ayulwgwh2qcfig6h9",
+    "name": "Cardiotonic Pill (ICP)",
+    "slug": "cardiotonic-pill-icp",
+    "description": "🌿 Ingredients:\nDanshen (Radix Salviae Miltiorrhizae)\n\nSanqi (Radix Notoginseng)\n\nBorneol\n\n📦 Package Info:\n250mg x 30 Capsules per Box\n\n🧴 Dosage:\n1–2 capsules, once or twice daily (PO qd–bid)\n\nTake before meals (ac)\n\n💡 Functions / Key Benefits:\n🩸 Improves Vascular Elasticity\n\n🚫 Reduces Lipid Sediment & Thrombosis Formation\n\n🧹 Clears Arterial Plaque and Body \"Garbage\"\n\n🔄 Enhances Circulation & Blood Flow\n\n🎯 Target Group:\nIndividuals with poor blood circulation\n\nPeople at risk of arteriosclerosis, plaque buildup, or vascular aging\n\nAdults seeking heart and vessel health support\n\nThose recovering from mild cardiac issues\n\n⚠️ Notes:\nTraditional Chinese Medicine (TCM) formulation\n\nIdeal for long-term cardiovascular maintenance\n\nStore in a cool, dry place\n",
+    "price": 312,
+    "imageURL": "https://i.imgur.com/teplKde.jpeg",
+    "category": "General",
+    "stock": 0,
+    "discount": 0,
+    "new": true
   }
 ]

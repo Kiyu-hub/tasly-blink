@@ -34,5 +34,29 @@
     "stock": 100,
     "discount": 0,
     "new": true
+  },
+  {
+    "id": "p7hqlzyt784h6v6xapeut",
+    "name": "Royal Jelly",
+    "slug": "royal-jelly",
+    "description": "FUNCTIONS\n\nRoyal Jelly helps maintain lower cholesterol level.\n\nIt also helps promote mental alertness.\n\nIt helps combat dizziness, buzzing in the ears.\n\nIt is found to be helpful to people who suffer from nervousness, anxiety and massive memory loss.\n\nRoyal Jelly has also been found to greatly improve energy levels, thereby eliminating fatigue.\n\nIt fortifies your natural immune system to help your body fight infections and diseases.\n\nSurprisingly, it has been known in treating bronchial asthma and liver disease.\n\nIt helps enhance sexual desire and performance.\n\nIt treats stomach ulcer and bone fractures.\n\nIt has the ability to restore skin's youthfulness and improve the skin beauty. This is possible because royal jelly is rich in nucleic acids - Gelatin, which is the one of the precursors of collagen. Collagen is famous as anti-aging element.\n",
+    "price": 283.2,
+    "imageURL": "https://i.imgur.com/BRnRKNP.jpeg",
+    "category": "General",
+    "stock": 100,
+    "discount": 0,
+    "new": true
+  },
+  {
+    "id": "dcu7n8wjb7uabh2fblxr",
+    "name": "Prop & Water Lily",
+    "slug": "prop-water-lily",
+    "description": "🔬 Key Ingredients:\nPropolis (Bee resin extract)\n\nWater Lily (Aquatic flower with calming benefits)\n\n💊 Recommended Dosage:\nAdults: 1–2 capsules daily with meals\n\nChildren: Consult a healthcare provider before use\n\n📦 Packaging Info:\n30 Capsules per Bottle (Exact weight not specified)\n\n💡 Key Health Benefits:\n🛡️ Immune Support\n\nFights infections\n\nBoosts white blood cells\n\nSupports overall immunity\n\n🌿 Stress Relief & Mental Clarity\n\nCalms the nervous system\n\nReduces anxiety and brain fog\n\nSupports emotional balance\n\n🔥 Anti-Inflammatory\n\nHelps joint pain, muscle soreness\n\nReduces skin and digestive inflammation\n\n✨ Skin Health\n\nTreats acne and irritation\n\nPromotes wound healing and hydration\n\nEnhances natural skin glow\n\n🚰 Detoxification\n\nCleanses liver, kidneys, and urinary tract\n\nFlushes out toxins and improves digestion\n\n🎯 Target Group:\n\nAdults seeking immune & stress support\n\nIndividuals with chronic inflammation or joint pain\n\nThose with skin issues or looking for anti-aging support\n\nPeople wanting natural detox and better digestion\n\n⚠️ Note:\nPregnant, breastfeeding, or chronically ill individuals should consult a healthcare provider before use.\n\nStore in a cool, dry place away from direct sunlight.",
+    "price": 192,
+    "imageURL": "https://i.imgur.com/4X8uKtM.jpeg",
+    "category": "General",
+    "stock": 100,
+    "discount": 0,
+    "new": false
   }
 ]

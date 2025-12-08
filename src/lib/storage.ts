@@ -95,21 +95,21 @@ const reviewTemplates = [
   {
     names: ['Kwame Mensah', 'Kofi Asante', 'Yaw Boateng', 'Kwabena Osei', 'Kojo Appiah'],
     comments: [
-      'Excellent product! I\'ve been using this for {weeks} weeks and the results are amazing. Highly recommend!',
-      'Very effective product. I noticed improvements within {weeks} weeks of use. Great quality!',
-      'This has become part of my daily routine. After {weeks} weeks, I can definitely feel the difference.',
-      'Authentic Tasly product. Been using it for {weeks} weeks and very satisfied with the results.',
-      'Great product! {weeks} weeks in and I\'m seeing positive changes. Will continue using it.'
+      '{productName} has been excellent! I\'ve been using this for {weeks} weeks and the results are amazing. Highly recommend!',
+      'Very effective {category} product. I noticed improvements within {weeks} weeks of use. Great quality!',
+      'This {category} supplement has become part of my daily routine. After {weeks} weeks, I can definitely feel the difference.',
+      'Authentic Tasly product. Been using {productName} for {weeks} weeks and very satisfied with the results.',
+      'Great product for {category}! {weeks} weeks in and I\'m seeing positive changes. Will continue using it.'
     ]
   },
   {
     names: ['Akosua Frimpong', 'Ama Owusu', 'Abena Mensah', 'Adwoa Asante', 'Afia Boateng'],
     comments: [
-      'Love this product! After {weeks} weeks of consistent use, I feel much better. Highly recommended!',
-      'Genuine Tasly product. I\'ve been taking this for {weeks} weeks and it really works!',
-      'Very pleased with this purchase. {weeks} weeks later and I can see real improvements.',
+      'Love {productName}! After {weeks} weeks of consistent use, I feel much better. Highly recommended!',
+      'Genuine Tasly product. I\'ve been taking this for {weeks} weeks and it really works for my {category} needs!',
+      'Very pleased with this {category} purchase. {weeks} weeks later and I can see real improvements.',
       'This product exceeded my expectations. Been using for {weeks} weeks with great results!',
-      'Excellent quality! After {weeks} weeks I\'m very happy with the outcome. Worth every cedi!'
+      'Excellent quality {category} supplement! After {weeks} weeks I\'m very happy with the outcome. Worth every cedi!'
     ]
   }
 ]
@@ -117,6 +117,12 @@ const reviewTemplates = [
 function generateProductReviews(productId: string, count: number = 3): Review[] {
   const reviews: Review[] = []
   const usedComments = new Set<string>()
+  
+  // Get product info for personalized reviews
+  const products = getProducts()
+  const product = products.find(p => p.id === productId)
+  const productName = product?.name || 'this product'
+  const category = product?.category?.toLowerCase() || 'health'
   
   for (let i = 0; i < count; i++) {
     const template = reviewTemplates[i % 2]
@@ -130,7 +136,11 @@ function generateProductReviews(productId: string, count: number = 3): Review[] 
     usedComments.add(`${template.names[nameIndex]}-${commentIndex}`)
     
     const weeks = 2 + Math.floor(Math.random() * 10) // 2-11 weeks
-    const comment = template.comments[commentIndex].replace('{weeks}', weeks.toString())
+    let comment = template.comments[commentIndex]
+      .replace(/{weeks}/g, weeks.toString())
+      .replace(/{productName}/g, productName)
+      .replace(/{category}/g, category)
+    
     const rating = Math.random() > 0.3 ? 5 : 4 // 70% get 5 stars, 30% get 4 stars
     
     // Generate date within last 90 days

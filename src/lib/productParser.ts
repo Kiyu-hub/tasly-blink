@@ -48,6 +48,18 @@ export function parseProductDescription(rawDescription: string): ParsedProductDa
     warnings: /^(⚠️\s*)?(important\s+)?notes?:?$/i,
   }
 
+  // Helper to remove all emojis from text
+  const removeEmojis = (text: string): string => {
+    return text
+      .replace(/[🌿💡💊🧴📦🎯⚠️💪🩸🛡️💓❤️🧠✅🌟⭐🔥💯👍✨🎉🌈]/g, '')
+      .replace(/[\u{1F600}-\u{1F64F}]/gu, '') // Emoticons
+      .replace(/[\u{1F300}-\u{1F5FF}]/gu, '') // Misc Symbols
+      .replace(/[\u{1F680}-\u{1F6FF}]/gu, '') // Transport
+      .replace(/[\u{2600}-\u{26FF}]/gu, '')   // Misc symbols
+      .replace(/[\u{2700}-\u{27BF}]/gu, '')   // Dingbats
+      .trim()
+  }
+
   const processSectionContent = (section: string, content: string[]) => {
     const text = content.join('\n').trim()
     if (!text) return
@@ -60,7 +72,11 @@ export function parseProductDescription(rawDescription: string): ParsedProductDa
             const trimmed = line.trim()
             return trimmed && !sectionPatterns.ingredients.test(trimmed)
           })
-          .map(line => line.replace(/^[•\-\*]\s*/, '').trim())
+          .map(line => {
+            // Remove emojis and list markers
+            let cleaned = removeEmojis(line.replace(/^[•\-\*]\s*/, '').trim())
+            return cleaned
+          })
           .filter(Boolean)
         
         result.ingredients = ingredientItems
@@ -68,9 +84,9 @@ export function parseProductDescription(rawDescription: string): ParsedProductDa
 
       case 'usage':
       case 'dosage':
-        result.usage = text
+        result.usage = removeEmojis(text)
         if (section === 'dosage') {
-          result.dosage = text
+          result.dosage = removeEmojis(text)
         }
         break
 
@@ -84,7 +100,7 @@ export function parseProductDescription(rawDescription: string): ParsedProductDa
           })
           .map(line => {
             // Remove emoji prefixes and list markers
-            let cleaned = line.replace(/^[🎯💡💪🩸🛡️💓❤️🧠✅\-\*•]\s*/, '').trim()
+            let cleaned = removeEmojis(line.replace(/^[\-\*•]\s*/, '').trim())
             return cleaned
           })
           .filter(Boolean)
@@ -93,15 +109,15 @@ export function parseProductDescription(rawDescription: string): ParsedProductDa
         break
 
       case 'package':
-        result.packageInfo = text
+        result.packageInfo = removeEmojis(text)
         break
 
       case 'targetGroup':
-        result.targetGroup = text
+        result.targetGroup = removeEmojis(text)
         break
 
       case 'warnings':
-        result.warnings = text
+        result.warnings = removeEmojis(text)
         break
 
       case 'description':
@@ -112,7 +128,8 @@ export function parseProductDescription(rawDescription: string): ParsedProductDa
           return !Object.values(sectionPatterns).some(pattern => pattern.test(trimmed))
         })
         if (nonHeaderContent.length > 0) {
-          result.description += (result.description ? '\n' : '') + nonHeaderContent.join('\n')
+          const cleanedContent = nonHeaderContent.map(removeEmojis).join('\n')
+          result.description += (result.description ? '\n' : '') + cleanedContent
         }
         break
     }
@@ -235,10 +252,23 @@ export function autoParseProduct(product: any): any {
     updated.benefits = parsed.benefits
   }
 
-  // Update description to be cleaner (remove extracted sections)
+  // Format description professionally with bullet points if it contains multiple sentences
   if (parsed.description) {
     updated.longDescription = product.description // Keep original as longDescription
-    updated.description = parsed.description
+    
+    // Split into sentences and format as bullet points
+    const sentences = parsed.description
+      .split(/[.!?]\s+/)
+      .map(s => s.trim())
+      .filter(s => s.length > 10) // Only meaningful sentences
+    
+    if (sentences.length > 2) {
+      // Format as clean bullet points
+      updated.description = sentences.map(s => `• ${s.charAt(0).toUpperCase() + s.slice(1)}`).join('\n')
+    } else {
+      // Keep as regular text if too short
+      updated.description = parsed.description
+    }
   }
 
   return updated

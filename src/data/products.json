@@ -94,5 +94,17 @@
     "stock": 100,
     "discount": 0,
     "new": true
+  },
+  {
+    "id": "5elww20picqb9aw7tobm",
+    "name": "Cen Forte Tablet",
+    "slug": "cen-forte-tablet",
+    "description": "🎯 Functions / Health Benefits:\n✅ Provides balanced daily nutritional support\n\n🔄 Regulates metabolic functions\n\n🛡️ Boosts immune system and general wellness\n\n🧍‍♂️ Target Group:\nAdults needing complete daily vitamin/mineral coverage\n\nIndividuals with nutritional deficiencies\n\nPeople recovering from illness, stress, or fatigue\n\nAnyone seeking to boost immunity and prevent deficiency diseases\n\n📦 Package:\n100 tablets per bottle\n\n📅 Dosage:\nTake 1 tablet orally per day (PO pd)\n",
+    "price": 300,
+    "imageURL": "https://i.imgur.com/bWBc0B6.jpeg",
+    "category": "General",
+    "stock": 100,
+    "discount": 0,
+    "new": true
   }
 ]

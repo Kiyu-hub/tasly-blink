@@ -23,6 +23,7 @@ export default function ProductCard({ product, index = 0, compact = false }: Pro
   const inWishlist = isInWishlist(product.id)
   
   const [showQuantityDialog, setShowQuantityDialog] = useState(false)
+  const [isAddingToCart, setIsAddingToCart] = useState(false)
   const clickCountRef = useRef(0)
   const clickTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
@@ -30,10 +31,15 @@ export default function ProductCard({ product, index = 0, compact = false }: Pro
     e.preventDefault()
     e.stopPropagation()
     
-    if (product.stock <= 0) {
-      toast.error('This product is out of stock')
+    if (product.stock <= 0 || isAddingToCart) {
+      if (product.stock <= 0) {
+        toast.error('This product is out of stock')
+      }
       return
     }
+
+    // Prevent rapid clicks
+    setIsAddingToCart(true)
 
     // Clear existing timer
     if (clickTimerRef.current) {
@@ -48,19 +54,21 @@ export default function ProductCard({ product, index = 0, compact = false }: Pro
       addItem(product, 1)
       toast.success(`${product.name} added to cart`)
       
-      // Reset counter after 1 second
+      // Reset counter and re-enable after delay
       clickTimerRef.current = setTimeout(() => {
         clickCountRef.current = 0
-      }, 1000)
+        setIsAddingToCart(false)
+      }, 800)
     } else {
       // Multiple clicks - show quantity dialog
       setShowQuantityDialog(true)
       clickCountRef.current = 0
+      setIsAddingToCart(false)
       if (clickTimerRef.current) {
         clearTimeout(clickTimerRef.current)
       }
     }
-  }, [product, addItem])
+  }, [product, addItem, isAddingToCart])
 
   const handleQuantityConfirm = (quantity: number) => {
     addItem(product, quantity)
@@ -165,12 +173,12 @@ export default function ProductCard({ product, index = 0, compact = false }: Pro
                 <button
                   className={cn(
                     "w-10 h-10 rounded-full flex items-center justify-center transition-all shadow-md hover:shadow-lg",
-                    product.stock <= 0
+                    product.stock <= 0 || isAddingToCart
                       ? "bg-gray-200 text-gray-400 cursor-not-allowed"
                       : "bg-gradient-to-r from-primary to-green-600 text-white hover:scale-110"
                   )}
                   onClick={handleAddToCart}
-                  disabled={product.stock <= 0}
+                  disabled={product.stock <= 0 || isAddingToCart}
                 >
                   <ShoppingCart className="h-5 w-5" />
                 </button>
@@ -238,10 +246,10 @@ export default function ProductCard({ product, index = 0, compact = false }: Pro
                 size="lg"
                 className="w-full h-12 rounded-full bg-gradient-to-r from-primary to-green-600 shadow-xl hover:shadow-2xl hover:scale-105 transition-all"
                 onClick={handleAddToCart}
-                disabled={product.stock <= 0}
+                disabled={product.stock <= 0 || isAddingToCart}
               >
                 <ShoppingCart className="mr-2 h-5 w-5" />
-                {product.stock <= 0 ? 'Out of Stock' : 'Add to Cart'}
+                {product.stock <= 0 ? 'Out of Stock' : isAddingToCart ? 'Adding...' : 'Add to Cart'}
               </Button>
             </div>
           </div>

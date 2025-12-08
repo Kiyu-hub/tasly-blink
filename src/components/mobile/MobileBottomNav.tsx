@@ -1,4 +1,4 @@
-import { Home, Grid3x3, ShoppingCart, Heart, Menu, X, UserPlus } from 'lucide-react'
+import { Home, Grid3x3, ShoppingCart, Menu, X, UserPlus } from 'lucide-react'
 import { Link, useLocation } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import { useCartStore } from '@/store'
@@ -45,12 +45,13 @@ export default function MobileBottomNav() {
     }
   }, [])
 
-  // Show both categories and distributor buttons, hide categories when no visible categories exist
+  // Show cart always in bottom nav when no categories exist
+  // Hide wishlist from bottom nav (shown in header instead)
+  // Hide distributor when categories exist
   const navItems = [
     { icon: Home, label: 'Home', path: '/' },
     { icon: Grid3x3, label: 'Categories', path: '/categories', hidden: !hasVisibleCategories },
-    { icon: ShoppingCart, label: 'Cart', path: '/cart', badge: cartItemCount },
-    { icon: Heart, label: 'Wishlist', path: '/wishlist' },
+    { icon: ShoppingCart, label: 'Cart', path: '/cart', badge: cartItemCount, hidden: hasVisibleCategories },
     { icon: UserPlus, label: 'Distributor', path: '/distributor', hidden: hasVisibleCategories },
   ].filter(item => !item.hidden)
 
@@ -115,7 +116,7 @@ export default function MobileBottomNav() {
 
       {/* Bottom Navigation */}
       <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700 shadow-lg">
-        <div className="flex justify-around items-center h-14 px-2">
+        <div className="flex justify-around items-center h-14 px-1">
           {navItems.map((item) => {
             const Icon = item.icon
             const isActive = location.pathname === item.path

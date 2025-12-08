@@ -29,28 +29,28 @@ export default function MobileStickyActions({
 
   return (
     <div className="md:hidden fixed bottom-14 left-0 right-0 z-30 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/90 border-t shadow-lg">
-      <div className="container mx-auto px-2 py-2">
+      <div className="px-3 py-2">
         <div className="flex items-center gap-2">
           {/* Price Display */}
-          <div className="flex flex-col flex-1">
-            <span className="text-[10px] text-muted-foreground leading-tight">Total Price</span>
-            <span className="text-base font-bold text-primary leading-tight">{price}</span>
+          <div className="flex flex-col flex-shrink-0">
+            <span className="text-[9px] text-muted-foreground leading-tight">Total Price</span>
+            <span className="text-sm font-bold text-primary leading-tight">{price}</span>
           </div>
 
           {/* Dynamic Button */}
           <Button
-            className="flex-1 h-11 text-sm font-semibold bg-gradient-to-r from-primary to-green-600"
+            className="flex-1 h-10 text-sm font-semibold bg-gradient-to-r from-primary to-green-600 rounded-full"
             onClick={handleButtonClick}
             disabled={disabled && !hasCartItems}
           >
             {hasCartItems ? (
               <>
                 View Cart
-                <ArrowRight className="ml-1.5 h-4 w-4" />
+                <ArrowRight className="ml-1 h-4 w-4" />
               </>
             ) : (
               <>
-                <ShoppingCart className="mr-1.5 h-4 w-4" />
+                <ShoppingCart className="mr-1 h-4 w-4" />
                 {disabled ? 'Out of Stock' : 'Add to Cart'}
               </>
             )}

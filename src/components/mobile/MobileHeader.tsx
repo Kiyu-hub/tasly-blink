@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { Search, ShoppingCart, UserPlus, Moon, Sun } from 'lucide-react'
-import { useCartStore } from '@/store'
+import { Search, Heart, UserPlus, Moon, Sun } from 'lucide-react'
+import { useWishlistStore } from '@/store'
 import { Badge } from '@/components/ui/badge'
 import { cn } from '@/lib/utils'
 import { getSiteInfo } from '@/lib/storage'
@@ -13,8 +13,7 @@ export default function MobileHeader() {
   const [siteInfo, setSiteInfo] = useState(getSiteInfo())
   const navigate = useNavigate()
   const { theme, setTheme } = useTheme()
-  const cartItems = useCartStore((state) => state.items)
-  const totalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0)
+  const wishlistItems = useWishlistStore((state) => state.items.length)
   const logoUrl = siteInfo?.logo || 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSE5bpjWLc7v0MJ8EVqLPSOweMBQmvVU94YYw&s'
   
   const toggleTheme = () => {
@@ -98,16 +97,16 @@ export default function MobileHeader() {
           )}
         </button>
 
-        {/* Cart Icon with Badge */}
-        <Link to="/cart" className="relative flex-shrink-0">
+        {/* Wishlist Icon with Badge */}
+        <Link to="/wishlist" className="relative flex-shrink-0">
           <div className="w-10 h-10 rounded-full bg-muted/50 flex items-center justify-center">
-            <ShoppingCart className="h-5 w-5" />
-            {totalItems > 0 && (
+            <Heart className="h-5 w-5" />
+            {wishlistItems > 0 && (
               <Badge 
-                variant="sale" 
+                variant="destructive" 
                 className="absolute -top-1 -right-1 h-5 w-5 flex items-center justify-center p-0 text-[10px]"
               >
-                {totalItems > 9 ? '9+' : totalItems}
+                {wishlistItems > 9 ? '9+' : wishlistItems}
               </Badge>
             )}
           </div>

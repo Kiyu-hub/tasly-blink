@@ -10,5 +10,17 @@
     "stock": 100,
     "discount": 0,
     "new": true
+  },
+  {
+    "id": "ko4p29fsznp33awowjauo8",
+    "name": "Dan Shen Tea",
+    "slug": "dan-shen-tea",
+    "description": "🌿 Ingredients:\nRadix Salviae Miltiorrhizae (Dan Shen)\n\nRadix Astragali\n\nRadix Notoginseng\n\nGreen Tea\n\n\n📦 Package Info:\n1,500mg x 20 Sachets per Box\n\n\n🧴 Dosage & Usage:\nTake 1 sachet, once or twice daily (PO bid)\n\nSoak in boiling water for 2 minutes\n\nRecommended for regular/long-term use\n\n💡 Functions / Key Benefits:\n❤️ Improves Heart & Brain Blood Circulation\n\n🧠 Reduces Risk of Cardiovascular & Cerebrovascular Diseases\n\n💪 Improves Cardiac Muscle Oxygen Supply\n\n🩸 Lowers Blood Cholesterol\n\n🛡️ Prevents Blood Clot Formation (Platelet Aggregation)\n\n💓 Protects Heart Muscle Cells from Damage\n\n🎯 Target Group:\nAdults, especially those at risk of heart or brain blood vessel disease\n\nIndividuals with high blood cholesterol, poor circulation, or cardiac fatigue\n\nHealth-conscious people seeking preventive natural remedies\n\n⚠️ Notes:\n100% natural herbal formula based on Traditional Chinese Medicine (TCM)\n\nNo known harmful side effects when used as directed\n\nStore in a cool, dry place away from sunlight\n",
+    "price": 192,
+    "imageURL": "https://i.imgur.com/O0fSwaY.jpeg",
+    "category": "General",
+    "stock": 100,
+    "discount": 0,
+    "new": true
   }
 ]
